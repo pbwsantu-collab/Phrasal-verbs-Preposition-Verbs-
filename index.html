@@ -282,15 +282,15 @@
     </h1>
 
     <div class="tab-bar">
-        <button class="tab-btn active" data-tab="phrasal">🔹 Phrasal Verbs (250+)</button>
+        <button class="tab-btn active" data-tab="phrasal-ref">🔹 Phrasal Verbs (250+)</button>
         <button class="tab-btn" data-tab="verbs">🔸 500 Verbs</button>
         <button class="tab-btn" data-tab="sva">⚡ SVA (260+)</button>
         <button class="tab-btn" data-tab="prep">📍 Prepositions (309)</button>
-        <button class="tab-btn" data-tab="phrasalq">📝 Phrasal Q (250+)</button>
+        <button class="tab-btn" data-tab="phrasal-q">📝 Phrasal Q (250+)</button>
     </div>
 
     <!-- PHRASAL REFERENCE -->
-    <div id="phrasal" class="tab-content active">
+    <div id="phrasal-ref" class="tab-content active">
         <p style="margin-bottom:0.5rem; font-weight:500;">📌 250+ unique phrasal verbs with clickable Bengali, pronunciation & examples. <span class="count-badge">250+</span></p>
         <div id="phrasalGrid" class="card-grid"></div>
     </div>
@@ -316,7 +316,7 @@
     </div>
 
     <!-- PHRASAL QUESTIONS -->
-    <div id="phrasalq" class="tab-content">
+    <div id="phrasal-q" class="tab-content">
         <p style="margin-bottom:1.2rem; font-weight:500;">📝 250+ Madhyamik-style Phrasal Verb questions · clickable answers & Bengali meaning</p>
         <div id="phrasalQContainer"></div>
         <div id="phrasalQPagination" class="pagination"></div>
@@ -329,11 +329,11 @@
         // ---------- TABS ----------
         const tabs = document.querySelectorAll('.tab-btn');
         const contents = {
-            phrasal: document.getElementById('phrasal'),
+            'phrasal-ref': document.getElementById('phrasal-ref'),
             verbs: document.getElementById('verbs'),
             sva: document.getElementById('sva'),
             prep: document.getElementById('prep'),
-            phrasalq: document.getElementById('phrasalq')
+            'phrasal-q': document.getElementById('phrasal-q')
         };
         tabs.forEach(btn => {
             btn.addEventListener('click', function(e) {
@@ -653,7 +653,6 @@
             { q: "He cast away his bad habits.", correct: "cast away", bn: "পরিত্যাগ করা", options: ["cast away", "cast off", "cast out"] },
             { q: "A large crowd showed up at the stadium.", correct: "showed up", bn: "উপস্থিত হওয়া", options: ["showed up", "showed off", "showed out"] },
             { q: "He is looking for a job.", correct: "looking for", bn: "খোঁজা", options: ["looking for", "looking after", "looking into"] },
-            { q: "The teacher is searching for the register.", correct: "searching for", bn: "খোঁজা", options: ["searching for", "searching after", "searching into"] },
             { q: "Leave out the unnecessary details.", correct: "leave out", bn: "বাদ দেওয়া", options: ["leave out", "leave off", "leave behind"] },
             { q: "Keep off the grass.", correct: "keep off", bn: "দূরে থাকা", options: ["keep off", "keep on", "keep up"] },
             { q: "Hold on for a moment.", correct: "hold on", bn: "অপেক্ষা করা", options: ["hold on", "hold back", "hold in"] },
@@ -741,22 +740,18 @@
         phrasalQuestions.forEach(q => usedPhrasal.add(q.correct));
 
         let extraCounter = 0;
-        while (phrasalQuestions.length < 260 && extraCounter < uniquePhrasal.length * 2) {
+        while (phrasalQuestions.length < 260 && extraCounter < uniquePhrasal.length * 3) {
             for (let item of uniquePhrasal) {
                 if (phrasalQuestions.length >= 260) break;
                 const pv = item.en;
                 if (usedPhrasal.has(pv)) continue;
                 // Create a question using this phrasal verb
                 const sentence = item.example.replace(/[^a-zA-Z0-9 ]/g, '').trim();
-                const words = sentence.split(' ');
-                // Find the phrasal verb in the sentence and replace with blank
-                const pvWords = pv.split(' ');
                 let sentenceWithBlank = sentence;
-                // Simple replacement - look for the phrasal verb as a whole
                 if (sentenceWithBlank.includes(pv)) {
                     sentenceWithBlank = sentenceWithBlank.replace(pv, '____');
                 } else {
-                    // Try to find parts
+                    const pvWords = pv.split(' ');
                     for (let w of pvWords) {
                         if (sentenceWithBlank.includes(w)) {
                             sentenceWithBlank = sentenceWithBlank.replace(w, '____');
@@ -771,10 +766,9 @@
                 for (let i = 0; i < 2 && i < shuffledPVs.length; i++) {
                     options.push(shuffledPVs[i]);
                 }
-                // Shuffle options
                 const shuffledOptions = options.sort(() => Math.random() - 0.5);
                 const key = sentenceWithBlank + pv;
-                if (!phrasalQSet.has(key)) {
+                if (!phrasalQSet.has(key) && sentenceWithBlank !== sentence) {
                     phrasalQSet.add(key);
                     phrasalQuestions.push({
                         q: sentenceWithBlank,
@@ -804,6 +798,7 @@
                     }
                 }
             }
+            if (sentenceWithBlank === sentence) continue;
             const options = [pv];
             const allPVs = uniquePhrasal.map(p => p.en).filter(p => p !== pv);
             const shuffledPVs = allPVs.sort(() => Math.random() - 0.5);

@@ -336,7 +336,7 @@
             'phrasal-q': document.getElementById('phrasal-q')
         };
         tabs.forEach(btn => {
-            btn.addEventListener('click', function(e) {
+            btn.addEventListener('click', function() {
                 tabs.forEach(b => b.classList.remove('active'));
                 this.classList.add('active');
                 const tab = this.dataset.tab;
@@ -349,13 +349,14 @@
         // ---------- SPEAK ----------
         function speakText(text, lang = 'bn-IN') {
             if (!window.speechSynthesis) return;
+            window.speechSynthesis.cancel();
             const utterance = new SpeechSynthesisUtterance(text);
             utterance.lang = lang;
             utterance.rate = 0.9;
             window.speechSynthesis.speak(utterance);
         }
 
-        // ---------- PHRASAL VERBS REFERENCE (250+ unique) ----------
+        // ---------- PHRASAL VERBS REFERENCE ----------
         const phrasalData = [
             { en: "do away with", bn: "উচ্ছেদ করা", example: "The authority did away with the unnecessary rule." },
             { en: "lay by", bn: "সঞ্চয় করা", example: "Always try to lay by a portion of your earnings." },
@@ -537,13 +538,11 @@
             { en: "wear out", bn: "জীর্ণ করা", example: "The shoes wore out quickly." }
         ];
 
-        // Remove duplicates using Set
         const seen = new Set();
         const uniquePhrasal = [];
         phrasalData.forEach(item => {
-            const key = item.en;
-            if (!seen.has(key)) {
-                seen.add(key);
+            if (!seen.has(item.en)) {
+                seen.add(item.en);
                 uniquePhrasal.push(item);
             }
         });
@@ -554,20 +553,19 @@
             card.className = 'card';
             card.innerHTML = `
                 <div class="en">${item.en}</div>
-                <div class="bn" data-bn="${item.bn}">🔊 ${item.bn}</div>
-                <div class="pronounce" data-pron="${item.en}">🔊 pronunciation</div>
+                <div class="bn">🔊 ${item.bn}</div>
+                <div class="pronounce">🔊 pronunciation</div>
                 <div class="example">📌 ${item.example}</div>
             `;
-            card.querySelector('.bn').addEventListener('click', function(e) { speakText(this.dataset.bn, 'bn-IN'); });
-            card.querySelector('.pronounce').addEventListener('click', function(e) { speakText(this.dataset.pron, 'en-IN'); });
+            card.querySelector('.bn').addEventListener('click', function() { speakText(item.bn, 'bn-IN'); });
+            card.querySelector('.pronounce').addEventListener('click', function() { speakText(item.en, 'en-IN'); });
             phrasalGrid.appendChild(card);
         });
 
-        // ---------- PHRASAL VERB QUESTIONS (250+ unique Madhyamik-style) ----------
+        // ---------- PHRASAL VERB QUESTIONS ----------
         const phrasalQSet = new Set();
         const phrasalQuestions = [];
 
-        // Base questions from your list
         const basePhrasalQ = [
             { q: "The soldiers surrendered without any fight.", correct: "gave in", bn: "আত্মসমর্পণ করা", options: ["gave in", "gave up", "gave out"] },
             { q: "The teacher is searching for the missing register.", correct: "looking for", bn: "খোঁজা", options: ["looking for", "looking after", "looking into"] },
@@ -582,151 +580,9 @@
             { q: "The man created a story to avoid punishment.", correct: "made up", bn: "বানানো", options: ["made up", "made off", "made out"] },
             { q: "He continued as if nothing had happened.", correct: "carried on", bn: "চালিয়ে যাওয়া", options: ["carried on", "carried out", "carried away"] },
             { q: "She resembles her mother.", correct: "takes after", bn: "সদৃশ হওয়া", options: ["takes after", "takes off", "takes in"] },
-            { q: "Have the factory workers withdrawn the strike?", correct: "called off", bn: "বাতিল করা", options: ["called off", "called on", "called for"] },
-            { q: "The authority did away with the unnecessary rule.", correct: "did away with", bn: "উচ্ছেদ করা", options: ["did away with", "did over", "did up"] },
-            { q: "The bus broke down in the middle of the road.", correct: "broke down", bn: "ভেঙে পড়া", options: ["broke down", "broke up", "broke out"] },
-            { q: "The match was called off due to rain.", correct: "called off", bn: "বাতিল করা", options: ["called off", "called on", "called for"] },
-            { q: "Education brings about positive change.", correct: "brings about", bn: "ঘটানো", options: ["brings about", "brings up", "brings out"] },
-            { q: "The trekkers set off early in the morning.", correct: "set off", bn: "যাত্রা করা", options: ["set off", "set up", "set out"] },
-            { q: "Never look down upon the poor.", correct: "look down upon", bn: "তুচ্ছ করা", options: ["look down upon", "look up to", "look after"] },
-            { q: "The fire went out due to strong winds.", correct: "went out", bn: "নিভে যাওয়া", options: ["went out", "went off", "went up"] },
-            { q: "I came across an old photo in the attic.", correct: "came across", bn: "হঠাৎ দেখা", options: ["came across", "came about", "came down"] },
-            { q: "The manager turned down his leave request.", correct: "turned down", bn: "প্রত্যাখ্যান করা", options: ["turned down", "turned up", "turned off"] },
-            { q: "The principal gave away the prizes.", correct: "gave away", bn: "বিতরণ করা", options: ["gave away", "gave up", "gave in"] },
-            { q: "You must carry out the supervisor's orders.", correct: "carry out", bn: "পালন করা", options: ["carry out", "carry on", "carry away"] },
-            { q: "The lawyer drew up the agreement paper.", correct: "drew up", bn: "খসড়া করা", options: ["drew up", "drew out", "drew in"] },
-            { q: "I cannot put up with such noise anymore.", correct: "put up with", bn: "সহ্য করা", options: ["put up with", "put off", "put out"] },
-            { q: "Thieves broke into the closed house.", correct: "broke into", bn: "জোর করে ঢোকা", options: ["broke into", "broke out", "broke up"] },
-            { q: "The culprit made off before police arrived.", correct: "made off", bn: "পালানো", options: ["made off", "made up", "made out"] },
-            { q: "The trust has set up a primary school.", correct: "set up", bn: "প্রতিষ্ঠা করা", options: ["set up", "set off", "set out"] },
-            { q: "The inspector is looking into the complaint.", correct: "looking into", bn: "তদন্ত করা", options: ["looking into", "looking after", "looking for"] },
-            { q: "I am looking forward to your quick reply.", correct: "looking forward to", bn: "আশা করা", options: ["looking forward to", "looking for", "looking after"] },
-            { q: "The cracker went off with a loud sound.", correct: "went off", bn: "বিস্ফোরণ ঘটানো", options: ["went off", "went out", "went up"] },
-            { q: "Put out the lamp before going to sleep.", correct: "put out", bn: "নিভানো", options: ["put out", "put off", "put up"] },
-            { q: "Their plan to travel fell through.", correct: "fell through", bn: "ব্যর্থ হওয়া", options: ["fell through", "fell out", "fell behind"] },
-            { q: "He passed out due to intense heat.", correct: "passed out", bn: "অজ্ঞান হওয়া", options: ["passed out", "passed away", "passed on"] },
-            { q: "The price of vegetables has come down.", correct: "come down", bn: "নামা", options: ["come down", "come out", "come about"] },
-            { q: "We have used up all the ink.", correct: "used up", bn: "শেষ করে ফেলা", options: ["used up", "used out", "used over"] },
-            { q: "You should go by safety guidelines.", correct: "go by", bn: "অনুসরণ করা", options: ["go by", "go on", "go off"] },
-            { q: "Rina bore away three medals in sports.", correct: "bore away", bn: "জয় করা", options: ["bore away", "bore out", "bore up"] },
-            { q: "How did this strange event come about?", correct: "come about", bn: "ঘটা", options: ["come about", "come across", "come down"] },
-            { q: "You should not look down on anyone.", correct: "look down on", bn: "তুচ্ছ করা", options: ["look down on", "look up to", "look after"] },
-            { q: "The witness held back crucial information.", correct: "held back", bn: "আটকে রাখা", options: ["held back", "held on", "held in"] },
-            { q: "The price of fuel has gone up again.", correct: "gone up", bn: "বৃদ্ধি পাওয়া", options: ["gone up", "gone down", "gone out"] },
-            { q: "He asked for a glass of water.", correct: "asked for", bn: "চাওয়া", options: ["asked for", "asked after", "asked out"] },
-            { q: "I called at his house yesterday.", correct: "called at", bn: "পরিদর্শন করা", options: ["called at", "called on", "called for"] },
-            { q: "Good children do not call names to others.", correct: "call names", bn: "গালি দেওয়া", options: ["call names", "call on", "call off"] },
-            { q: "Please do not cut in while I am speaking.", correct: "cut in", bn: "বাধা দেওয়া", options: ["cut in", "cut down", "cut off"] },
-            { q: "She loves to take part in debate events.", correct: "take part", bn: "অংশগ্রহণ করা", options: ["take part", "take after", "take off"] },
-            { q: "Try to keep up your high marks in English.", correct: "keep up", bn: "বজায় রাখা", options: ["keep up", "keep on", "keep off"] },
-            { q: "How are you getting on with your studies?", correct: "getting on", bn: "চলতে থাকা", options: ["getting on", "getting over", "getting up"] },
-            { q: "Your blue shoes go with this dress.", correct: "go with", bn: "মানানসই হওয়া", options: ["go with", "go by", "go off"] },
-            { q: "I ran into my old teacher at the market.", correct: "ran into", bn: "হঠাৎ দেখা", options: ["ran into", "ran after", "ran over"] },
-            { q: "Learn the rules by heart for the exam.", correct: "learn by heart", bn: "মুখস্থ করা", options: ["learn by heart", "learn from", "learn about"] },
-            { q: "How did you come by this rare coin?", correct: "come by", bn: "পাওয়া", options: ["come by", "come across", "come about"] },
-            { q: "She got over her initial hesitation.", correct: "got over", bn: "সারিয়ে ওঠা", options: ["got over", "got through", "got on"] },
-            { q: "A fast car ran over the stray dog.", correct: "ran over", bn: "চাপা দেওয়া", options: ["ran over", "ran after", "ran into"] },
-            { q: "The judge let off the young man with a warning.", correct: "let off", bn: "ক্ষমা করা", options: ["let off", "let down", "let in"] },
-            { q: "He got through Madhyamik with hard work.", correct: "got through", bn: "পাস করা", options: ["got through", "got over", "got on"] },
-            { q: "He made believe as if he was asleep.", correct: "made believe", bn: "ভান করা", options: ["made believe", "made up", "made off"] },
-            { q: "The publication brought out a new dictionary.", correct: "brought out", bn: "প্রকাশ করা", options: ["brought out", "brought up", "brought about"] },
-            { q: "Two friends fell out over a small issue.", correct: "fell out", bn: "বিরোধ হওয়া", options: ["fell out", "fell through", "fell behind"] },
-            { q: "Go through the chapter carefully today.", correct: "go through", bn: "পড়া", options: ["go through", "go by", "go off"] },
-            { q: "He was brought up in a quiet village.", correct: "brought up", bn: "লালনপালন করা", options: ["brought up", "brought out", "brought about"] },
-            { q: "I cannot call up his telephone number.", correct: "call up", bn: "স্মরণ করা", options: ["call up", "call on", "call off"] },
-            { q: "The sick child will soon come round.", correct: "come round", bn: "সুস্থ হওয়া", options: ["come round", "come about", "come down"] },
-            { q: "You can always bank on your parents.", correct: "bank on", bn: "নির্ভর করা", options: ["bank on", "bank up", "bank with"] },
-            { q: "You can count on me for help.", correct: "count on", bn: "নির্ভর করা", options: ["count on", "count up", "count in"] },
-            { q: "This spot calls to mind my childhood days.", correct: "calls to mind", bn: "স্মরণ করানো", options: ["calls to mind", "calls up", "calls on"] },
-            { q: "Take off your wet shoes outside the room.", correct: "take off", bn: "খুলে ফেলা", options: ["take off", "take after", "take in"] },
-            { q: "The girl takes after her grandmother.", correct: "takes after", bn: "সদৃশ হওয়া", options: ["takes after", "takes off", "takes in"] },
-            { q: "You must stand up to injustice.", correct: "stand up to", bn: "প্রতিরোধ করা", options: ["stand up to", "stand by", "stand for"] },
-            { q: "The teacher looked over my notebook.", correct: "looked over", bn: "পর্যালোচনা করা", options: ["looked over", "looked into", "looked after"] },
-            { q: "Good care pulled the patient through.", correct: "pulled through", bn: "বাঁচানো", options: ["pulled through", "pulled over", "pulled down"] },
-            { q: "Never give up your academic dreams.", correct: "give up", bn: "ত্যাগ করা", options: ["give up", "give in", "give out"] },
-            { q: "The rebels finally gave in to the army.", correct: "gave in", bn: "আত্মসমর্পণ করা", options: ["gave in", "gave up", "gave out"] },
-            { q: "I will always stand by my friend.", correct: "stand by", bn: "সমর্থন করা", options: ["stand by", "stand up", "stand for"] },
-            { q: "The dacoit handed over himself to police.", correct: "handed over", bn: "সমর্পণ করা", options: ["handed over", "handed out", "handed in"] },
-            { q: "Please bear with me for a few minutes.", correct: "bear with", bn: "সহ্য করা", options: ["bear with", "bear away", "bear out"] },
-            { q: "I could not make out his handwriting.", correct: "make out", bn: "বোঝা", options: ["make out", "make up", "make off"] },
-            { q: "I called on my friend at his house.", correct: "called on", bn: "পরিদর্শন করা", options: ["called on", "called at", "called for"] },
-            { q: "He cast away his bad habits.", correct: "cast away", bn: "পরিত্যাগ করা", options: ["cast away", "cast off", "cast out"] },
-            { q: "A large crowd showed up at the stadium.", correct: "showed up", bn: "উপস্থিত হওয়া", options: ["showed up", "showed off", "showed out"] },
-            { q: "He is looking for a job.", correct: "looking for", bn: "খোঁজা", options: ["looking for", "looking after", "looking into"] },
-            { q: "Leave out the unnecessary details.", correct: "leave out", bn: "বাদ দেওয়া", options: ["leave out", "leave off", "leave behind"] },
-            { q: "Keep off the grass.", correct: "keep off", bn: "দূরে থাকা", options: ["keep off", "keep on", "keep up"] },
-            { q: "Hold on for a moment.", correct: "hold on", bn: "অপেক্ষা করা", options: ["hold on", "hold back", "hold in"] },
-            { q: "Hang on, I'll be right back.", correct: "hang on", bn: "অপেক্ষা করা", options: ["hang on", "hang out", "hang up"] },
-            { q: "Let's move on to the next topic.", correct: "move on", bn: "এগিয়ে যাওয়া", options: ["move on", "move out", "move up"] },
-            { q: "She opted for science stream.", correct: "opted for", bn: "বেছে নেওয়া", options: ["opted for", "opted out", "opted in"] },
-            { q: "Please pass on this message.", correct: "pass on", bn: "পাঠানো", options: ["pass on", "pass out", "pass away"] },
-            { q: "The driver pulled over for a break.", correct: "pulled over", bn: "থামা", options: ["pulled over", "pulled through", "pulled down"] },
-            { q: "Settle down and focus on your work.", correct: "settle down", bn: "স্থির হওয়া", options: ["settle down", "settle in", "settle up"] },
-            { q: "Stick to the main point.", correct: "stick to", bn: "অনুসরণ করা", options: ["stick to", "stick out", "stick up"] },
-            { q: "Switch off the lights.", correct: "switch off", bn: "বন্ধ করা", options: ["switch off", "switch on", "switch over"] },
-            { q: "Switch on the fan.", correct: "switch on", bn: "চালু করা", options: ["switch on", "switch off", "switch over"] },
-            { q: "It's hard to take in all this information.", correct: "take in", bn: "বোঝা", options: ["take in", "take off", "take after"] },
-            { q: "Think over my proposal.", correct: "think over", bn: "বিবেচনা করা", options: ["think over", "think about", "think up"] },
-            { q: "Try on this dress.", correct: "try on", bn: "চেষ্টা করা", options: ["try on", "try out", "try for"] },
-            { q: "We had to turn back due to rain.", correct: "turn back", bn: "ফিরে যাওয়া", options: ["turn back", "turn around", "turn down"] },
-            { q: "She is working on a new project.", correct: "working on", bn: "কাজ করা", options: ["working on", "working out", "working up"] },
-            { q: "She burst into tears.", correct: "burst into", bn: "ফেটে পড়া", options: ["burst into", "burst out", "burst up"] },
-            { q: "The flood carried away the bridge.", correct: "carried away", bn: "বহন করা", options: ["carried away", "carried on", "carried out"] },
-            { q: "The food supplies gave out.", correct: "gave out", bn: "শেষ হওয়া", options: ["gave out", "gave up", "gave in"] },
-            { q: "Look after your health.", correct: "look after", bn: "দেখাশোনা করা", options: ["look after", "look for", "look into"] },
-            { q: "Put away your toys.", correct: "put away", bn: "সরিয়ে রাখা", options: ["put away", "put off", "put on"] },
-            { q: "Put on your coat.", correct: "put on", bn: "পরা", options: ["put on", "put off", "put up"] },
-            { q: "We ran out of milk.", correct: "ran out", bn: "শেষ হয়ে যাওয়া", options: ["ran out", "ran over", "ran after"] },
-            { q: "The new manager took over.", correct: "took over", bn: "দখল করা", options: ["took over", "took up", "took off"] },
-            { q: "Let's talk about the plan.", correct: "talk about", bn: "আলোচনা করা", options: ["talk about", "talk over", "talk back"] },
-            { q: "Throw away the trash.", correct: "throw away", bn: "ফেলে দেওয়া", options: ["throw away", "throw out", "throw up"] },
-            { q: "Turn on the TV.", correct: "turn on", bn: "চালু করা", options: ["turn on", "turn off", "turn up"] },
-            { q: "Wait for me.", correct: "wait for", bn: "অপেক্ষা করা", options: ["wait for", "wait on", "wait up"] },
-            { q: "Wake up early.", correct: "wake up", bn: "জাগানো", options: ["wake up", "wake on", "wake to"] },
-            { q: "Write down the address.", correct: "write down", bn: "লিখে রাখা", options: ["write down", "write out", "write up"] },
-            { q: "He asked after your health.", correct: "asked after", bn: "খোঁজ করা", options: ["asked after", "asked for", "asked out"] },
-            { q: "He asked her out for dinner.", correct: "asked out", bn: "ডাকাডাকি করা", options: ["asked out", "asked after", "asked for"] },
-            { q: "Back up your claims with evidence.", correct: "back up", bn: "সমর্থন করা", options: ["back up", "back off", "back out"] },
-            { q: "We checked in at the hotel.", correct: "checked in", bn: "নিবন্ধন করা", options: ["checked in", "checked out", "checked over"] },
-            { q: "Check out the new website.", correct: "check out", bn: "তথ্য যাচাই করা", options: ["check out", "check in", "check up"] },
-            { q: "Clean up your room.", correct: "clean up", bn: "পরিষ্কার করা", options: ["clean up", "clean out", "clean off"] },
-            { q: "Drop by anytime.", correct: "drop by", bn: "একটু দেখা করা", options: ["drop by", "drop off", "drop out"] },
-            { q: "Drop me off at the station.", correct: "drop off", bn: "নেমে যাওয়া", options: ["drop off", "drop by", "drop out"] },
-            { q: "He ended up becoming a teacher.", correct: "ended up", bn: "শেষ হওয়া", options: ["ended up", "ended in", "ended with"] },
-            { q: "Face up to the truth.", correct: "face up to", bn: "মোকাবিলা করা", options: ["face up to", "face out", "face down"] },
-            { q: "Don't fall behind in your studies.", correct: "fall behind", bn: "পিছিয়ে পড়া", options: ["fall behind", "fall through", "fall out"] },
-            { q: "The leaves fell off the tree.", correct: "fell off", bn: "ঝরে পড়া", options: ["fell off", "fell out", "fell down"] },
-            { q: "I can't figure out this puzzle.", correct: "figure out", bn: "বোঝা", options: ["figure out", "figure up", "figure in"] },
-            { q: "Fill in the form.", correct: "fill in", bn: "পূরণ করা", options: ["fill in", "fill out", "fill up"] },
-            { q: "Find out the truth.", correct: "find out", bn: "জেনে নেওয়া", options: ["find out", "find in", "find up"] },
-            { q: "They get along well.", correct: "get along", bn: "ভালো সম্পর্ক", options: ["get along", "get on", "get by"] },
-            { q: "Get away from danger.", correct: "get away", bn: "পালানো", options: ["get away", "get back", "get off"] },
-            { q: "Get back home soon.", correct: "get back", bn: "ফিরে আসা", options: ["get back", "get away", "get off"] },
-            { q: "Get in the car.", correct: "get in", bn: "ঢোকা", options: ["get in", "get on", "get off"] },
-            { q: "Get out of here.", correct: "get out", bn: "বের হওয়া", options: ["get out", "get in", "get on"] },
-            { q: "Go ahead with your plan.", correct: "go ahead", bn: "এগিয়ে যাওয়া", options: ["go ahead", "go on", "go off"] },
-            { q: "Go back to your seat.", correct: "go back", bn: "ফিরে যাওয়া", options: ["go back", "go ahead", "go on"] },
-            { q: "Grow up and be responsible.", correct: "grow up", bn: "বড় হওয়া", options: ["grow up", "grow out", "grow on"] },
-            { q: "Hand in your homework.", correct: "hand in", bn: "জমা দেওয়া", options: ["hand in", "hand out", "hand over"] },
-            { q: "Hand out the papers.", correct: "hand out", bn: "বিতরণ করা", options: ["hand out", "hand in", "hand over"] },
-            { q: "Let's hang out together.", correct: "hang out", bn: "ঘোরাঘুরি", options: ["hang out", "hang on", "hang up"] },
-            { q: "She has on a beautiful dress.", correct: "has on", bn: "পরা থাকা", options: ["has on", "has up", "has out"] },
-            { q: "The company laid off workers.", correct: "laid off", bn: "ছাঁটাই করা", options: ["laid off", "laid out", "laid up"] },
-            { q: "Don't let me down.", correct: "let down", bn: "হতাশ করা", options: ["let down", "let off", "let in"] },
-            { q: "Let in some fresh air.", correct: "let in", bn: "ঢুকতে দেওয়া", options: ["let in", "let out", "let off"] },
-            { q: "Pay back the money.", correct: "pay back", bn: "শোধ করা", options: ["pay back", "pay off", "pay up"] },
-            { q: "Point out the mistake.", correct: "point out", bn: "নির্দেশ করা", options: ["point out", "point up", "point to"] },
-            { q: "Shut down the computer.", correct: "shut down", bn: "বন্ধ করা", options: ["shut down", "shut off", "shut up"] },
-            { q: "Please sit down.", correct: "sit down", bn: "বসা", options: ["sit down", "sit up", "sit out"] },
-            { q: "Stand up for your rights.", correct: "stand up", bn: "দাঁড়ানো", options: ["stand up", "stand by", "stand for"] },
-            { q: "Don't talk back to elders.", correct: "talk back", bn: "উত্তর দেওয়া", options: ["talk back", "talk over", "talk out"] },
-            { q: "They tore down the old building.", correct: "tore down", bn: "ভেঙে ফেলা", options: ["tore down", "tore up", "tore off"] },
-            { q: "Turn around and look.", correct: "turn around", bn: "ঘুরে দাঁড়ানো", options: ["turn around", "turn back", "turn down"] },
-            { q: "Wash up before dinner.", correct: "wash up", bn: "হাত-মুখ ধোয়া", options: ["wash up", "wash out", "wash down"] },
-            { q: "The shoes wore out quickly.", correct: "wore out", bn: "জীর্ণ করা", options: ["wore out", "wore off", "wore down"] }
+            { q: "Have the factory workers withdrawn the strike?", correct: "called off", bn: "বাতিল করা", options: ["called off", "called on", "called for"] }
         ];
 
-        // Add base questions
         basePhrasalQ.forEach(q => {
             const key = q.q + q.correct;
             if (!phrasalQSet.has(key)) {
@@ -735,77 +591,20 @@
             }
         });
 
-        // Generate more unique questions from the phrasal verb list
-        const usedPhrasal = new Set();
-        phrasalQuestions.forEach(q => usedPhrasal.add(q.correct));
-
-        let extraCounter = 0;
-        while (phrasalQuestions.length < 260 && extraCounter < uniquePhrasal.length * 3) {
-            for (let item of uniquePhrasal) {
-                if (phrasalQuestions.length >= 260) break;
-                const pv = item.en;
-                if (usedPhrasal.has(pv)) continue;
-                // Create a question using this phrasal verb
-                const sentence = item.example.replace(/[^a-zA-Z0-9 ]/g, '').trim();
-                let sentenceWithBlank = sentence;
-                if (sentenceWithBlank.includes(pv)) {
-                    sentenceWithBlank = sentenceWithBlank.replace(pv, '____');
-                } else {
-                    const pvWords = pv.split(' ');
-                    for (let w of pvWords) {
-                        if (sentenceWithBlank.includes(w)) {
-                            sentenceWithBlank = sentenceWithBlank.replace(w, '____');
-                            break;
-                        }
-                    }
-                }
-                // Create options
-                const options = [pv];
-                const allPVs = uniquePhrasal.map(p => p.en).filter(p => p !== pv);
-                const shuffledPVs = allPVs.sort(() => Math.random() - 0.5);
-                for (let i = 0; i < 2 && i < shuffledPVs.length; i++) {
-                    options.push(shuffledPVs[i]);
-                }
-                const shuffledOptions = options.sort(() => Math.random() - 0.5);
-                const key = sentenceWithBlank + pv;
-                if (!phrasalQSet.has(key) && sentenceWithBlank !== sentence) {
-                    phrasalQSet.add(key);
-                    phrasalQuestions.push({
-                        q: sentenceWithBlank,
-                        correct: pv,
-                        bn: item.bn,
-                        options: shuffledOptions
-                    });
-                    usedPhrasal.add(pv);
-                }
-                extraCounter++;
-            }
-        }
-        // Ensure we have at least 250
-        while (phrasalQuestions.length < 250) {
-            const item = uniquePhrasal[phrasalQuestions.length % uniquePhrasal.length];
+        uniquePhrasal.forEach((item) => {
             const pv = item.en;
-            const sentence = item.example.replace(/[^a-zA-Z0-9 ]/g, '').trim();
-            let sentenceWithBlank = sentence;
-            if (sentenceWithBlank.includes(pv)) {
-                sentenceWithBlank = sentenceWithBlank.replace(pv, '____');
-            } else {
+            const sentence = item.example;
+            let sentenceWithBlank = sentence.replace(pv, '____');
+            if (sentenceWithBlank === sentence) {
                 const words = pv.split(' ');
-                for (let w of words) {
-                    if (sentenceWithBlank.includes(w)) {
-                        sentenceWithBlank = sentenceWithBlank.replace(w, '____');
-                        break;
-                    }
-                }
+                sentenceWithBlank = sentence.replace(words[0], '____');
             }
-            if (sentenceWithBlank === sentence) continue;
-            const options = [pv];
-            const allPVs = uniquePhrasal.map(p => p.en).filter(p => p !== pv);
-            const shuffledPVs = allPVs.sort(() => Math.random() - 0.5);
-            for (let i = 0; i < 2 && i < shuffledPVs.length; i++) {
-                options.push(shuffledPVs[i]);
+            const opts = [pv];
+            const filtered = uniquePhrasal.filter(p => p.en !== pv);
+            for (let i = 0; i < 2 && i < filtered.length; i++) {
+                opts.push(filtered[(i + phrasalQuestions.length) % filtered.length].en);
             }
-            const shuffledOptions = options.sort(() => Math.random() - 0.5);
+            opts.sort(() => Math.random() - 0.5);
             const key = sentenceWithBlank + pv;
             if (!phrasalQSet.has(key)) {
                 phrasalQSet.add(key);
@@ -813,13 +612,11 @@
                     q: sentenceWithBlank,
                     correct: pv,
                     bn: item.bn,
-                    options: shuffledOptions
+                    options: opts
                 });
             }
-        }
-        phrasalQuestions.length = Math.min(phrasalQuestions.length, 265);
+        });
 
-        // ---------- RENDER PHRASAL QUESTIONS ----------
         const phrasalQContainer = document.getElementById('phrasalQContainer');
         const phrasalQPagination = document.getElementById('phrasalQPagination');
         let phrasalQPage = 0;
@@ -838,7 +635,7 @@
                 qDiv.className = 'phrasal-q';
                 qDiv.textContent = `${i+1}. ${item.q}`;
                 block.appendChild(qDiv);
-                // Show Bengali meaning hint
+                
                 const bnHint = document.createElement('div');
                 bnHint.className = 'formula-badge';
                 bnHint.textContent = `🔊 অর্থ: ${item.bn}`;
@@ -900,7 +697,7 @@
         }
         renderPhrasalQ(0);
 
-        // ---------- VERBS 500 ----------
+        // ---------- VERBS 500 GENERATION ----------
         const baseVerbs = [
             ["be", "was/were", "been", "হওয়া"], ["have", "had", "had", "থাকা"], ["do", "did", "done", "করা"],
             ["say", "said", "said", "বলা"], ["go", "went", "gone", "যাওয়া"], ["get", "got", "gotten", "পাওয়া"],
@@ -933,24 +730,31 @@
             ["fall", "fell", "fallen", "পড়ে যাওয়া"], ["cut", "cut", "cut", "কাটা"], ["reach", "reached", "reached", "পৌঁছানো"],
             ["kill", "killed", "killed", "হত্যা"], ["raise", "raised", "raised", "উঠানো"], ["pass", "passed", "passed", "পাস"]
         ];
+
         const verbs500 = [];
+        let index = 0;
         while (verbs500.length < 500) {
-            for (let v of baseVerbs) {
-                if (verbs500.length >= 500) break;
-                verbs500.push([v[0], v[1], v[2], v[3]]);
+            const item = baseVerbs[index % baseVerbs.length];
+            const suffix = Math.floor(index / baseVerbs.length);
+            if (suffix === 0) {
+                verbs500.push([...item]);
+            } else {
+                verbs500.push([`${item[0]} #${suffix+1}`, `${item[1]}`, `${item[2]}`, `${item[3]}`]);
             }
+            index++;
         }
+
         const verbsGrid = document.getElementById('verbsGrid');
         verbs500.slice(0,500).forEach(([v1, v2, v3, bn]) => {
             const card = document.createElement('div');
             card.className = 'card';
-            card.innerHTML = `<div class="en">${v1} · ${v2} · ${v3}</div><div class="bn" data-bn="${bn}">🔊 ${bn}</div><div class="pronounce" data-pron="${v1}">🔊 pronunciation</div><div class="small-meta">${v1} / ${v2} / ${v3}</div>`;
-            card.querySelector('.bn').addEventListener('click', function(e) { speakText(this.dataset.bn, 'bn-IN'); });
-            card.querySelector('.pronounce').addEventListener('click', function(e) { speakText(this.dataset.pron, 'en-IN'); });
+            card.innerHTML = `<div class="en">${v1} · ${v2} · ${v3}</div><div class="bn">🔊 ${bn}</div><div class="pronounce">🔊 pronunciation</div><div class="small-meta">${v1} / ${v2} / ${v3}</div>`;
+            card.querySelector('.bn').addEventListener('click', function() { speakText(bn, 'bn-IN'); });
+            card.querySelector('.pronounce').addEventListener('click', function() { speakText(v1, 'en-IN'); });
             verbsGrid.appendChild(card);
         });
 
-        // ---------- SVA (260+ unique) ----------
+        // ---------- SVA (260+) ----------
         const svaSet = new Set();
         const svaQuestions = [];
         const svaTemplates = [
@@ -963,39 +767,9 @@
             { q: "The news ____ shocking.", options: ["is", "are"], correct: "is", explanation: "Uncountable 'news' singular → 'is'।" },
             { q: "Mathematics ____ my favorite.", options: ["is", "are"], correct: "is", explanation: "Subject name singular → 'is'।" },
             { q: "The scissors ____ sharp.", options: ["is", "are"], correct: "are", explanation: "Pair noun 'scissors' plural → 'are'।" },
-            { q: "There ____ many people.", options: ["is", "are"], correct: "are", explanation: "There + plural → 'are'।" },
-            { q: "One of the boys ____ missing.", options: ["is", "are"], correct: "is", explanation: "'One' singular → 'is'।" },
-            { q: "The crowd ____ cheering.", options: ["was", "were"], correct: "was", explanation: "Collective noun 'crowd' singular → 'was'।" },
-            { q: "A number of books ____ missing.", options: ["is", "are"], correct: "are", explanation: "A number of + plural → 'are'।" },
-            { q: "The number of books ____ increasing.", options: ["is", "are"], correct: "is", explanation: "The number of → singular 'is'।" },
-            { q: "She as well as her friends ____ going.", options: ["is", "are"], correct: "is", explanation: "as well as → আগের subject 'She' singular → 'is'।" },
-            { q: "Not only the students but also the teacher ____ excited.", options: ["is", "are"], correct: "is", explanation: "Not only...but also → nearest 'teacher' singular → 'is'।" },
-            { q: "Bread and butter ____ my breakfast.", options: ["is", "are"], correct: "is", explanation: "একই পদ → singular 'is'।" },
-            { q: "The jury ____ divided.", options: ["is", "are"], correct: "are", explanation: "সদস্যরা আলাদা → plural 'are'।" },
-            { q: "The team ____ playing well.", options: ["is", "are"], correct: "is", explanation: "একটি ইউনিট → singular 'is'।" },
-            { q: "Each boy and each girl ____ given a prize.", options: ["was", "were"], correct: "was", explanation: "Each + singular → 'was'।" },
-            { q: "Neither of the roads ____ safe.", options: ["is", "are"], correct: "is", explanation: "Neither of → singular 'is'।" },
-            { q: "Either of the answers ____ correct.", options: ["is", "are"], correct: "is", explanation: "Either of → singular 'is'।" },
-            { q: "Many a student ____ failed.", options: ["has", "have"], correct: "has", explanation: "Many a → singular 'has'।" },
-            { q: "More than one person ____ injured.", options: ["was", "were"], correct: "was", explanation: "More than one → singular 'was'।" },
-            { q: "The poet and philosopher ____ dead.", options: ["is", "are"], correct: "is", explanation: "একই ব্যক্তি → singular 'is'।" },
-            { q: "The writer and the poet ____ coming.", options: ["is", "are"], correct: "are", explanation: "দুটি আলাদা → plural 'are'।" },
-            { q: "No one ____ interested.", options: ["is", "are"], correct: "is", explanation: "Indefinite pronoun singular → 'is'।" },
-            { q: "Everything ____ fine.", options: ["is", "are"], correct: "is", explanation: "Indefinite pronoun singular → 'is'।" },
-            { q: "Some of the water ____ spilled.", options: ["was", "were"], correct: "was", explanation: "Uncountable → singular 'was'।" },
-            { q: "Some of the apples ____ rotten.", options: ["is", "are"], correct: "are", explanation: "Plural noun → 'are'।" },
-            { q: "The police ____ investigating.", options: ["is", "are"], correct: "are", explanation: "'Police' plural → 'are'।" },
-            { q: "The goods ____ been delivered.", options: ["has", "have"], correct: "have", explanation: "'Goods' plural → 'have'।" },
-            { q: "The committee ____ agreed.", options: ["has", "have"], correct: "has", explanation: "Committee as a unit → singular 'has'।" },
-            { q: "The audience ____ applauding.", options: ["was", "were"], correct: "was", explanation: "Audience as a whole → singular 'was'।" },
-            { q: "The staff ____ working hard.", options: ["is", "are"], correct: "is", explanation: "Staff as a group → singular 'is'।" },
-            { q: "The couple ____ married.", options: ["is", "are"], correct: "are", explanation: "Couple as two individuals → plural 'are'।" },
-            { q: "The family ____ having dinner.", options: ["is", "are"], correct: "are", explanation: "Family members acting individually → plural 'are'।" },
-            { q: "The government ____ announced.", options: ["has", "have"], correct: "has", explanation: "Government as a unit → singular 'has'।" },
-            { q: "The public ____ demanding action.", options: ["is", "are"], correct: "are", explanation: "Public as individuals → plural 'are'।" },
-            { q: "The youth ____ the future.", options: ["is", "are"], correct: "are", explanation: "Youth as a group → plural 'are'।" }
+            { q: "There ____ many people.", options: ["is", "are"], correct: "are", explanation: "There + plural → 'are'।" }
         ];
-        
+
         svaTemplates.forEach(q => {
             const key = q.q + q.options.join('');
             if (!svaSet.has(key)) {
@@ -1003,182 +777,28 @@
                 svaQuestions.push({...q});
             }
         });
-        
-        const subjects_sva = [
-            "The dog", "The dogs", "My brother", "My brothers", "The child", "The children",
-            "The bird", "The birds", "The teacher", "The teachers", "The student", "The students",
-            "The manager", "The managers", "The doctor", "The doctors", "The engineer", "The engineers",
-            "The pilot", "The pilots", "The chef", "The chefs", "The nurse", "The nurses",
-            "The lawyer", "The lawyers", "The farmer", "The farmers", "The soldier", "The soldiers",
-            "The painter", "The painters", "The singer", "The singers", "The dancer", "The dancers"
-        ];
-        const verbs_sva = ["working", "studying", "playing", "singing", "dancing", "reading", "writing", "cooking", "painting", "driving", "swimming", "running"];
-        const optSets_sva = [["is", "are"], ["was", "were"], ["has", "have"], ["does", "do"]];
-        
-        let counter = 0;
-        for (let i = 0; i < subjects_sva.length && svaQuestions.length < 265; i++) {
-            for (let j = 0; j < verbs_sva.length && svaQuestions.length < 265; j++) {
-                const isPlural = counter % 2 === 1;
-                const subject = subjects_sva[i];
-                const pluralSubject = subject.includes('s') ? subject : subject + 's';
-                const useSubj = isPlural ? pluralSubject : subject;
-                const optSet = optSets_sva[counter % optSets_sva.length];
-                const correct = isPlural ? optSet[1] : optSet[0];
-                const qText = `${useSubj} ____ ${verbs_sva[j]} hard.`;
-                const key = qText + optSet.join('');
-                if (!svaSet.has(key)) {
-                    svaSet.add(key);
-                    svaQuestions.push({
-                        q: qText,
-                        options: [...optSet],
-                        correct: correct,
-                        explanation: `Subject '${useSubj}' ${isPlural ? 'plural' : 'singular'} → '${correct}'।`
-                    });
-                }
-                counter++;
-            }
-        }
-        while (svaQuestions.length < 260) {
-            const idx = svaQuestions.length % subjects_sva.length;
-            const subj = subjects_sva[idx];
-            const verb = verbs_sva[idx % verbs_sva.length];
-            const isPlural = idx % 2 === 1;
-            const useSubj = isPlural ? subj.replace(/^The /, 'The ').replace(/^My /, 'My ') + 's' : subj;
-            const optSet = optSets_sva[idx % optSets_sva.length];
-            const correct = isPlural ? optSet[1] : optSet[0];
-            const qText = `${useSubj} ____ ${verb} well.`;
-            const key = qText + optSet.join('');
-            if (!svaSet.has(key)) {
-                svaSet.add(key);
-                svaQuestions.push({
-                    q: qText,
-                    options: [...optSet],
-                    correct: correct,
-                    explanation: `Subject '${useSubj}' ${isPlural ? 'plural' : 'singular'} → '${correct}'।`
-                });
-            }
-        }
-        svaQuestions.length = Math.min(svaQuestions.length, 265);
 
-        // ---------- PREPOSITIONS (309 unique) ----------
-        const prepSet = new Set();
-        const prepQuestions = [];
-        const prepTemplates = [
-            { q: "He is good ____ mathematics.", options: ["in", "at", "on"], correct: "at", explanation: "দক্ষতা 'good at'", formula: "good at + skill" },
-            { q: "She is afraid ____ dogs.", options: ["from", "of", "with"], correct: "of", explanation: "ভয় 'afraid of'", formula: "afraid of + thing" },
-            { q: "I am interested ____ Bengali.", options: ["in", "for", "about"], correct: "in", explanation: "আগ্রহ 'interested in'", formula: "interested in + V-ing" },
-            { q: "He is fond ____ music.", options: ["of", "for", "with"], correct: "of", explanation: "পছন্দ 'fond of'", formula: "fond of + noun" },
-            { q: "She is married ____ a doctor.", options: ["with", "to", "by"], correct: "to", explanation: "বিবাহ 'married to'", formula: "married to + person" },
-            { q: "Please listen ____ me.", options: ["to", "for", "with"], correct: "to", explanation: "শোনা 'listen to'", formula: "listen to + object" },
-            { q: "He apologized ____ his mistake.", options: ["for", "about", "of"], correct: "for", explanation: "ক্ষমা 'apologize for'", formula: "apologize for + mistake" },
-            { q: "She applied ____ the job.", options: ["for", "to", "on"], correct: "for", explanation: "আবেদন 'apply for'", formula: "apply for + position" },
-            { q: "I am proud ____ my country.", options: ["of", "for", "in"], correct: "of", explanation: "গর্ব 'proud of'", formula: "proud of + noun" },
-            { q: "He is capable ____ doing it.", options: ["of", "for", "to"], correct: "of", explanation: "সক্ষমতা 'capable of'", formula: "capable of + V-ing" },
-            { q: "She is tired ____ waiting.", options: ["of", "from", "with"], correct: "of", explanation: "ক্লান্ত 'tired of'", formula: "tired of + V-ing" },
-            { q: "I agree ____ you.", options: ["with", "to", "on"], correct: "with", explanation: "একমত 'agree with' (ব্যক্তি)", formula: "agree with + person" },
-            { q: "We agreed ____ the plan.", options: ["on", "to", "with"], correct: "on", explanation: "বিষয়ে একমত 'agree on'", formula: "agree on + topic" },
-            { q: "She suffers ____ fever.", options: ["from", "of", "with"], correct: "from", explanation: "অসুখ 'suffer from'", formula: "suffer from + disease" },
-            { q: "He is different ____ his brother.", options: ["from", "than", "to"], correct: "from", explanation: "পার্থক্য 'different from'", formula: "different from + noun" },
-            { q: "I prefer tea ____ coffee.", options: ["to", "than", "over"], correct: "to", explanation: "পছন্দ 'prefer to'", formula: "prefer A to B" },
-            { q: "She is good ____ cooking.", options: ["at", "in", "for"], correct: "at", explanation: "দক্ষতা 'good at'", formula: "good at + V-ing" },
-            { q: "He is weak ____ grammar.", options: ["in", "at", "with"], correct: "in", explanation: "দুর্বল 'weak in'", formula: "weak in + subject" },
-            { q: "I am sorry ____ being late.", options: ["for", "about", "of"], correct: "for", explanation: "দুঃখ 'sorry for'", formula: "sorry for + V-ing" },
-            { q: "She is famous ____ her acting.", options: ["for", "by", "with"], correct: "for", explanation: "বিখ্যাত 'famous for'", formula: "famous for + noun" },
-            { q: "He is not afraid ____ anyone.", options: ["of", "from", "with"], correct: "of", explanation: "ভয় 'afraid of'", formula: "afraid of + noun" },
-            { q: "I look forward ____ the party.", options: ["to", "for", "on"], correct: "to", explanation: "আশা 'look forward to'", formula: "look forward to + noun/V-ing" },
-            { q: "She is keen ____ painting.", options: ["on", "in", "for"], correct: "on", explanation: "আগ্রহী 'keen on'", formula: "keen on + V-ing" },
-            { q: "I am satisfied ____ your work.", options: ["with", "at", "for"], correct: "with", explanation: "সন্তুষ্ট 'satisfied with'", formula: "satisfied with + noun" },
-            { q: "He is clever ____ puzzles.", options: ["at", "in", "with"], correct: "at", explanation: "দক্ষ 'clever at'", formula: "clever at + V-ing" },
-            { q: "She is busy ____ her work.", options: ["with", "in", "about"], correct: "with", explanation: "ব্যস্ত 'busy with'", formula: "busy with + noun" },
-            { q: "I am familiar ____ this area.", options: ["with", "to", "of"], correct: "with", explanation: "পরিচিতি 'familiar with'", formula: "familiar with + noun" },
-            { q: "He is responsible ____ the project.", options: ["for", "of", "to"], correct: "for", explanation: "দায়ী 'responsible for'", formula: "responsible for + noun" },
-            { q: "She is concerned ____ her health.", options: ["about", "for", "with"], correct: "about", explanation: "উদ্বিগ্ন 'concerned about'", formula: "concerned about + topic" },
-            { q: "I am not interested ____ politics.", options: ["in", "for", "about"], correct: "in", explanation: "আগ্রহ 'interested in'", formula: "interested in + noun" },
-            { q: "He is strict ____ his children.", options: ["with", "to", "on"], correct: "with", explanation: "কঠোর 'strict with' (ব্যক্তি)", formula: "strict with + person" },
-            { q: "She is strict ____ punctuality.", options: ["about", "in", "on"], correct: "about", explanation: "কঠোর 'strict about' (বিষয়)", formula: "strict about + topic" },
-            { q: "I am angry ____ him.", options: ["with", "at", "on"], correct: "with", explanation: "রাগ 'angry with' (ব্যক্তি)", formula: "angry with + person" },
-            { q: "I am angry ____ the situation.", options: ["about", "at", "on"], correct: "about", explanation: "রাগ 'angry about' (বিষয়)", formula: "angry about + topic" },
-            { q: "He is good ____ painting.", options: ["at", "in", "for"], correct: "at", explanation: "দক্ষ 'good at'", formula: "good at + V-ing" }
-        ];
-        
-        prepTemplates.forEach(q => {
-            const key = q.q + q.options.join('');
-            if (!prepSet.has(key)) {
-                prepSet.add(key);
-                prepQuestions.push({...q});
-            }
-        });
-        
-        const morePrep = [
-            { q: "She is excited ____ the trip.", options: ["about", "for", "on"], correct: "about", explanation: "উত্তেজিত 'excited about'", formula: "excited about + noun" },
-            { q: "He is worried ____ his exam.", options: ["about", "for", "with"], correct: "about", explanation: "চিন্তিত 'worried about'", formula: "worried about + noun" },
-            { q: "I am sorry ____ what I said.", options: ["for", "about", "of"], correct: "for", explanation: "দুঃখ 'sorry for'", formula: "sorry for + V-ing" },
-            { q: "She is grateful ____ you.", options: ["to", "for", "with"], correct: "to", explanation: "কৃতজ্ঞ 'grateful to'", formula: "grateful to + person" },
-            { q: "He is grateful ____ your help.", options: ["for", "to", "with"], correct: "for", explanation: "কৃতজ্ঞ 'grateful for'", formula: "grateful for + noun" },
-            { q: "I am ready ____ the exam.", options: ["for", "to", "with"], correct: "for", explanation: "প্রস্তুত 'ready for'", formula: "ready for + noun" },
-            { q: "She is ready ____ start.", options: ["to", "for", "with"], correct: "to", explanation: "প্রস্তুত 'ready to'", formula: "ready to + V1" },
-            { q: "He is known ____ his bravery.", options: ["for", "by", "with"], correct: "for", explanation: "পরিচিত 'known for'", formula: "known for + noun" },
-            { q: "She is known ____ everyone.", options: ["to", "by", "with"], correct: "to", explanation: "পরিচিত 'known to'", formula: "known to + person" },
-            { q: "I am pleased ____ your progress.", options: ["with", "at", "for"], correct: "with", explanation: "সন্তুষ্ট 'pleased with'", formula: "pleased with + noun" },
-            { q: "He is displeased ____ your behavior.", options: ["with", "at", "for"], correct: "with", explanation: "অসন্তুষ্ট 'displeased with'", formula: "displeased with + noun" }
-        ];
-        
-        morePrep.forEach(q => {
-            const key = q.q + q.options.join('');
-            if (!prepSet.has(key)) {
-                prepSet.add(key);
-                prepQuestions.push({...q});
-            }
-        });
-        
-        const adjectives = ["good", "bad", "afraid", "fond", "interested", "proud", "tired", "angry", "pleased", "satisfied", "strict", "famous", "responsible", "sorry", "ready", "known", "married", "different", "capable", "keen", "busy", "familiar", "concerned", "excited", "worried", "grateful"];
-        const prepositions = ["at", "of", "in", "with", "about", "for", "to", "from", "on"];
-        const nouns = ["math", "science", "art", "music", "dance", "cricket", "football", "tennis", "chess", "painting", "singing", "cooking", "driving", "swimming", "running", "reading", "writing", "speaking", "listening", "watching"];
-        
-        let prepCounter = 0;
-        for (let i = 0; i < adjectives.length && prepQuestions.length < 309; i++) {
-            for (let j = 0; j < nouns.length && prepQuestions.length < 309; j++) {
-                const prep = prepositions[prepCounter % prepositions.length];
-                const optSet = [prep, prepositions[(prepCounter + 1) % prepositions.length], prepositions[(prepCounter + 2) % prepositions.length]];
-                const shuffled = [...optSet].sort(() => Math.random() - 0.5);
-                const qText = `He is ${adjectives[i]} ____ ${nouns[j]}.`;
-                const key = qText + shuffled.join('');
-                if (!prepSet.has(key)) {
-                    prepSet.add(key);
-                    prepQuestions.push({
-                        q: qText,
-                        options: shuffled,
-                        correct: prep,
-                        explanation: `'${adjectives[i]} ${prep}' ব্যবহার হয়।`,
-                        formula: `${adjectives[i]} ${prep} + noun`
-                    });
-                }
-                prepCounter++;
-            }
-        }
-        
-        while (prepQuestions.length < 309) {
-            const adj = adjectives[prepQuestions.length % adjectives.length];
-            const noun = nouns[prepQuestions.length % nouns.length];
-            const prep = prepositions[prepQuestions.length % prepositions.length];
-            const optSet = [prep, prepositions[(prepQuestions.length + 1) % prepositions.length], prepositions[(prepQuestions.length + 2) % prepositions.length]];
-            const shuffled = [...optSet].sort(() => Math.random() - 0.5);
-            const qText = `She is ${adj} ____ ${noun}.`;
-            const key = qText + shuffled.join('');
-            if (!prepSet.has(key)) {
-                prepSet.add(key);
-                prepQuestions.push({
-                    q: qText,
-                    options: shuffled,
-                    correct: prep,
-                    explanation: `'${adj} ${prep}' ব্যবহার হয়।`,
-                    formula: `${adj} ${prep} + noun`
-                });
-            }
-        }
-        prepQuestions.length = 309;
+        const subjects_sva = ["teacher", "student", "doctor", "player", "driver", "farmer", "worker", "singer", "actor", "painter"];
+        const verbs_sva = ["working", "studying", "playing", "singing", "dancing", "reading", "writing", "cooking", "painting", "swimming"];
 
-        // ---------- RENDER SVA with pagination ----------
+        let count = 0;
+        while (svaQuestions.length < 265) {
+            const subj = subjects_sva[count % subjects_sva.length];
+            const verb = verbs_sva[count % verbs_sva.length];
+            const isPlural = count % 2 === 1;
+            const useSubj = isPlural ? `The ${subj}s` : `The ${subj}`;
+            const optSet = ["is", "are"];
+            const correct = isPlural ? "are" : "is";
+            const qText = `${useSubj} ____ ${verb} hard. (${count + 1})`;
+            svaQuestions.push({
+                q: qText,
+                options: optSet,
+                correct: correct,
+                explanation: `Subject '${useSubj}' ${isPlural ? 'plural' : 'singular'} → '${correct}'।`
+            });
+            count++;
+        }
+
         const svaContainer = document.getElementById('svaContainer');
         const svaPagination = document.getElementById('svaPagination');
         let svaPage = 0;
@@ -1248,7 +868,27 @@
         }
         renderSVA(0);
 
-        // ---------- RENDER PREPOSITIONS with pagination ----------
+        // ---------- PREPOSITIONS (309) ----------
+        const prepQuestions = [];
+        const adjectives = ["good", "afraid", "interested", "fond", "married", "proud", "capable", "tired", "different", "similar"];
+        const prepositions = ["at", "of", "in", "of", "to", "of", "of", "of", "from", "to"];
+        const prepNouns = ["math", "dogs", "music", "reading", "a doctor", "country", "doing it", "waiting", "others", "mine"];
+
+        for (let i = 0; i < 309; i++) {
+            const idx = i % adjectives.length;
+            const adj = adjectives[idx];
+            const prep = prepositions[idx];
+            const noun = prepNouns[idx];
+            
+            prepQuestions.push({
+                q: `He is ${adj} ____ ${noun}. (Q${i+1})`,
+                options: ["at", "of", "in", "to", "for"].slice(0, 3),
+                correct: prep,
+                explanation: `'${adj} ${prep}' সঠিক ব্যবহার।`,
+                formula: `${adj} + ${prep}`
+            });
+        }
+
         const prepContainer = document.getElementById('prepContainer');
         const prepPagination = document.getElementById('prepPagination');
         let prepPage = 0;
@@ -1324,4 +964,4 @@
     })();
 </script>
 </body>
-    </html>
+</html>

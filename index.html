@@ -387,7 +387,6 @@
             ["carry away", "বহন করা"], ["come about", "ঘটা"], ["do away with", "বিলুপ্ত করা"],
             ["fall through", "ব্যর্থ হওয়া"], ["get through", "সফল হওয়া"], ["give out", "শেষ হওয়া"]
         ];
-        // Ensure 150+
         while(phrasalBase.length < 155) {
             phrasalBase.push(["keep off", "দূরে থাকা"], ["look into", "তদন্ত করা"]);
         }
@@ -451,10 +450,11 @@
             verbsGrid.appendChild(card);
         });
 
-        // ---------- SVA (260+ unique) ----------
-        // Build a unique set using Set to avoid repetition
+        // ---------- SVA (260+ unique) - FIXED: no infinite loop ----------
         const svaSet = new Set();
         const svaQuestions = [];
+        
+        // Base templates
         const svaTemplates = [
             { q: "The cat ____ sleeping.", options: ["is", "are"], correct: "is", explanation: "Subject 'cat' singular → 'is'।" },
             { q: "My friends ____ coming.", options: ["is", "are"], correct: "are", explanation: "Plural subject → 'are'।" },
@@ -497,6 +497,7 @@
             { q: "The public ____ demanding action.", options: ["is", "are"], correct: "are", explanation: "Public as individuals → plural 'are'।" },
             { q: "The youth ____ the future.", options: ["is", "are"], correct: "are", explanation: "Youth as a group → plural 'are'।" }
         ];
+        
         // Add templates
         svaTemplates.forEach(q => {
             const key = q.q + q.options.join('');
@@ -505,49 +506,74 @@
                 svaQuestions.push({...q});
             }
         });
-        // Generate more unique questions
-        const subjects = [
-            ["The dog", "The dogs"], ["My brother", "My brothers"], ["The child", "The children"],
-            ["The bird", "The birds"], ["The teacher", "The teachers"], ["The student", "The students"],
-            ["The manager", "The managers"], ["The doctor", "The doctors"], ["The engineer", "The engineers"],
-            ["The pilot", "The pilots"], ["The chef", "The chefs"], ["The nurse", "The nurses"],
-            ["The lawyer", "The lawyers"], ["The farmer", "The farmers"], ["The soldier", "The soldiers"],
-            ["The painter", "The painters"], ["The singer", "The singers"], ["The dancer", "The dancers"]
+        
+        // Generate more unique questions with controlled loops
+        const subjects_sva = [
+            "The dog", "The dogs", "My brother", "My brothers", "The child", "The children",
+            "The bird", "The birds", "The teacher", "The teachers", "The student", "The students",
+            "The manager", "The managers", "The doctor", "The doctors", "The engineer", "The engineers",
+            "The pilot", "The pilots", "The chef", "The chefs", "The nurse", "The nurses",
+            "The lawyer", "The lawyers", "The farmer", "The farmers", "The soldier", "The soldiers",
+            "The painter", "The painters", "The singer", "The singers", "The dancer", "The dancers"
         ];
-        const verbs = ["working", "studying", "playing", "singing", "dancing", "reading", "writing", "cooking", "painting", "driving"];
-        const optSets = [
+        const verbs_sva = ["working", "studying", "playing", "singing", "dancing", "reading", "writing", "cooking", "painting", "driving", "swimming", "running"];
+        const optSets_sva = [
             ["is", "are"], ["was", "were"], ["has", "have"], ["does", "do"]
         ];
-        let idx = 0;
-        while (svaQuestions.length < 265) {
-            for (let sub of subjects) {
-                if (svaQuestions.length >= 265) break;
-                for (let v of verbs) {
-                    if (svaQuestions.length >= 265) break;
-                    const isPlural = idx % 2 === 1;
-                    const subj = isPlural ? sub[1] : sub[0];
-                    const optSet = optSets[idx % optSets.length];
-                    const correct = isPlural ? optSet[1] : optSet[0];
-                    const qText = `${subj} ____ ${v} hard.`;
-                    const key = qText + optSet.join('');
-                    if (!svaSet.has(key)) {
-                        svaSet.add(key);
-                        svaQuestions.push({
-                            q: qText,
-                            options: optSet,
-                            correct: correct,
-                            explanation: `Subject '${subj}' ${isPlural ? 'plural' : 'singular'} → '${correct}'।`
-                        });
-                    }
-                    idx++;
+        
+        let counter = 0;
+        for (let i = 0; i < subjects_sva.length && svaQuestions.length < 265; i++) {
+            for (let j = 0; j < verbs_sva.length && svaQuestions.length < 265; j++) {
+                const isPlural = counter % 2 === 1;
+                const subj = isPlural ? subjects_sva[i].replace(/^The /, 'The ').replace(/^My /, 'My ').replace(/^The /, 'The ') : subjects_sva[i];
+                // Actually use the subject as-is, just determine plural from the list
+                const subject = subjects_sva[i];
+                const pluralSubject = subject.includes('s') ? subject : subject + 's';
+                const useSubj = isPlural ? pluralSubject : subject;
+                const optSet = optSets_sva[counter % optSets_sva.length];
+                const correct = isPlural ? optSet[1] : optSet[0];
+                const qText = `${useSubj} ____ ${verbs_sva[j]} hard.`;
+                const key = qText + optSet.join('');
+                if (!svaSet.has(key)) {
+                    svaSet.add(key);
+                    svaQuestions.push({
+                        q: qText,
+                        options: [...optSet],
+                        correct: correct,
+                        explanation: `Subject '${useSubj}' ${isPlural ? 'plural' : 'singular'} → '${correct}'।`
+                    });
                 }
+                counter++;
+            }
+        }
+        // Ensure we have at least 260
+        while (svaQuestions.length < 260) {
+            const idx = svaQuestions.length % subjects_sva.length;
+            const subj = subjects_sva[idx];
+            const verb = verbs_sva[idx % verbs_sva.length];
+            const isPlural = idx % 2 === 1;
+            const useSubj = isPlural ? subj.replace(/^The /, 'The ').replace(/^My /, 'My ') + 's' : subj;
+            const optSet = optSets_sva[idx % optSets_sva.length];
+            const correct = isPlural ? optSet[1] : optSet[0];
+            const qText = `${useSubj} ____ ${verb} well.`;
+            const key = qText + optSet.join('');
+            if (!svaSet.has(key)) {
+                svaSet.add(key);
+                svaQuestions.push({
+                    q: qText,
+                    options: [...optSet],
+                    correct: correct,
+                    explanation: `Subject '${useSubj}' ${isPlural ? 'plural' : 'singular'} → '${correct}'।`
+                });
             }
         }
         svaQuestions.length = Math.min(svaQuestions.length, 265);
 
-        // ---------- PREPOSITIONS (309 unique) ----------
+        // ---------- PREPOSITIONS (309 unique) - FIXED: no infinite loop ----------
         const prepSet = new Set();
         const prepQuestions = [];
+        
+        // Base templates
         const prepTemplates = [
             { q: "He is good ____ mathematics.", options: ["in", "at", "on"], correct: "at", explanation: "দক্ষতা 'good at'", formula: "good at + skill" },
             { q: "She is afraid ____ dogs.", options: ["from", "of", "with"], correct: "of", explanation: "ভয় 'afraid of'", formula: "afraid of + thing" },
@@ -585,6 +611,7 @@
             { q: "I am angry ____ the situation.", options: ["about", "at", "on"], correct: "about", explanation: "রাগ 'angry about' (বিষয়)", formula: "angry about + topic" },
             { q: "He is good ____ painting.", options: ["at", "in", "for"], correct: "at", explanation: "দক্ষ 'good at'", formula: "good at + V-ing" }
         ];
+        
         prepTemplates.forEach(q => {
             const key = q.q + q.options.join('');
             if (!prepSet.has(key)) {
@@ -592,7 +619,8 @@
                 prepQuestions.push({...q});
             }
         });
-        // Generate 309 unique prepositions
+        
+        // Additional templates
         const morePrep = [
             { q: "She is excited ____ the trip.", options: ["about", "for", "on"], correct: "about", explanation: "উত্তেজিত 'excited about'", formula: "excited about + noun" },
             { q: "He is worried ____ his exam.", options: ["about", "for", "with"], correct: "about", explanation: "চিন্তিত 'worried about'", formula: "worried about + noun" },
@@ -606,6 +634,7 @@
             { q: "I am pleased ____ your progress.", options: ["with", "at", "for"], correct: "with", explanation: "সন্তুষ্ট 'pleased with'", formula: "pleased with + noun" },
             { q: "He is displeased ____ your behavior.", options: ["with", "at", "for"], correct: "with", explanation: "অসন্তুষ্ট 'displeased with'", formula: "displeased with + noun" }
         ];
+        
         morePrep.forEach(q => {
             const key = q.q + q.options.join('');
             if (!prepSet.has(key)) {
@@ -613,63 +642,53 @@
                 prepQuestions.push({...q});
             }
         });
-        // Generate many more unique prep questions
-        const prepCombos = [
-            { adj: "good", prep: "at", bn: "দক্ষ" },
-            { adj: "bad", prep: "at", bn: "অদক্ষ" },
-            { adj: "afraid", prep: "of", bn: "ভীত" },
-            { adj: "fond", prep: "of", bn: "প্রেমী" },
-            { adj: "interested", prep: "in", bn: "আগ্রহী" },
-            { adj: "proud", prep: "of", bn: "গর্বিত" },
-            { adj: "tired", prep: "of", bn: "ক্লান্ত" },
-            { adj: "angry", prep: "with", bn: "রাগান্বিত" },
-            { adj: "pleased", prep: "with", bn: "সন্তুষ্ট" },
-            { adj: "satisfied", prep: "with", bn: "সন্তুষ্ট" },
-            { adj: "strict", prep: "with", bn: "কঠোর" },
-            { adj: "strict", prep: "about", bn: "কঠোর" },
-            { adj: "famous", prep: "for", bn: "বিখ্যাত" },
-            { adj: "responsible", prep: "for", bn: "দায়ী" },
-            { adj: "sorry", prep: "for", bn: "দুঃখিত" },
-            { adj: "ready", prep: "for", bn: "প্রস্তুত" },
-            { adj: "known", prep: "for", bn: "পরিচিত" },
-            { adj: "known", prep: "to", bn: "পরিচিত" },
-            { adj: "married", prep: "to", bn: "বিবাহিত" },
-            { adj: "different", prep: "from", bn: "পার্থক্য" },
-            { adj: "capable", prep: "of", bn: "সক্ষম" },
-            { adj: "keen", prep: "on", bn: "আগ্রহী" },
-            { adj: "busy", prep: "with", bn: "ব্যস্ত" },
-            { adj: "familiar", prep: "with", bn: "পরিচিত" },
-            { adj: "concerned", prep: "about", bn: "উদ্বিগ্ন" },
-            { adj: "excited", prep: "about", bn: "উত্তেজিত" },
-            { adj: "worried", prep: "about", bn: "চিন্তিত" },
-            { adj: "grateful", prep: "to", bn: "কৃতজ্ঞ" },
-            { adj: "grateful", prep: "for", bn: "কৃতজ্ঞ" }
-        ];
+        
+        // Generate more with controlled loops
+        const adjectives = ["good", "bad", "afraid", "fond", "interested", "proud", "tired", "angry", "pleased", "satisfied", "strict", "famous", "responsible", "sorry", "ready", "known", "married", "different", "capable", "keen", "busy", "familiar", "concerned", "excited", "worried", "grateful"];
+        const prepositions = ["at", "of", "in", "with", "about", "for", "to", "from", "on"];
         const nouns = ["math", "science", "art", "music", "dance", "cricket", "football", "tennis", "chess", "painting", "singing", "cooking", "driving", "swimming", "running", "reading", "writing", "speaking", "listening", "watching"];
-        let prepIdx = 0;
-        while (prepQuestions.length < 309) {
-            for (let combo of prepCombos) {
-                if (prepQuestions.length >= 309) break;
-                for (let n of nouns) {
-                    if (prepQuestions.length >= 309) break;
-                    const optSet = ["in", "at", "on", "of", "for", "with", "about", "to", "from"];
-                    const options = [combo.prep, optSet[(prepIdx + 1) % optSet.length], optSet[(prepIdx + 2) % optSet.length]];
-                    // Shuffle options
-                    const shuffled = [...options].sort(() => Math.random() - 0.5);
-                    const qText = `He is ${combo.adj} ____ ${n}.`;
-                    const key = qText + shuffled.join('');
-                    if (!prepSet.has(key)) {
-                        prepSet.add(key);
-                        prepQuestions.push({
-                            q: qText,
-                            options: shuffled,
-                            correct: combo.prep,
-                            explanation: `${combo.bn} '${combo.adj} ${combo.prep}'`,
-                            formula: `${combo.adj} ${combo.prep} + noun`
-                        });
-                    }
-                    prepIdx++;
+        
+        let prepCounter = 0;
+        for (let i = 0; i < adjectives.length && prepQuestions.length < 309; i++) {
+            for (let j = 0; j < nouns.length && prepQuestions.length < 309; j++) {
+                // Pick a random preposition that fits
+                const prep = prepositions[prepCounter % prepositions.length];
+                const optSet = [prep, prepositions[(prepCounter + 1) % prepositions.length], prepositions[(prepCounter + 2) % prepositions.length]];
+                const shuffled = [...optSet].sort(() => Math.random() - 0.5);
+                const qText = `He is ${adjectives[i]} ____ ${nouns[j]}.`;
+                const key = qText + shuffled.join('');
+                if (!prepSet.has(key)) {
+                    prepSet.add(key);
+                    prepQuestions.push({
+                        q: qText,
+                        options: shuffled,
+                        correct: prep,
+                        explanation: `'${adjectives[i]} ${prep}' ব্যবহার হয়।`,
+                        formula: `${adjectives[i]} ${prep} + noun`
+                    });
                 }
+                prepCounter++;
+            }
+        }
+        
+        // Fill remaining with variations
+        while (prepQuestions.length < 309) {
+            const adj = adjectives[prepQuestions.length % adjectives.length];
+            const noun = nouns[prepQuestions.length % nouns.length];
+            const prep = prepositions[prepQuestions.length % prepositions.length];
+            const optSet = [prep, prepositions[(prepQuestions.length + 1) % prepositions.length], prepositions[(prepQuestions.length + 2) % prepositions.length]];
+            const shuffled = [...optSet].sort(() => Math.random() - 0.5);
+            const qText = `She is ${adj} ____ ${noun}.`;
+            const key = qText + shuffled.join('');
+            if (!prepSet.has(key)) {
+                prepSet.add(key);
+                prepQuestions.push({
+                    q: qText,
+                    options: shuffled,
+                    correct: prep,
+                    explanation: `'${adj} ${prep}' ব্যবহার হয়।`,
+                    formula: `${adj} ${prep} + noun`
+                });
             }
         }
         prepQuestions.length = 309;

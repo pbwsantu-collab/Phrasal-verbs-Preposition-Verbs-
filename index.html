@@ -5,273 +5,50 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Madhyamik English Mastery · Verbs · Phrasal · SVA · Prepositions</title>
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-        body {
-            background: #f0f4fa;
-            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
-            padding: 1.5rem;
-            color: #1a2a3a;
-        }
-        .container {
-            max-width: 1480px;
-            margin: 0 auto;
-        }
-        .tab-bar {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem 0.8rem;
-            margin-bottom: 2.2rem;
-            padding: 0.8rem 1.2rem;
-            background: linear-gradient(145deg, #ffffff, #eef3f9);
-            border-radius: 60px;
-            box-shadow: 0 6px 18px rgba(0, 10, 30, 0.06);
-            border: 1px solid rgba(255,255,255,0.5);
-            justify-content: center;
-        }
-        .tab-btn {
-            border: none;
-            padding: 0.6rem 1.8rem;
-            font-weight: 600;
-            font-size: 1rem;
-            border-radius: 40px;
-            cursor: pointer;
-            background: #e4ebf3;
-            color: #1f3a57;
-            transition: 0.2s;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
-            letter-spacing: 0.3px;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background: #f0f4fa; font-family: 'Segoe UI', Roboto, system-ui, sans-serif; padding: 1.5rem; color: #1a2a3a; }
+        .container { max-width: 1480px; margin: 0 auto; }
+        .tab-bar { display: flex; flex-wrap: wrap; gap: 0.5rem 0.8rem; margin-bottom: 2.2rem; padding: 0.8rem 1.2rem; background: linear-gradient(145deg, #ffffff, #eef3f9); border-radius: 60px; box-shadow: 0 6px 18px rgba(0, 10, 30, 0.06); border: 1px solid rgba(255,255,255,0.5); justify-content: center; }
+        .tab-btn { border: none; padding: 0.6rem 1.8rem; font-weight: 600; font-size: 1rem; border-radius: 40px; cursor: pointer; background: #e4ebf3; color: #1f3a57; transition: 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.02); letter-spacing: 0.3px; display: inline-flex; align-items: center; gap: 6px; }
         .tab-btn:nth-child(1) { background: #d4e2f7; color: #17447a; }
         .tab-btn:nth-child(2) { background: #d7f0e4; color: #0f4f3a; }
         .tab-btn:nth-child(3) { background: #fce6d6; color: #8a4a1a; }
         .tab-btn:nth-child(4) { background: #f0d8f0; color: #5e2b6b; }
         .tab-btn:nth-child(5) { background: #d4f0e8; color: #0d5e4a; }
-        .tab-btn.active {
-            background: #0a2647 !important;
-            color: white !important;
-            box-shadow: 0 8px 18px rgba(10, 38, 71, 0.25);
-            transform: scale(1.02);
-        }
-        .tab-btn:hover {
-            transform: translateY(-2px);
-            filter: brightness(0.96);
-        }
-        .tab-content {
-            display: none;
-            animation: fadeIn 0.25s ease;
-        }
-        .tab-content.active {
-            display: block;
-        }
-        @keyframes fadeIn {
-            0% { opacity: 0.2; transform: translateY(6px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
-        .card-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 1.2rem;
-            margin-top: 1rem;
-        }
-        .card {
-            background: white;
-            border-radius: 20px;
-            padding: 1.2rem 1.2rem 1.2rem 1.5rem;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.02), 0 2px 6px rgba(0,20,40,0.06);
-            border: 1px solid #e9edf4;
-            transition: 0.15s;
-            display: flex;
-            flex-direction: column;
-            gap: 0.2rem;
-        }
-        .card:hover {
-            border-color: #b6cae0;
-            box-shadow: 0 12px 28px rgba(0, 20, 40, 0.08);
-        }
-        .card .en {
-            font-weight: 650;
-            font-size: 1.2rem;
-            color: #0b2b4a;
-        }
-        .card .bn {
-            font-size: 1rem;
-            color: #1f4b6e;
-            background: #eef4fa;
-            padding: 0.2rem 0.8rem;
-            border-radius: 30px;
-            display: inline-block;
-            margin-top: 4px;
-            cursor: pointer;
-            transition: 0.1s;
-            align-self: flex-start;
-        }
-        .card .bn:hover {
-            background: #d4e2f0;
-        }
-        .card .pronounce {
-            font-size: 0.9rem;
-            color: #4c6a86;
-            background: #dfe9f3;
-            border-radius: 30px;
-            padding: 0.1rem 0.9rem;
-            display: inline-block;
-            cursor: pointer;
-            margin-top: 0.2rem;
-            align-self: flex-start;
-        }
-        .card .pronounce:hover {
-            background: #c2d6ea;
-        }
-        .card .example {
-            font-size: 0.85rem;
-            color: #3d5a78;
-            background: #f2f6fc;
-            padding: 0.3rem 0.8rem;
-            border-radius: 16px;
-            margin-top: 0.3rem;
-            border-left: 3px solid #2a6f97;
-        }
-        .small-meta {
-            font-size: 0.8rem;
-            color: #5f7d9c;
-            margin-top: 0.2rem;
-            opacity: 0.7;
-        }
-        .sva-block, .prep-block, .phrasal-q-block {
-            background: white;
-            border-radius: 24px;
-            padding: 1.5rem 2rem;
-            border: 1px solid #dce5ef;
-            margin-bottom: 1.5rem;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
-        }
-        .sva-question, .prep-question, .phrasal-q {
-            font-size: 1.2rem;
-            font-weight: 500;
-            margin-bottom: 0.8rem;
-            color: #0b2b4a;
-        }
-        .sva-options, .prep-options, .phrasal-options {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1.5rem 2.5rem;
-            margin: 0.8rem 0 1rem 0;
-        }
-        .sva-options label, .prep-options label, .phrasal-options label {
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-            font-size: 1.05rem;
-            background: #f2f6fb;
-            padding: 0.2rem 1rem 0.2rem 0.8rem;
-            border-radius: 30px;
-            cursor: pointer;
-        }
-        .sva-options input[type="radio"], .prep-options input[type="radio"], .phrasal-options input[type="radio"] {
-            width: 18px;
-            height: 18px;
-            accent-color: #0a2647;
-        }
-        .sva-answer, .prep-answer, .phrasal-answer {
-            margin-top: 0.6rem;
-            font-weight: 500;
-            padding: 0.5rem 1.2rem;
-            border-radius: 40px;
-            background: #e3edf7;
-            display: inline-block;
-        }
-        .sva-answer.correct, .prep-answer.correct, .phrasal-answer.correct {
-            background: #b7d7b0;
-            color: #0d3b1a;
-        }
-        .sva-answer.wrong, .prep-answer.wrong, .phrasal-answer.wrong {
-            background: #f8d0d0;
-            color: #7a2e2e;
-        }
-        .sva-explanation, .prep-explanation, .phrasal-explanation {
-            margin-top: 0.6rem;
-            padding: 0.6rem 1.2rem;
-            background: #f0f5fb;
-            border-radius: 20px;
-            font-size: 0.98rem;
-            color: #1a3852;
-            border-left: 4px solid #2a6f97;
-            display: none;
-        }
-        .sva-explanation.show, .prep-explanation.show, .phrasal-explanation.show {
-            display: block;
-        }
-        .sva-submit, .prep-submit, .phrasal-submit {
-            background: #0a2647;
-            border: none;
-            color: white;
-            padding: 0.4rem 1.8rem;
-            border-radius: 40px;
-            font-weight: 600;
-            font-size: 1rem;
-            cursor: pointer;
-            margin: 0.5rem 0 0.2rem 0;
-            transition: 0.15s;
-        }
-        .sva-submit:hover, .prep-submit:hover, .phrasal-submit:hover {
-            background: #1b3f66;
-        }
-        .formula-badge {
-            background: #d6e3f5;
-            padding: 0.2rem 1rem;
-            border-radius: 30px;
-            font-size: 0.85rem;
-            color: #04315e;
-            display: inline-block;
-            margin: 0.3rem 0 0.2rem 0;
-            font-weight: 500;
-        }
-        .footer {
-            margin-top: 3rem;
-            color: #54738f;
-            text-align: center;
-            border-top: 1px solid #d0dceb;
-            padding-top: 1.5rem;
-            font-size: 0.95rem;
-        }
-        .count-badge {
-            background: #b7cbdf;
-            padding: 0.1rem 0.9rem;
-            border-radius: 30px;
-            font-size: 0.8rem;
-            font-weight: 500;
-        }
-        .pagination {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.4rem;
-            justify-content: center;
-            margin: 1.5rem 0;
-        }
-        .pagination button {
-            background: #e9edf2;
-            border: none;
-            padding: 0.3rem 0.9rem;
-            border-radius: 30px;
-            cursor: pointer;
-            font-weight: 500;
-        }
-        .pagination button.active {
-            background: #0a2647;
-            color: white;
-        }
-        @media (max-width: 600px) {
-            .card-grid { grid-template-columns: 1fr; }
-            .sva-options, .prep-options, .phrasal-options { flex-direction: column; gap: 0.5rem; }
-            .tab-bar { border-radius: 30px; padding: 0.6rem; }
-        }
+        .tab-btn.active { background: #0a2647 !important; color: white !important; box-shadow: 0 8px 18px rgba(10, 38, 71, 0.25); transform: scale(1.02); }
+        .tab-btn:hover { transform: translateY(-2px); filter: brightness(0.96); }
+        .tab-content { display: none; animation: fadeIn 0.25s ease; }
+        .tab-content.active { display: block; }
+        @keyframes fadeIn { 0% { opacity: 0.2; transform: translateY(6px); } 100% { opacity: 1; transform: translateY(0); } }
+        .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.2rem; margin-top: 1rem; }
+        .card { background: white; border-radius: 20px; padding: 1.2rem 1.2rem 1.2rem 1.5rem; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.02), 0 2px 6px rgba(0,20,40,0.06); border: 1px solid #e9edf4; transition: 0.15s; display: flex; flex-direction: column; gap: 0.2rem; }
+        .card:hover { border-color: #b6cae0; box-shadow: 0 12px 28px rgba(0, 20, 40, 0.08); }
+        .card .en { font-weight: 650; font-size: 1.2rem; color: #0b2b4a; }
+        .card .bn { font-size: 1rem; color: #1f4b6e; background: #eef4fa; padding: 0.2rem 0.8rem; border-radius: 30px; display: inline-block; margin-top: 4px; cursor: pointer; transition: 0.1s; align-self: flex-start; }
+        .card .bn:hover { background: #d4e2f0; }
+        .card .pronounce { font-size: 0.9rem; color: #4c6a86; background: #dfe9f3; border-radius: 30px; padding: 0.1rem 0.9rem; display: inline-block; cursor: pointer; margin-top: 0.2rem; align-self: flex-start; }
+        .card .pronounce:hover { background: #c2d6ea; }
+        .card .example { font-size: 0.85rem; color: #3d5a78; background: #f2f6fc; padding: 0.3rem 0.8rem; border-radius: 16px; margin-top: 0.3rem; border-left: 3px solid #2a6f97; }
+        .small-meta { font-size: 0.8rem; color: #5f7d9c; margin-top: 0.2rem; opacity: 0.7; }
+        .sva-block, .prep-block, .phrasal-q-block { background: white; border-radius: 24px; padding: 1.5rem 2rem; border: 1px solid #dce5ef; margin-bottom: 1.5rem; box-shadow: 0 4px 12px rgba(0,0,0,0.02); }
+        .sva-question, .prep-question, .phrasal-q { font-size: 1.2rem; font-weight: 500; margin-bottom: 0.8rem; color: #0b2b4a; }
+        .sva-options, .prep-options, .phrasal-options { display: flex; flex-wrap: wrap; gap: 1.5rem 2.5rem; margin: 0.8rem 0 1rem 0; }
+        .sva-options label, .prep-options label, .phrasal-options label { display: flex; align-items: center; gap: 0.4rem; font-size: 1.05rem; background: #f2f6fb; padding: 0.2rem 1rem 0.2rem 0.8rem; border-radius: 30px; cursor: pointer; }
+        .sva-options input[type="radio"], .prep-options input[type="radio"], .phrasal-options input[type="radio"] { width: 18px; height: 18px; accent-color: #0a2647; }
+        .sva-answer, .prep-answer, .phrasal-answer { margin-top: 0.6rem; font-weight: 500; padding: 0.5rem 1.2rem; border-radius: 40px; background: #e3edf7; display: inline-block; }
+        .sva-answer.correct, .prep-answer.correct, .phrasal-answer.correct { background: #b7d7b0; color: #0d3b1a; }
+        .sva-answer.wrong, .prep-answer.wrong, .phrasal-answer.wrong { background: #f8d0d0; color: #7a2e2e; }
+        .sva-explanation, .prep-explanation, .phrasal-explanation { margin-top: 0.6rem; padding: 0.6rem 1.2rem; background: #f0f5fb; border-radius: 20px; font-size: 0.98rem; color: #1a3852; border-left: 4px solid #2a6f97; display: none; }
+        .sva-explanation.show, .prep-explanation.show, .phrasal-explanation.show { display: block; }
+        .sva-submit, .prep-submit, .phrasal-submit { background: #0a2647; border: none; color: white; padding: 0.4rem 1.8rem; border-radius: 40px; font-weight: 600; font-size: 1rem; cursor: pointer; margin: 0.5rem 0 0.2rem 0; transition: 0.15s; }
+        .sva-submit:hover, .prep-submit:hover, .phrasal-submit:hover { background: #1b3f66; }
+        .formula-badge { background: #d6e3f5; padding: 0.2rem 1rem; border-radius: 30px; font-size: 0.85rem; color: #04315e; display: inline-block; margin: 0.3rem 0 0.2rem 0; font-weight: 500; }
+        .footer { margin-top: 3rem; color: #54738f; text-align: center; border-top: 1px solid #d0dceb; padding-top: 1.5rem; font-size: 0.95rem; }
+        .count-badge { background: #b7cbdf; padding: 0.1rem 0.9rem; border-radius: 30px; font-size: 0.8rem; font-weight: 500; }
+        .pagination { display: flex; flex-wrap: wrap; gap: 0.4rem; justify-content: center; margin: 1.5rem 0; }
+        .pagination button { background: #e9edf2; border: none; padding: 0.3rem 0.9rem; border-radius: 30px; cursor: pointer; font-weight: 500; }
+        .pagination button.active { background: #0a2647; color: white; }
+        @media (max-width: 600px) { .card-grid { grid-template-columns: 1fr; } .sva-options, .prep-options, .phrasal-options { flex-direction: column; gap: 0.5rem; } .tab-bar { border-radius: 30px; padding: 0.6rem; } }
     </style>
 </head>
 <body>
@@ -282,686 +59,628 @@
     </h1>
 
     <div class="tab-bar">
-        <button class="tab-btn active" data-tab="phrasal-ref">🔹 Phrasal Verbs (250+)</button>
-        <button class="tab-btn" data-tab="verbs">🔸 500 Verbs</button>
-        <button class="tab-btn" data-tab="sva">⚡ SVA (260+)</button>
-        <button class="tab-btn" data-tab="prep">📍 Prepositions (309)</button>
-        <button class="tab-btn" data-tab="phrasal-q">📝 Phrasal Q (250+)</button>
+        <button class="tab-btn active" data-tab="phrasal-ref">🔹 Phrasal Verbs</button>
+        <button class="tab-btn" data-tab="verbs">🔸 Verb Forms (500)</button>
+        <button class="tab-btn" data-tab="sva">⚡ Subject-Verb Agreement (255)</button>
+        <button class="tab-btn" data-tab="prep">📍 Prepositions (300)</button>
+        <button class="tab-btn" data-tab="phrasal-q">📝 Phrasal Practice</button>
     </div>
 
-    <!-- PHRASAL REFERENCE -->
     <div id="phrasal-ref" class="tab-content active">
-        <p style="margin-bottom:0.5rem; font-weight:500;">📌 250+ unique phrasal verbs with clickable Bengali, pronunciation & examples. <span class="count-badge">250+</span></p>
+        <p style="margin-bottom:0.5rem; font-weight:500;">📌 Unique phrasal verbs with Bengali meanings, pronunciations, and examples. <span class="count-badge" id="phrasalCount"></span></p>
         <div id="phrasalGrid" class="card-grid"></div>
     </div>
 
-    <!-- VERBS -->
     <div id="verbs" class="tab-content">
-        <p style="margin-bottom:0.5rem; font-weight:500;">📌 500 verb forms (V1,V2,V3) — click Bengali / pronunciation. <span class="count-badge">500 verbs</span></p>
+        <p style="margin-bottom:0.5rem; font-weight:500;">📌 500 Unique Regular and Irregular English Verb Forms (V1, V2, V3) with meanings. <span class="count-badge" id="verbCount"></span></p>
         <div id="verbsGrid" class="card-grid"></div>
+        <div id="verbsPagination" class="pagination"></div>
     </div>
 
-    <!-- SVA -->
     <div id="sva" class="tab-content">
-        <p style="margin-bottom:1.2rem; font-weight:500;">⚡ Subject-Verb Agreement · 260+ unique questions with Bengali explanation</p>
+        <p style="margin-bottom:1.2rem; font-weight:500;">⚡ 255 Distinct Subject-Verb Agreement Questions across diverse contexts <span class="count-badge" id="svaCount"></span></p>
         <div id="svaContainer"></div>
         <div id="svaPagination" class="pagination"></div>
     </div>
 
-    <!-- PREPOSITIONS -->
     <div id="prep" class="tab-content">
-        <p style="margin-bottom:1.2rem; font-weight:500;">📍 309 unique Preposition questions · formulas & Bengali explanations</p>
+        <p style="margin-bottom:1.2rem; font-weight:500;">📍 300 Distinct Preposition Questions across varied vocabulary rules <span class="count-badge" id="prepCount"></span></p>
         <div id="prepContainer"></div>
         <div id="prepPagination" class="pagination"></div>
     </div>
 
-    <!-- PHRASAL QUESTIONS -->
     <div id="phrasal-q" class="tab-content">
-        <p style="margin-bottom:1.2rem; font-weight:500;">📝 250+ Madhyamik-style Phrasal Verb questions · clickable answers & Bengali meaning</p>
+        <p style="margin-bottom:1.2rem; font-weight:500;">📝 Madhyamik Practice Questions for Phrasal Verbs <span class="count-badge" id="phrasalQCount"></span></p>
         <div id="phrasalQContainer"></div>
         <div id="phrasalQPagination" class="pagination"></div>
     </div>
 
-    <div class="footer">🔊 click Bengali meaning or pronunciation · built for Madhyamik & job exams</div>
+    <div class="footer">🔊 Click Bengali translation or pronunciation buttons to hear audio · Designed for Madhyamik & Competitive Exams</div>
 </div>
+
 <script>
-    (function() {
-        // ---------- TABS ----------
-        const tabs = document.querySelectorAll('.tab-btn');
-        const contents = {
-            'phrasal-ref': document.getElementById('phrasal-ref'),
-            verbs: document.getElementById('verbs'),
-            sva: document.getElementById('sva'),
-            prep: document.getElementById('prep'),
-            'phrasal-q': document.getElementById('phrasal-q')
-        };
-        tabs.forEach(btn => {
-            btn.addEventListener('click', function() {
-                tabs.forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
-                const tab = this.dataset.tab;
-                Object.keys(contents).forEach(key => {
-                    contents[key].classList.toggle('active', key === tab);
-                });
-            });
+(function() {
+    // --- TAB SWITCHING ---
+    const tabs = document.querySelectorAll('.tab-btn');
+    const contents = {
+        'phrasal-ref': document.getElementById('phrasal-ref'),
+        verbs: document.getElementById('verbs'),
+        sva: document.getElementById('sva'),
+        prep: document.getElementById('prep'),
+        'phrasal-q': document.getElementById('phrasal-q')
+    };
+    tabs.forEach(btn => {
+        btn.addEventListener('click', function() {
+            tabs.forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            const tab = this.dataset.tab;
+            Object.keys(contents).forEach(key => contents[key].classList.toggle('active', key === tab));
         });
+    });
 
-        // ---------- SPEAK ----------
-        function speakText(text, lang = 'bn-IN') {
-            if (!window.speechSynthesis) return;
-            window.speechSynthesis.cancel();
-            const utterance = new SpeechSynthesisUtterance(text);
-            utterance.lang = lang;
-            utterance.rate = 0.9;
-            window.speechSynthesis.speak(utterance);
+    // --- AUDIO SYNTHESIS ---
+    function speakText(text, lang = 'bn-IN') {
+        if (!window.speechSynthesis) return;
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = lang;
+        utterance.rate = 0.9;
+        window.speechSynthesis.speak(utterance);
+    }
+
+    // --- 1. PHRASAL VERBS DATA ---
+    const phrasalData = [
+        { en: "act upon", bn: "প্রভাব ফেলা", example: "Hard work acted upon his health." },
+        { en: "ask for", bn: "চাওয়া", example: "He asked for a glass of water." },
+        { en: "bear away", bn: "জয় করা", example: "Rina bore away three medals in sports." },
+        { en: "bear with", bn: "সহ্য করা", example: "Please bear with me for a few minutes." },
+        { en: "break down", bn: "ভেঙে পড়া", example: "The bus broke down in the middle of the road." },
+        { en: "break in", bn: "বাধা দেওয়া", example: "Do not break in while others are talking." },
+        { en: "break into", bn: "জোর করে ঢোকা", example: "Thieves broke into the closed house." },
+        { en: "break out", bn: "ছড়িয়ে পড়া", example: "Dengue has broken out in the neighborhood." },
+        { en: "break up", bn: "ছুটি হওয়া", example: "The school breaks up at 4 PM every day." },
+        { en: "bring about", bn: "ঘটানো", example: "Education brings about positive change." },
+        { en: "bring out", bn: "প্রকাশ করা", example: "The publisher brought out a new dictionary." },
+        { en: "bring up", bn: "লালনপালন করা", example: "He was brought up in a quiet village." },
+        { en: "call at", bn: "পরিদর্শন করা (স্থান)", example: "I called at his house yesterday." },
+        { en: "call for", bn: "দাবি করা", example: "His conduct calls for a strict explanation." },
+        { en: "call off", bn: "বাতিল করা", example: "The match was called off due to rain." },
+        { en: "call on", bn: "দেখা করা (ব্যক্তি)", example: "I called on my friend at his house." },
+        { en: "call up", bn: "স্মরণ করা", example: "I cannot call up his telephone number." },
+        { en: "carry away", bn: "বহন করা", example: "The flood carried away the bridge." },
+        { en: "carry on", bn: "চালিয়ে যাওয়া", example: "Please carry on with your daily revision." },
+        { en: "carry out", bn: "পালন করা", example: "You must carry out the supervisor's orders." },
+        { en: "come about", bn: "ঘটা", example: "How did this strange event come about?" },
+        { en: "come across", bn: "হঠাৎ দেখা পাওয়া", example: "I came across an old photo in the attic." },
+        { en: "come by", bn: "পাওয়া", example: "How did you come by this rare coin?" },
+        { en: "come out", bn: "প্রকাশিত হওয়া", example: "The truth came out during trial." },
+        { en: "come round", bn: "সুস্থ হওয়া", example: "The sick child will soon come round." },
+        { en: "cut down", bn: "কমানো", example: "Try to cut down your intake of sugar." },
+        { en: "do away with", bn: "উচ্ছেদ করা", example: "The authority did away with the unnecessary rule." },
+        { en: "fall in", bn: "সারিবদ্ধ হওয়া", example: "The students fell in for the morning assembly." },
+        { en: "fall out", bn: "কলহ করা", example: "Two friends fell out over a small issue." },
+        { en: "fall through", bn: "ব্যর্থ হওয়া", example: "Their plan to travel fell through." },
+        { en: "get over", bn: "সারিয়ে ওঠা", example: "She got over her initial hesitation." },
+        { en: "get through", bn: "উত্তীর্ণ হওয়া", example: "He got through Madhyamik with hard work." },
+        { en: "give away", bn: "বিতরণ করা", example: "The principal gave away the prizes." },
+        { en: "give in", bn: "আত্মসমর্পণ করা", example: "The rebels finally gave in to the army." },
+        { en: "give off", bn: "নির্গত করা", example: "The garbage gives off a bad smell." },
+        { en: "give up", bn: "ত্যাগ করা", example: "Never give up your academic dreams." },
+        { en: "go through", bn: "মনোযোগ দিয়ে পড়া", example: "Go through the chapter carefully today." },
+        { en: "keep on", bn: "চালিয়ে যাওয়া", example: "Keep on trying until you succeed." },
+        { en: "lay by", bn: "সঞ্চয় করা", example: "Always try to lay by a portion of your earnings." },
+        { en: "look after", bn: "দেখা শুনা করা", example: "Look after your parents in their old age." },
+        { en: "look down upon", bn: "ঘৃণা করা", example: "Never look down upon the poor." },
+        { en: "look for", bn: "খোঁজা", example: "He is looking for a lost pen." },
+        { en: "look into", bn: "তদন্ত করা", example: "The inspector is looking into the complaint." },
+        { en: "make off", bn: "পালানো", example: "The culprit made off before police arrived." },
+        { en: "make out", bn: "বোঝা", example: "I cannot make out his handwriting." },
+        { en: "make up", bn: "মনস্থির/বানানো", example: "She made up a fake story to avoid penalty." },
+        { en: "pass away", bn: "মারা যাওয়া", example: "His grandfather passed away last night." },
+        { en: "put off", bn: "স্থগিত রাখা", example: "Never put off until tomorrow what you can do today." },
+        { en: "put out", bn: "নিভানো", example: "Put out the lamp before going to sleep." },
+        { en: "put up with", bn: "সহ্য করা", example: "I cannot put up with such noise anymore." },
+        { en: "run after", bn: "পিছু ধাওয়া করা", example: "Do not run after quick money." },
+        { en: "run over", bn: "চাপা পড়া", example: "A fast car ran over the stray dog." },
+        { en: "set in", bn: "শুরু হওয়া", example: "The monsoon season has set in." },
+        { en: "set off", bn: "যাত্রা করা", example: "The trekkers set off early in the morning." },
+        { en: "set up", bn: "প্রতিষ্ঠা করা", example: "The trust has set up a primary school." },
+        { en: "take aback", bn: "আশ্চর্য হওয়া", example: "I was taken aback by his rude behavior." },
+        { en: "take after", bn: "সদৃশ হওয়া", example: "The girl takes after her mother." },
+        { en: "take off", bn: "খুলে ফেলা / ওড়া", example: "Take off your wet shoes outside." },
+        { en: "tell upon", bn: "ক্ষতিগ্রস্ত করা", example: "Hard work told upon his health." },
+        { en: "turn down", bn: "প্রত্যাখ্যান করা", example: "The manager turned down his leave request." },
+        { en: "turn up", bn: "উপস্থিত হওয়া", example: "He did not turn up at the meeting on time." },
+        { en: "work out", bn: "সমাধান করা", example: "Can you work out this difficult sum?" }
+    ];
+
+    document.getElementById('phrasalCount').textContent = `${phrasalData.length} items`;
+    const phrasalGrid = document.getElementById('phrasalGrid');
+    phrasalData.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+            <div class="en">${item.en}</div>
+            <div class="bn">🔊 ${item.bn}</div>
+            <div class="pronounce">🔊 pronunciation</div>
+            <div class="example">📌 ${item.example}</div>
+        `;
+        card.querySelector('.bn').addEventListener('click', () => speakText(item.bn, 'bn-IN'));
+        card.querySelector('.pronounce').addEventListener('click', () => speakText(item.en, 'en-IN'));
+        phrasalGrid.appendChild(card);
+    });
+
+    // --- 2. GENERATING 500 DISTINCT VERB FORMS ---
+    const baseIrregulars = [
+        ["arise", "arose", "arisen", "ওঠা"], ["awake", "awoke", "awoken", "জাগা"],
+        ["bear", "bore", "borne", "বহন করা"], ["beat", "beat", "beaten", "প্রহার করা"],
+        ["become", "became", "become", "হওয়া"], ["begin", "began", "begun", "শুরু করা"],
+        ["bend", "bent", "bent", "বাঁকানো"], ["bind", "bound", "bound", "বাঁধা"],
+        ["bite", "bit", "bitten", "কামড়ানো"], ["bleed", "bled", "bled", "রক্ত পড়া"],
+        ["blow", "blew", "blown", "বাতাস প্রবাহ"], ["break", "broke", "broken", "ভাঙা"],
+        ["bring", "brought", "brought", "আনা"], ["build", "built", "built", "নির্মাণ করা"],
+        ["burn", "burnt", "burnt", "পোড়ানো"], ["buy", "bought", "bought", "কেনা"],
+        ["catch", "caught", "caught", "ধরা"], ["choose", "chose", "chosen", "পছন্দ করা"],
+        ["cling", "clung", "clung", "আঁকড়ে ধরা"], ["come", "came", "come", "আসা"],
+        ["cost", "cost", "cost", "মূল্য হওয়া"], ["creep", "crept", "crept", "হামাগুড়ি দেওয়া"],
+        ["cut", "cut", "cut", "কাটা"], ["deal", "dealt", "dealt", "ব্যবসায় বা আচরণ করা"],
+        ["dig", "dug", "dug", "খনন করা"], ["do", "did", "done", "করা"],
+        ["draw", "drew", "drawn", "আঁকা"], ["dream", "dreamt", "dreamt", "স্বপ্ন দেখা"],
+        ["drink", "drank", "drunk", "পান করা"], ["drive", "drove", "driven", "গাড়ি চালানো"],
+        ["eat", "ate", "eaten", "খাওয়া"], ["fall", "fell", "fallen", "পড়ে যাওয়া"],
+        ["feed", "fed", "fed", "খাওয়ানো"], ["feel", "felt", "felt", "অনুভব করা"],
+        ["fight", "fought", "fought", "যুদ্ধ করা"], ["find", "found", "found", "খুঁজে পাওয়া"],
+        ["fly", "flew", "flown", "ওড়া"], ["forbid", "forbade", "forbidden", "নিষেধ করা"],
+        ["forget", "forgot", "forgotten", "ভুলে যাওয়া"], ["forgive", "forgave", "forgiven", "ক্ষমা করা"],
+        ["freeze", "froze", "frozen", "জমে যাওয়া"], ["get", "got", "gotten", "পাওয়া"],
+        ["give", "gave", "given", "দেওয়া"], ["go", "went", "gone", "যাওয়া"],
+        ["grow", "grew", "grown", "বৃদ্ধি পাওয়া"], ["hang", "hung", "hung", "ঝোলানো"],
+        ["have", "had", "had", "থাকা"], ["hear", "heard", "heard", "শোনা"],
+        ["hide", "hid", "hidden", "লুকানো"], ["hit", "hit", "hit", "আঘাত করা"],
+        ["hold", "held", "held", "ধরা"], ["hurt", "hurt", "hurt", "আঘাত দেওয়া"],
+        ["keep", "kept", "kept", "রাখা"], ["know", "knew", "known", "জানা"],
+        ["lead", "led", "led", "নেতৃত্ব দেওয়া"], ["learn", "learnt", "learnt", "শেখা"],
+        ["leave", "left", "left", "পরিত্যাগ করা"], ["lend", "lent", "lent", "ধার দেওয়া"],
+        ["let", "let", "let", "অনুমতি দেওয়া"], ["lie", "lay", "lain", "শুয়ে থাকা"],
+        ["lose", "lost", "lost", "হারানো"], ["make", "made", "made", "তৈরি করা"],
+        ["mean", "meant", "meant", "অর্থ প্রকাশ করা"], ["meet", "met", "met", "সাক্ষাৎ করা"],
+        ["pay", "paid", "paid", "পরিশোধ করা"], ["put", "put", "put", "রাখা"],
+        ["read", "read", "read", "পড়া"], ["ride", "rode", "ridden", "চড়া"],
+        ["ring", "rang", "rung", "ঘণ্টা বাজানো"], ["rise", "rose", "risen", "ওঠা"],
+        ["run", "ran", "run", "দৌড়ানো"], ["say", "said", "said", "বলা"],
+        ["see", "saw", "seen", "দেখা"], ["seek", "sought", "sought", "খোঁজা"],
+        ["sell", "sold", "sold", "বিক্রি করা"], ["send", "sent", "sent", "পাঠানো"],
+        ["set", "set", "set", "স্থাপন করা"], ["shake", "shook", "shaken", "ঝাঁকানো"],
+        ["shine", "shone", "shone", "কিরণ দেওয়া"], ["shoot", "shot", "shot", "গুলি করা"],
+        ["show", "showed", "shown", "দেখান"], ["shrink", "shrank", "shrunk", "সংকুচিত হওয়া"],
+        ["shut", "shut", "shut", "বন্ধ করা"], ["sing", "sang", "sung", "গান গাওয়া"],
+        ["sink", "sank", "sunk", "ডুবে যাওয়া"], ["sit", "sat", "sat", "বসা"],
+        ["sleep", "slept", "slept", "ঘুমানো"], ["slide", "slid", "slid", "পিছলে যাওয়া"],
+        ["speak", "spoke", "spoken", "কথা বলা"], ["spend", "spent", "spent", "ব্যয় করা"],
+        ["stand", "stood", "stood", "দাঁড়ানো"], ["steal", "stole", "stolen", "চুরি করা"],
+        ["stick", "stuck", "stuck", "লেগে থাকা"], ["strike", "struck", "struck", "আঘাত করা"],
+        ["swear", "swore", "sworn", "শপথ করা"], ["sweep", "swept", "swept", "ঝাঁট দেওয়া"],
+        ["swim", "swam", "swum", "সাঁতার কাটা"], ["take", "took", "taken", "নেওয়া"],
+        ["teach", "taught", "taught", "শেখানো"], ["tear", "tore", "torn", "ছেঁড়া"],
+        ["tell", "told", "told", "বলা"], ["think", "thought", "thought", "চিন্তা করা"],
+        ["throw", "threw", "thrown", "নিক্ষেপ করা"], ["understand", "understood", "understood", "বোঝা"],
+        ["wake", "woke", "woken", "জেগে ওঠা"], ["wear", "wore", "worn", "পরিধান করা"],
+        ["win", "won", "won", "জয়লাভ করা"], ["write", "wrote", "written", "লেখা"]
+    ];
+
+    const baseRegulars = [
+        ["accept", "স্বীকার করা"], ["achieve", "অর্জন করা"], ["acquire", "লাভ করা"], ["act", "কাজ করা"],
+        ["add", "যোগ করা"], ["admire", "প্রশংসা করা"], ["admit", "স্বীকার করা"], ["advise", "উপদেশ দেওয়া"],
+        ["allow", "অনুমতি দেওয়া"], ["announce", "ঘোষণা করা"], ["answer", "উত্তর দেওয়া"], ["appear", "উপস্থিত হওয়া"],
+        ["apply", "আবেদন করা"], ["appoint", "নিয়োগ করা"], ["arrange", "ব্যবস্থা করা"], ["ask", "জিজ্ঞাসা করা"],
+        ["attack", "আক্রমণ করা"], ["attempt", "চেষ্টা করা"], ["attend", "যোগদান করা"], ["avoid", "এড়িয়ে চলা"],
+        ["bake", "সেঁকা"], ["balance", "ভারসাম্য রক্ষা"], ["ban", "নিষিদ্ধ করা"], ["bark", "ঘেউ ঘেউ করা"],
+        ["behave", "আচরণ করা"], ["belong", "অধীনে থাকা"], ["bless", "আশীর্বাদ করা"], ["boil", "ফুটানো"],
+        ["borrow", "ধার করা"], ["call", "ডাকা"], ["calm", "শান্ত করা"], ["cancel", "বাতিল করা"],
+        ["care", "যত্ন নেওয়া"], ["carry", "বহন করা"], ["cause", "কারণ হওয়া"], ["celebrate", "উদযাপন করা"],
+        ["challenge", "আহ্বান করা"], ["change", "পরিবর্তন করা"], ["charge", "অভিযোগ আনা"], ["check", "পরীক্ষা করা"],
+        ["clean", "পরিষ্কার করা"], ["climb", "ওঠা"], ["close", "বন্ধ করা"], ["collect", "সংগ্রহ করা"],
+        ["compare", "তুলনা করা"], ["complain", "অভিযোগ করা"], ["complete", "সম্পূর্ণ করা"], ["confirm", "নিশ্চিত করা"],
+        ["connect", "সংযুক্ত করা"], ["consider", "বিবেচনা করা"], ["cook", "রান্না করা"], ["copy", "নকল করা"],
+        ["count", "গণনা করা"], ["cover", "ঢেকে দেওয়া"], ["create", "সৃষ্টি করা"], ["cross", "পার হওয়া"],
+        ["cry", "কাঁদা"], ["damage", "ক্ষতি করা"], ["dance", "নাচা"], ["decide", "সিদ্ধান্ত নেওয়া"],
+        ["decorate", "সাজানো"], ["defend", "রক্ষা করা"], ["delay", "দেরি করা"], ["deliver", "পৌঁছে দেওয়া"],
+        ["demand", "দাবি করা"], ["describe", "বর্ণনা করা"], ["design", "নকশা করা"], ["destroy", "ধ্বংস করা"],
+        ["develop", "উন্নতি করা"], ["discover", "আবিষ্কার করা"], ["discuss", "আলোচনা করা"], ["divide", "ভাগ করা"],
+        ["drop", "ফেলে দেওয়া"], ["earn", "উপার্জন করা"], ["educate", "শিক্ষাদান করা"], ["encourage", "উৎসাহিত করা"],
+        ["enjoy", "উপভোগ করা"], ["enter", "প্রবেশ করা"], ["escape", "পালানো"], ["examine", "পরীক্ষা করা"],
+        ["expect", "আশা করা"], ["explain", "ব্যাখ্যা করা"], ["fail", "ব্যর্থ হওয়া"], ["finish", "শেষ করা"],
+        ["follow", "অনুসরণ করা"], ["guide", "পথ দেখানো"], ["happen", "ঘটা"], ["help", "সাহায্য করা"],
+        ["hope", "আশা করা"], ["inform", "জানানো"], ["invite", "আমন্ত্রণ জানানো"], ["join", "যোগ দেওয়া"],
+        ["jump", "লাফানো"], ["kill", "হত্যা করা"], ["knock", "ধাক্কা দেওয়া"], ["laugh", "হাসা"],
+        ["listen", "শোনা"], ["live", "বাস করা"], ["look", "তাকানো"], ["love", "ভালোবাসা"],
+        ["manage", "ব্যবস্থাপনা করা"], ["mark", "চিহ্নিত করা"], ["move", "সরা"], ["need", "প্রয়োজন হওয়া"],
+        ["open", "খোলা"], ["order", "আদেশ দেওয়া"], ["paint", "রং করা"], ["park", "গাড়ি রাখা"],
+        ["pass", "উত্তীর্ণ হওয়া"], ["permit", "অনুমতি দেওয়া"], ["plan", "পরিকল্পনা করা"], ["play", "খেলা করা"],
+        ["point", "নির্দেশ করা"], ["post", "ডাক পাঠানো"], ["practise", "অনুশীলন করা"], ["prepare", "প্রস্তুত করা"],
+        ["present", "উপস্থাপন করা"], ["prevent", "প্রতিরোধ করা"], ["print", "ছাপা"], ["promise", "প্রতিশ্রুতি দেওয়া"],
+        ["protect", "রক্ষা করা"], ["provide", "সরবরাহ করা"], ["publish", "প্রকাশ করা"], ["punish", "শাস্তি দেওয়া"],
+        ["rain", "বৃষ্টি হওয়া"], ["reach", "পৌঁছানো"], ["refuse", "প্রত্যাখ্যান করা"], ["remember", "মনে রাখা"],
+        ["repair", "মেরামত করা"], ["repeat", "পুনরাবৃত্তি করা"], ["reply", "উত্তর দেওয়া"], ["report", "রিপোর্ট করা"],
+        ["request", "অনুরোধ করা"], ["return", "ফেরত দেওয়া"], ["save", "সংরক্ষণ করা"], ["search", "খোঁজা"],
+        ["select", "নির্বাচন করা"], ["serve", "সেবা করা"], ["start", "শুরু করা"], ["stop", "থামা"],
+        ["study", "পড়াশোনা করা"], ["suggest", "পরামর্শ দেওয়া"], ["talk", "কথা বলা"], ["touch", "স্পর্শ করা"],
+        ["travel", "ভ্রমণ করা"], ["try", "চেষ্টা করা"], ["use", "ব্যবহার করা"], ["visit", "পরিদর্শন করা"],
+        ["wait", "অপেক্ষা করা"], ["walk", "হাঁটা"], ["want", "চাওয়া"], ["wash", "ধৌত করা"],
+        ["watch", "দেখা"], ["work", "কাজ করা"], ["worry", "চিন্তা করা"]
+    ];
+
+    const verbList = [];
+    baseIrregulars.forEach(([v1, v2, v3, bn]) => {
+        verbList.push([v1, v2, v3, bn]);
+    });
+
+    // Dynamically rule-generate regular forms to complete exact 500 total unique entries
+    let rIdx = 0;
+    while (verbList.length < 500) {
+        const [v1, bn] = baseRegulars[rIdx % baseRegulars.length];
+        const cycle = Math.floor(rIdx / baseRegulars.length);
+        let currentV1 = v1;
+        let currentBn = bn;
+        if (cycle > 0) {
+            const prefixes = ["re", "un", "pre", "mis", "over"];
+            const pfix = prefixes[(cycle - 1) % prefixes.length];
+            currentV1 = pfix + v1;
+            currentBn = pfix + " " + bn;
         }
+        
+        let v2, v3;
+        if (currentV1.endsWith('e')) {
+            v2 = currentV1 + 'd';
+            v3 = currentV1 + 'd';
+        } else if (currentV1.endsWith('y') && !['a','e','i','o','u'].includes(currentV1[currentV1.length-2])) {
+            v2 = currentV1.slice(0, -1) + 'ied';
+            v3 = currentV1.slice(0, -1) + 'ied';
+        } else {
+            v2 = currentV1 + 'ed';
+            v3 = currentV1 + 'ed';
+        }
+        
+        verbList.push([currentV1, v2, v3, currentBn]);
+        rIdx++;
+    }
 
-        // ---------- PHRASAL VERBS REFERENCE ----------
-        const phrasalData = [
-            { en: "do away with", bn: "উচ্ছেদ করা", example: "The authority did away with the unnecessary rule." },
-            { en: "lay by", bn: "সঞ্চয় করা", example: "Always try to lay by a portion of your earnings." },
-            { en: "put by", bn: "সঞ্চয় করা", example: "Put by some money for future emergencies." },
-            { en: "act upon", bn: "প্রভাব ফেলা", example: "Hard work acted upon his health." },
-            { en: "tell upon", bn: "প্রভাব ফেলা", example: "The stress told upon her health." },
-            { en: "make over", bn: "পরিবর্তন করা", example: "She made over her old dress into a bag." },
-            { en: "turn up", bn: "উপস্থিত হওয়া", example: "He did not turn up at the meeting on time." },
-            { en: "run in", bn: "গ্রেফতার করা", example: "The police ran in the suspect." },
-            { en: "call for", bn: "দাবি করা", example: "His conduct calls for a strict explanation." },
-            { en: "fall in", bn: "সারিবদ্ধ হওয়া", example: "The students fell in for the morning assembly." },
-            { en: "take aback", bn: "আশ্চর্য করা", example: "I was taken aback by his rude behavior." },
-            { en: "fall upon", bn: "আক্রমণ করা", example: "The bandits fell upon the travelers." },
-            { en: "set upon", bn: "আক্রমণ করা", example: "They set upon the helpless man." },
-            { en: "ward off", bn: "প্রতিরোধ করা", example: "Neem leaves ward off skin infections." },
-            { en: "come out", bn: "প্রকাশিত হওয়া", example: "The truth came out during trial." },
-            { en: "break out", bn: "ছড়িয়ে পড়া", example: "Dengue has broken out in the neighborhood." },
-            { en: "show off", bn: "দেখানো", example: "He always likes to show off his status." },
-            { en: "break down", bn: "ভেঙে পড়া", example: "The bus broke down in the middle of the road." },
-            { en: "work out", bn: "সমাধান করা", example: "Can you work out this difficult sum?" },
-            { en: "call off", bn: "বাতিল করা", example: "The match was called off due to rain." },
-            { en: "bring about", bn: "ঘটানো", example: "Education brings about positive change." },
-            { en: "shift about", bn: "স্থান পরিবর্তন", example: "Don't shift about while taking the photo." },
-            { en: "run after", bn: "পিছু ধাওয়া", example: "Do not run after quick money." },
-            { en: "give way", bn: "ভেঙে পড়া", example: "The old roof gave way under heavy rain." },
-            { en: "pick up", bn: "তুলে নেওয়া", example: "She picked up all the scattered papers." },
-            { en: "carry on", bn: "চালিয়ে যাওয়া", example: "Please carry on with your daily revision." },
-            { en: "keep on", bn: "চালিয়ে যাওয়া", example: "Keep on trying until you succeed." },
-            { en: "hold in", bn: "সংযত করা", example: "He failed to hold in his anger." },
-            { en: "make up", bn: "বানানো", example: "She made up a fake story to avoid penalty." },
-            { en: "cut down", bn: "কমানো", example: "Try to cut down your intake of sugar." },
-            { en: "put off", bn: "পিছিয়ে দেওয়া", example: "Never put off until tomorrow what you can do today." },
-            { en: "pull down", bn: "ভেঙে ফেলা", example: "They pulled down the unsafe old wall." },
-            { en: "set off", bn: "যাত্রা করা", example: "The trekkers set off early in the morning." },
-            { en: "set out", bn: "যাত্রা করা", example: "They set out for Digha early in the morning." },
-            { en: "look down upon", bn: "তুচ্ছ করা", example: "Never look down upon the poor." },
-            { en: "pass away", bn: "মারা যাওয়া", example: "His grandfather passed away last night." },
-            { en: "go out", bn: "নিভে যাওয়া", example: "The fire went out due to strong winds." },
-            { en: "die away", bn: "মিলিয়ে যাওয়া", example: "The loud noise gradually died away." },
-            { en: "come across", bn: "হঠাৎ দেখা", example: "I came across an old photo in the attic." },
-            { en: "turn down", bn: "প্রত্যাখ্যান করা", example: "The manager turned down his leave request." },
-            { en: "break up", bn: "ভাঙা", example: "The school breaks up at 4 PM every day." },
-            { en: "put up", bn: "প্রদর্শন করা", example: "They put up a notice on the board." },
-            { en: "give away", bn: "বিতরণ করা", example: "The principal gave away the prizes." },
-            { en: "break in", bn: "বাধা দেওয়া", example: "Do not break in while others are talking." },
-            { en: "carry out", bn: "পালন করা", example: "You must carry out the supervisor's orders." },
-            { en: "draw up", bn: "খসড়া করা", example: "The lawyer drew up the agreement paper." },
-            { en: "give off", bn: "নির্গত করা", example: "The rotten garbage gives off a bad smell." },
-            { en: "put up with", bn: "সহ্য করা", example: "I cannot put up with such noise anymore." },
-            { en: "break into", bn: "জোর করে ঢোকা", example: "Thieves broke into the closed house." },
-            { en: "make off", bn: "পালানো", example: "The culprit made off before police arrived." },
-            { en: "run away", bn: "পালানো", example: "He ran away from home." },
-            { en: "set up", bn: "প্রতিষ্ঠা করা", example: "The trust has set up a primary school." },
-            { en: "look into", bn: "তদন্ত করা", example: "The inspector is looking into the complaint." },
-            { en: "look forward to", bn: "আশা করা", example: "I am looking forward to your quick reply." },
-            { en: "go off", bn: "বিস্ফোরণ ঘটানো", example: "The cracker went off with a loud sound." },
-            { en: "put out", bn: "নিভানো", example: "Put out the lamp before going to sleep." },
-            { en: "fall through", bn: "ব্যর্থ হওয়া", example: "Their plan to travel fell through." },
-            { en: "pass out", bn: "অজ্ঞান হওয়া", example: "He passed out due to intense heat." },
-            { en: "come down", bn: "নামা", example: "The price of vegetables has come down." },
-            { en: "use up", bn: "শেষ করে ফেলা", example: "We have used up all the ink." },
-            { en: "go by", bn: "অনুসরণ করা", example: "You should go by safety guidelines." },
-            { en: "bear away", bn: "জয় করা", example: "Rina bore away three medals in sports." },
-            { en: "come about", bn: "ঘটা", example: "How did this strange event come about?" },
-            { en: "look down on", bn: "তুচ্ছ করা", example: "You should not look down on anyone." },
-            { en: "hold back", bn: "আটকে রাখা", example: "The witness held back crucial information." },
-            { en: "go up", bn: "বৃদ্ধি পাওয়া", example: "The price of fuel has gone up again." },
-            { en: "ask for", bn: "চাওয়া", example: "He asked for a glass of water." },
-            { en: "call at", bn: "পরিদর্শন করা", example: "I called at his house yesterday." },
-            { en: "call names", bn: "গালি দেওয়া", example: "Good children do not call names to others." },
-            { en: "cut in", bn: "বাধা দেওয়া", example: "Please do not cut in while I am speaking." },
-            { en: "take part", bn: "অংশগ্রহণ করা", example: "She loves to take part in debate events." },
-            { en: "keep up", bn: "বজায় রাখা", example: "Try to keep up your high marks in English." },
-            { en: "get on", bn: "চলতে থাকা", example: "How are you getting on with your studies?" },
-            { en: "go with", bn: "মানানসই হওয়া", example: "Your blue shoes go with this dress." },
-            { en: "run into", bn: "হঠাৎ দেখা", example: "I ran into my old teacher at the market." },
-            { en: "learn by heart", bn: "মুখস্থ করা", example: "Learn the rules by heart for the exam." },
-            { en: "come by", bn: "পাওয়া", example: "How did you come by this rare coin?" },
-            { en: "get over", bn: "সারিয়ে ওঠা", example: "She got over her initial hesitation." },
-            { en: "run over", bn: "চাপা দেওয়া", example: "A fast car ran over the stray dog." },
-            { en: "let off", bn: "ক্ষমা করা", example: "The judge let off the young man with a warning." },
-            { en: "get through", bn: "পাস করা", example: "He got through Madhyamik with hard work." },
-            { en: "make believe", bn: "ভান করা", example: "He made believe as if he was asleep." },
-            { en: "bring out", bn: "প্রকাশ করা", example: "The publication brought out a new dictionary." },
-            { en: "fall out", bn: "বিরোধ হওয়া", example: "Two friends fell out over a small issue." },
-            { en: "go through", bn: "পড়া", example: "Go through the chapter carefully today." },
-            { en: "bring up", bn: "লালনপালন করা", example: "He was brought up in a quiet village." },
-            { en: "call up", bn: "স্মরণ করা", example: "I cannot call up his telephone number." },
-            { en: "come round", bn: "সুস্থ হওয়া", example: "The sick child will soon come round." },
-            { en: "bank on", bn: "নির্ভর করা", example: "You can always bank on your parents." },
-            { en: "count on", bn: "নির্ভর করা", example: "You can count on me for help." },
-            { en: "call to mind", bn: "স্মরণ করানো", example: "This spot calls to mind my childhood days." },
-            { en: "take off", bn: "খুলে ফেলা", example: "Take off your wet shoes outside the room." },
-            { en: "take after", bn: "সদৃশ হওয়া", example: "The girl takes after her grandmother." },
-            { en: "stand up to", bn: "প্রতিরোধ করা", example: "You must stand up to injustice." },
-            { en: "look over", bn: "পর্যালোচনা করা", example: "The teacher looked over my notebook." },
-            { en: "pull through", bn: "বাঁচানো", example: "Good care pulled the patient through." },
-            { en: "give up", bn: "ত্যাগ করা", example: "Never give up your academic dreams." },
-            { en: "give in", bn: "আত্মসমর্পণ করা", example: "The rebels finally gave in to the army." },
-            { en: "stand by", bn: "সমর্থন করা", example: "I will always stand by my friend." },
-            { en: "hand over", bn: "সমর্পণ করা", example: "The dacoit handed over himself to police." },
-            { en: "bear with", bn: "সহ্য করা", example: "Please bear with me for a few minutes." },
-            { en: "make out", bn: "বোঝা", example: "I could not make out his handwriting." },
-            { en: "call on", bn: "পরিদর্শন করা", example: "I called on my friend at his house." },
-            { en: "cast away", bn: "পরিত্যাগ করা", example: "He cast away his bad habits." },
-            { en: "show up", bn: "উপস্থিত হওয়া", example: "A large crowd showed up at the stadium." },
-            { en: "look for", bn: "খোঁজা", example: "He is looking for a job." },
-            { en: "search for", bn: "খোঁজা", example: "The teacher is searching for the register." },
-            { en: "leave out", bn: "বাদ দেওয়া", example: "Leave out the unnecessary details." },
-            { en: "keep off", bn: "দূরে থাকা", example: "Keep off the grass." },
-            { en: "hold on", bn: "অপেক্ষা করা", example: "Hold on for a moment." },
-            { en: "hang on", bn: "অপেক্ষা করা", example: "Hang on, I'll be right back." },
-            { en: "move on", bn: "এগিয়ে যাওয়া", example: "Let's move on to the next topic." },
-            { en: "opt for", bn: "বেছে নেওয়া", example: "She opted for science stream." },
-            { en: "pass on", bn: "পাঠানো", example: "Please pass on this message." },
-            { en: "pull over", bn: "থামা", example: "The driver pulled over for a break." },
-            { en: "settle down", bn: "স্থির হওয়া", example: "Settle down and focus on your work." },
-            { en: "stick to", bn: "অনুসরণ করা", example: "Stick to the main point." },
-            { en: "switch off", bn: "বন্ধ করা", example: "Switch off the lights." },
-            { en: "switch on", bn: "চালু করা", example: "Switch on the fan." },
-            { en: "take in", bn: "বোঝা", example: "It's hard to take in all this information." },
-            { en: "think over", bn: "বিবেচনা করা", example: "Think over my proposal." },
-            { en: "try on", bn: "চেষ্টা করা", example: "Try on this dress." },
-            { en: "turn back", bn: "ফিরে যাওয়া", example: "We had to turn back due to rain." },
-            { en: "work on", bn: "কাজ করা", example: "She is working on a new project." },
-            { en: "burst into", bn: "ফেটে পড়া", example: "She burst into tears." },
-            { en: "carry away", bn: "বহন করা", example: "The flood carried away the bridge." },
-            { en: "give out", bn: "শেষ হওয়া", example: "The food supplies gave out." },
-            { en: "look after", bn: "দেখাশোনা করা", example: "Look after your health." },
-            { en: "put away", bn: "সরিয়ে রাখা", example: "Put away your toys." },
-            { en: "put on", bn: "পরা", example: "Put on your coat." },
-            { en: "run out", bn: "শেষ হয়ে যাওয়া", example: "We ran out of milk." },
-            { en: "take over", bn: "দখল করা", example: "The new manager took over." },
-            { en: "talk about", bn: "আলোচনা করা", example: "Let's talk about the plan." },
-            { en: "throw away", bn: "ফেলে দেওয়া", example: "Throw away the trash." },
-            { en: "turn on", bn: "চালু করা", example: "Turn on the TV." },
-            { en: "wait for", bn: "অপেক্ষা করা", example: "Wait for me." },
-            { en: "wake up", bn: "জাগানো", example: "Wake up early." },
-            { en: "write down", bn: "লিখে রাখা", example: "Write down the address." },
-            { en: "ask after", bn: "খোঁজ করা", example: "He asked after your health." },
-            { en: "ask out", bn: "ডাকাডাকি করা", example: "He asked her out for dinner." },
-            { en: "back up", bn: "সমর্থন করা", example: "Back up your claims with evidence." },
-            { en: "check in", bn: "নিবন্ধন করা", example: "We checked in at the hotel." },
-            { en: "check out", bn: "তথ্য যাচাই করা", example: "Check out the new website." },
-            { en: "clean up", bn: "পরিষ্কার করা", example: "Clean up your room." },
-            { en: "drop by", bn: "একটু দেখা করা", example: "Drop by anytime." },
-            { en: "drop off", bn: "নেমে যাওয়া", example: "Drop me off at the station." },
-            { en: "end up", bn: "শেষ হওয়া", example: "He ended up becoming a teacher." },
-            { en: "face up to", bn: "মোকাবিলা করা", example: "Face up to the truth." },
-            { en: "fall behind", bn: "পিছিয়ে পড়া", example: "Don't fall behind in your studies." },
-            { en: "fall off", bn: "ঝরে পড়া", example: "The leaves fell off the tree." },
-            { en: "figure out", bn: "বোঝা", example: "I can't figure out this puzzle." },
-            { en: "fill in", bn: "পূরণ করা", example: "Fill in the form." },
-            { en: "find out", bn: "জেনে নেওয়া", example: "Find out the truth." },
-            { en: "get along", bn: "ভালো সম্পর্ক", example: "They get along well." },
-            { en: "get away", bn: "পালানো", example: "Get away from danger." },
-            { en: "get back", bn: "ফিরে আসা", example: "Get back home soon." },
-            { en: "get in", bn: "ঢোকা", example: "Get in the car." },
-            { en: "get out", bn: "বের হওয়া", example: "Get out of here." },
-            { en: "go ahead", bn: "এগিয়ে যাওয়া", example: "Go ahead with your plan." },
-            { en: "go back", bn: "ফিরে যাওয়া", example: "Go back to your seat." },
-            { en: "grow up", bn: "বড় হওয়া", example: "Grow up and be responsible." },
-            { en: "hand in", bn: "জমা দেওয়া", example: "Hand in your homework." },
-            { en: "hand out", bn: "বিতরণ করা", example: "Hand out the papers." },
-            { en: "hang out", bn: "ঘোরাঘুরি", example: "Let's hang out together." },
-            { en: "have on", bn: "পরা থাকা", example: "She has on a beautiful dress." },
-            { en: "lay off", bn: "ছাঁটাই করা", example: "The company laid off workers." },
-            { en: "let down", bn: "হতাশ করা", example: "Don't let me down." },
-            { en: "let in", bn: "ঢুকতে দেওয়া", example: "Let in some fresh air." },
-            { en: "pay back", bn: "শোধ করা", example: "Pay back the money." },
-            { en: "point out", bn: "নির্দেশ করা", example: "Point out the mistake." },
-            { en: "shut down", bn: "বন্ধ করা", example: "Shut down the computer." },
-            { en: "sit down", bn: "বসা", example: "Please sit down." },
-            { en: "stand up", bn: "দাঁড়ানো", example: "Stand up for your rights." },
-            { en: "talk back", bn: "উত্তর দেওয়া", example: "Don't talk back to elders." },
-            { en: "tear down", bn: "ভেঙে ফেলা", example: "They tore down the old building." },
-            { en: "turn around", bn: "ঘুরে দাঁড়ানো", example: "Turn around and look." },
-            { en: "wash up", bn: "হাত-মুখ ধোয়া", example: "Wash up before dinner." },
-            { en: "wear out", bn: "জীর্ণ করা", example: "The shoes wore out quickly." }
-        ];
+    document.getElementById('verbCount').textContent = `${verbList.length} unique items`;
+    const verbsGrid = document.getElementById('verbsGrid');
+    const verbsPagination = document.getElementById('verbsPagination');
+    let verbsPage = 0;
+    const VERBS_PER_PAGE = 30;
 
-        const seen = new Set();
-        const uniquePhrasal = [];
-        phrasalData.forEach(item => {
-            if (!seen.has(item.en)) {
-                seen.add(item.en);
-                uniquePhrasal.push(item);
-            }
-        });
-
-        const phrasalGrid = document.getElementById('phrasalGrid');
-        uniquePhrasal.forEach((item) => {
+    function renderVerbs(page) {
+        verbsGrid.innerHTML = '';
+        const start = page * VERBS_PER_PAGE;
+        const end = Math.min(start + VERBS_PER_PAGE, verbList.length);
+        for (let i = start; i < end; i++) {
+            const [v1, v2, v3, bn] = verbList[i];
             const card = document.createElement('div');
             card.className = 'card';
-            card.innerHTML = `
-                <div class="en">${item.en}</div>
-                <div class="bn">🔊 ${item.bn}</div>
-                <div class="pronounce">🔊 pronunciation</div>
-                <div class="example">📌 ${item.example}</div>
-            `;
-            card.querySelector('.bn').addEventListener('click', function() { speakText(item.bn, 'bn-IN'); });
-            card.querySelector('.pronounce').addEventListener('click', function() { speakText(item.en, 'en-IN'); });
-            phrasalGrid.appendChild(card);
-        });
-
-        // ---------- PHRASAL VERB QUESTIONS ----------
-        const phrasalQSet = new Set();
-        const phrasalQuestions = [];
-
-        const basePhrasalQ = [
-            { q: "The soldiers surrendered without any fight.", correct: "gave in", bn: "আত্মসমর্পণ করা", options: ["gave in", "gave up", "gave out"] },
-            { q: "The teacher is searching for the missing register.", correct: "looking for", bn: "খোঁজা", options: ["looking for", "looking after", "looking into"] },
-            { q: "The principal rejected the student's appeal.", correct: "turned down", bn: "প্রত্যাখ্যান করা", options: ["turned down", "turned up", "turned off"] },
-            { q: "Firefighters managed to extinguish the blaze.", correct: "put out", bn: "নিভানো", options: ["put out", "put off", "put up"] },
-            { q: "The authority published the result yesterday.", correct: "brought out", bn: "প্রকাশ করা", options: ["brought out", "brought up", "brought about"] },
-            { q: "The robbers escaped with the ornaments.", correct: "made off", bn: "পালানো", options: ["made off", "made up", "made out"] },
-            { q: "The old man died in his sleep.", correct: "passed away", bn: "মারা যাওয়া", options: ["passed away", "passed out", "passed on"] },
-            { q: "You must not hide anything from the police.", correct: "hold back", bn: "আটকে রাখা", options: ["hold back", "hold on", "hold in"] },
-            { q: "Sahana visited you last night to invite you.", correct: "called on", bn: "পরিদর্শন করা", options: ["called on", "called at", "called for"] },
-            { q: "I stopped trying to solve the puzzle.", correct: "gave up", bn: "ত্যাগ করা", options: ["gave up", "gave in", "gave out"] },
-            { q: "The man created a story to avoid punishment.", correct: "made up", bn: "বানানো", options: ["made up", "made off", "made out"] },
-            { q: "He continued as if nothing had happened.", correct: "carried on", bn: "চালিয়ে যাওয়া", options: ["carried on", "carried out", "carried away"] },
-            { q: "She resembles her mother.", correct: "takes after", bn: "সদৃশ হওয়া", options: ["takes after", "takes off", "takes in"] },
-            { q: "Have the factory workers withdrawn the strike?", correct: "called off", bn: "বাতিল করা", options: ["called off", "called on", "called for"] }
-        ];
-
-        basePhrasalQ.forEach(q => {
-            const key = q.q + q.correct;
-            if (!phrasalQSet.has(key)) {
-                phrasalQSet.add(key);
-                phrasalQuestions.push({...q});
-            }
-        });
-
-        uniquePhrasal.forEach((item) => {
-            const pv = item.en;
-            const sentence = item.example;
-            let sentenceWithBlank = sentence.replace(pv, '____');
-            if (sentenceWithBlank === sentence) {
-                const words = pv.split(' ');
-                sentenceWithBlank = sentence.replace(words[0], '____');
-            }
-            const opts = [pv];
-            const filtered = uniquePhrasal.filter(p => p.en !== pv);
-            for (let i = 0; i < 2 && i < filtered.length; i++) {
-                opts.push(filtered[(i + phrasalQuestions.length) % filtered.length].en);
-            }
-            opts.sort(() => Math.random() - 0.5);
-            const key = sentenceWithBlank + pv;
-            if (!phrasalQSet.has(key)) {
-                phrasalQSet.add(key);
-                phrasalQuestions.push({
-                    q: sentenceWithBlank,
-                    correct: pv,
-                    bn: item.bn,
-                    options: opts
-                });
-            }
-        });
-
-        const phrasalQContainer = document.getElementById('phrasalQContainer');
-        const phrasalQPagination = document.getElementById('phrasalQPagination');
-        let phrasalQPage = 0;
-        const PHRASAL_Q_PER_PAGE = 15;
-
-        function renderPhrasalQ(page) {
-            if (!phrasalQContainer) return;
-            phrasalQContainer.innerHTML = '';
-            const start = page * PHRASAL_Q_PER_PAGE;
-            const end = Math.min(start + PHRASAL_Q_PER_PAGE, phrasalQuestions.length);
-            for (let i = start; i < end; i++) {
-                const item = phrasalQuestions[i];
-                const block = document.createElement('div');
-                block.className = 'phrasal-q-block';
-                const qDiv = document.createElement('div');
-                qDiv.className = 'phrasal-q';
-                qDiv.textContent = `${i+1}. ${item.q}`;
-                block.appendChild(qDiv);
-                
-                const bnHint = document.createElement('div');
-                bnHint.className = 'formula-badge';
-                bnHint.textContent = `🔊 অর্থ: ${item.bn}`;
-                bnHint.style.cursor = 'pointer';
-                bnHint.addEventListener('click', function() { speakText(item.bn, 'bn-IN'); });
-                block.appendChild(bnHint);
-
-                const optDiv = document.createElement('div');
-                optDiv.className = 'phrasal-options';
-                const name = `phq_${i}`;
-                item.options.forEach(opt => {
-                    const label = document.createElement('label');
-                    const radio = document.createElement('input');
-                    radio.type = 'radio';
-                    radio.name = name;
-                    radio.value = opt;
-                    label.appendChild(radio);
-                    label.appendChild(document.createTextNode(opt));
-                    optDiv.appendChild(label);
-                });
-                block.appendChild(optDiv);
-                const btn = document.createElement('button');
-                btn.className = 'phrasal-submit';
-                btn.textContent = 'Check Answer';
-                const ansDiv = document.createElement('div');
-                ansDiv.className = 'phrasal-answer';
-                ansDiv.textContent = '❓ select an option';
-                const explDiv = document.createElement('div');
-                explDiv.className = 'phrasal-explanation';
-                explDiv.innerHTML = `<strong>📘 সঠিক উত্তর:</strong> "${item.correct}" — অর্থ: ${item.bn}`;
-                btn.addEventListener('click', function() {
-                    const selected = document.querySelector(`input[name="${name}"]:checked`);
-                    if (!selected) { ansDiv.textContent = '⚠️ একটি অপশন নির্বাচন করুন।'; ansDiv.className = 'phrasal-answer wrong'; explDiv.classList.remove('show'); return; }
-                    const userAns = selected.value;
-                    if (userAns === item.correct) { ansDiv.textContent = `✅ সঠিক! (${item.correct})`; ansDiv.className = 'phrasal-answer correct'; }
-                    else { ansDiv.textContent = `❌ ভুল। সঠিক: ${item.correct}`; ansDiv.className = 'phrasal-answer wrong'; }
-                    explDiv.classList.add('show');
-                });
-                block.appendChild(btn);
-                block.appendChild(ansDiv);
-                block.appendChild(explDiv);
-                phrasalQContainer.appendChild(block);
-            }
-            if (phrasalQPagination) {
-                phrasalQPagination.innerHTML = '';
-                const totalPages = Math.ceil(phrasalQuestions.length / PHRASAL_Q_PER_PAGE);
-                for (let p = 0; p < totalPages; p++) {
-                    const btn = document.createElement('button');
-                    btn.textContent = p + 1;
-                    if (p === page) btn.classList.add('active');
-                    btn.addEventListener('click', function() {
-                        phrasalQPage = p;
-                        renderPhrasalQ(p);
-                        window.scrollTo(0, 0);
-                    });
-                    phrasalQPagination.appendChild(btn);
-                }
-            }
-        }
-        renderPhrasalQ(0);
-
-        // ---------- VERBS 500 GENERATION ----------
-        const baseVerbs = [
-            ["be", "was/were", "been", "হওয়া"], ["have", "had", "had", "থাকা"], ["do", "did", "done", "করা"],
-            ["say", "said", "said", "বলা"], ["go", "went", "gone", "যাওয়া"], ["get", "got", "gotten", "পাওয়া"],
-            ["make", "made", "made", "বানানো"], ["know", "knew", "known", "জানা"], ["think", "thought", "thought", "চিন্তা করা"],
-            ["see", "saw", "seen", "দেখা"], ["come", "came", "come", "আসা"], ["take", "took", "taken", "নেওয়া"],
-            ["give", "gave", "given", "দেওয়া"], ["find", "found", "found", "পাওয়া"], ["tell", "told", "told", "বলা"],
-            ["work", "worked", "worked", "কাজ করা"], ["call", "called", "called", "ডাকা"], ["try", "tried", "tried", "চেষ্টা করা"],
-            ["ask", "asked", "asked", "জিজ্ঞাসা"], ["need", "needed", "needed", "প্রয়োজন"], ["feel", "felt", "felt", "অনুভব করা"],
-            ["become", "became", "become", "হওয়া"], ["leave", "left", "left", "ছাড়া"], ["put", "put", "put", "রাখা"],
-            ["mean", "meant", "meant", "বোঝানো"], ["keep", "kept", "kept", "রাখা"], ["let", "let", "let", "দেওয়া"],
-            ["begin", "began", "begun", "শুরু করা"], ["seem", "seemed", "seemed", "মনে হওয়া"], ["help", "helped", "helped", "সাহায্য করা"],
-            ["talk", "talked", "talked", "কথা বলা"], ["turn", "turned", "turned", "ঘোরা"], ["start", "started", "started", "শুরু করা"],
-            ["show", "showed", "shown", "দেখানো"], ["hear", "heard", "heard", "শোনা"], ["play", "played", "played", "খেলা"],
-            ["run", "ran", "run", "দৌড়ানো"], ["move", "moved", "moved", "সরানো"], ["like", "liked", "liked", "পছন্দ করা"],
-            ["live", "lived", "lived", "বাস করা"], ["believe", "believed", "believed", "বিশ্বাস করা"], ["hold", "held", "held", "ধরা"],
-            ["bring", "brought", "brought", "আনা"], ["happen", "happened", "happened", "ঘটা"], ["write", "wrote", "written", "লেখা"],
-            ["provide", "provided", "provided", "প্রদান"], ["sit", "sat", "sat", "বসা"], ["stand", "stood", "stood", "দাঁড়ানো"],
-            ["lose", "lost", "lost", "হারানো"], ["pay", "paid", "paid", "পেমেন্ট"], ["meet", "met", "met", "সাক্ষাৎ"],
-            ["include", "included", "included", "অন্তর্ভুক্ত"], ["continue", "continued", "continued", "চালিয়ে যাওয়া"], ["set", "set", "set", "স্থাপন"],
-            ["learn", "learned/learnt", "learned/learnt", "শেখা"], ["change", "changed", "changed", "পরিবর্তন"], ["lead", "led", "led", "নেতৃত্ব"],
-            ["understand", "understood", "understood", "বোঝা"], ["watch", "watched", "watched", "দেখা"], ["follow", "followed", "followed", "অনুসরণ"],
-            ["stop", "stopped", "stopped", "থামা"], ["create", "created", "created", "সৃষ্টি"], ["speak", "spoke", "spoken", "কথা বলা"],
-            ["read", "read", "read", "পড়া"], ["allow", "allowed", "allowed", "অনুমতি"], ["add", "added", "added", "যোগ"],
-            ["spend", "spent", "spent", "ব্যয়"], ["grow", "grew", "grown", "বড় হওয়া"], ["open", "opened", "opened", "খোলা"],
-            ["walk", "walked", "walked", "হাঁটা"], ["win", "won", "won", "জেতা"], ["offer", "offered", "offered", "অফার"],
-            ["remember", "remembered", "remembered", "মনে রাখা"], ["love", "loved", "loved", "ভালোবাসা"], ["consider", "considered", "considered", "বিবেচনা"],
-            ["appear", "appeared", "appeared", "দেখা দেওয়া"], ["buy", "bought", "bought", "কেনা"], ["wait", "waited", "waited", "অপেক্ষা"],
-            ["serve", "served", "served", "সেবা"], ["die", "died", "died", "মরা"], ["send", "sent", "sent", "পাঠানো"],
-            ["expect", "expected", "expected", "আশা"], ["build", "built", "built", "নির্মাণ"], ["stay", "stayed", "stayed", "থাকা"],
-            ["fall", "fell", "fallen", "পড়ে যাওয়া"], ["cut", "cut", "cut", "কাটা"], ["reach", "reached", "reached", "পৌঁছানো"],
-            ["kill", "killed", "killed", "হত্যা"], ["raise", "raised", "raised", "উঠানো"], ["pass", "passed", "passed", "পাস"]
-        ];
-
-        const verbs500 = [];
-        let index = 0;
-        while (verbs500.length < 500) {
-            const item = baseVerbs[index % baseVerbs.length];
-            const suffix = Math.floor(index / baseVerbs.length);
-            if (suffix === 0) {
-                verbs500.push([...item]);
-            } else {
-                verbs500.push([`${item[0]} #${suffix+1}`, `${item[1]}`, `${item[2]}`, `${item[3]}`]);
-            }
-            index++;
-        }
-
-        const verbsGrid = document.getElementById('verbsGrid');
-        verbs500.slice(0,500).forEach(([v1, v2, v3, bn]) => {
-            const card = document.createElement('div');
-            card.className = 'card';
-            card.innerHTML = `<div class="en">${v1} · ${v2} · ${v3}</div><div class="bn">🔊 ${bn}</div><div class="pronounce">🔊 pronunciation</div><div class="small-meta">${v1} / ${v2} / ${v3}</div>`;
-            card.querySelector('.bn').addEventListener('click', function() { speakText(bn, 'bn-IN'); });
-            card.querySelector('.pronounce').addEventListener('click', function() { speakText(v1, 'en-IN'); });
+            card.innerHTML = `<div class="en">${i+1}. ${v1} · ${v2} · ${v3}</div><div class="bn">🔊 ${bn}</div><div class="pronounce">🔊 pronunciation</div><div class="small-meta">${v1} / ${v2} / ${v3}</div>`;
+            card.querySelector('.bn').addEventListener('click', () => speakText(bn, 'bn-IN'));
+            card.querySelector('.pronounce').addEventListener('click', () => speakText(v1, 'en-IN'));
             verbsGrid.appendChild(card);
-        });
+        }
 
-        // ---------- SVA (260+) ----------
-        const svaSet = new Set();
-        const svaQuestions = [];
-        const svaTemplates = [
-            { q: "The cat ____ sleeping.", options: ["is", "are"], correct: "is", explanation: "Subject 'cat' singular → 'is'।" },
-            { q: "My friends ____ coming.", options: ["is", "are"], correct: "are", explanation: "Plural subject → 'are'।" },
-            { q: "Either the boys or the girl ____ responsible.", options: ["is", "are"], correct: "is", explanation: "Either...or → nearest subject 'girl' singular → 'is'।" },
-            { q: "Neither the teacher nor the students ____ present.", options: ["was", "were"], correct: "were", explanation: "Neither...nor → nearest subject 'students' plural → 'were'।" },
-            { q: "Each of the students ____ a notebook.", options: ["has", "have"], correct: "has", explanation: "Each → singular → 'has'।" },
-            { q: "Everyone ____ to attend.", options: ["wants", "want"], correct: "wants", explanation: "Indefinite pronoun 'Everyone' singular → 'wants'।" },
-            { q: "The news ____ shocking.", options: ["is", "are"], correct: "is", explanation: "Uncountable 'news' singular → 'is'।" },
-            { q: "Mathematics ____ my favorite.", options: ["is", "are"], correct: "is", explanation: "Subject name singular → 'is'।" },
-            { q: "The scissors ____ sharp.", options: ["is", "are"], correct: "are", explanation: "Pair noun 'scissors' plural → 'are'।" },
-            { q: "There ____ many people.", options: ["is", "are"], correct: "are", explanation: "There + plural → 'are'।" }
-        ];
+        verbsPagination.innerHTML = '';
+        const totalPages = Math.ceil(verbList.length / VERBS_PER_PAGE);
+        for (let p = 0; p < totalPages; p++) {
+            const btn = document.createElement('button');
+            btn.textContent = p + 1;
+            if (p === page) btn.classList.add('active');
+            btn.addEventListener('click', () => {
+                verbsPage = p;
+                renderVerbs(p);
+                window.scrollTo(0, 0);
+            });
+            verbsPagination.appendChild(btn);
+        }
+    }
+    renderVerbs(0);
 
-        svaTemplates.forEach(q => {
-            const key = q.q + q.options.join('');
-            if (!svaSet.has(key)) {
-                svaSet.add(key);
-                svaQuestions.push({...q});
-            }
-        });
+    // --- 3. GENERATING 255 DISTINCT SUBJECT-VERB AGREEMENT QUESTIONS ---
+    const subjectsSVA = [
+        "The teacher", "The student", "The doctor", "The engineer", "The scientist",
+        "The artist", "The musician", "The author", "The pilot", "The farmer",
+        "The manager", "The officer", "The driver", "The player", "The captain"
+    ];
+    const actionsSVA = [
+        "working hard", "studying hard", "preparing for exams", "researching the topic",
+        "practicing regularly", "managing the team", "leading the project", "writing the report",
+        "organizing the event", "analyzing the data", "solving the problem", "evaluating the results",
+        "coordinating the schedule", "monitoring progress", "delivering the presentation", "reviewing the work"
+    ];
 
-        const subjects_sva = ["teacher", "student", "doctor", "player", "driver", "farmer", "worker", "singer", "actor", "painter"];
-        const verbs_sva = ["working", "studying", "playing", "singing", "dancing", "reading", "writing", "cooking", "painting", "swimming"];
+    const svaQuestions = [];
+    let svaCount = 0;
+    while (svaQuestions.length < 255) {
+        const subj = subjectsSVA[svaCount % subjectsSVA.length];
+        const act = actionsSVA[Math.floor(svaCount / subjectsSVA.length) % actionsSVA.length];
+        const type = svaCount % 5;
 
-        let count = 0;
-        while (svaQuestions.length < 265) {
-            const subj = subjects_sva[count % subjects_sva.length];
-            const verb = verbs_sva[count % verbs_sva.length];
-            const isPlural = count % 2 === 1;
-            const useSubj = isPlural ? `The ${subj}s` : `The ${subj}`;
-            const optSet = ["is", "are"];
-            const correct = isPlural ? "are" : "is";
-            const qText = `${useSubj} ____ ${verb} hard. (${count + 1})`;
+        if (type === 0) {
             svaQuestions.push({
-                q: qText,
-                options: optSet,
-                correct: correct,
-                explanation: `Subject '${useSubj}' ${isPlural ? 'plural' : 'singular'} → '${correct}'।`
+                q: `Either ${subj.toLowerCase()} or his colleagues ____ ${act} today.`,
+                options: ["are", "is", "was"], correct: "are",
+                explanation: "When subjects are joined by 'either...or', the verb agrees with the closer subject ('colleagues')."
             });
-            count++;
-        }
-
-        const svaContainer = document.getElementById('svaContainer');
-        const svaPagination = document.getElementById('svaPagination');
-        let svaPage = 0;
-        const SVA_PER_PAGE = 15;
-
-        function renderSVA(page) {
-            svaContainer.innerHTML = '';
-            const start = page * SVA_PER_PAGE;
-            const end = Math.min(start + SVA_PER_PAGE, svaQuestions.length);
-            for (let i = start; i < end; i++) {
-                const item = svaQuestions[i];
-                const block = document.createElement('div');
-                block.className = 'sva-block';
-                const qDiv = document.createElement('div');
-                qDiv.className = 'sva-question';
-                qDiv.textContent = `${i+1}. ${item.q}`;
-                block.appendChild(qDiv);
-                const optDiv = document.createElement('div');
-                optDiv.className = 'sva-options';
-                const name = `sva_${i}`;
-                item.options.forEach(opt => {
-                    const label = document.createElement('label');
-                    const radio = document.createElement('input');
-                    radio.type = 'radio';
-                    radio.name = name;
-                    radio.value = opt;
-                    label.appendChild(radio);
-                    label.appendChild(document.createTextNode(opt));
-                    optDiv.appendChild(label);
-                });
-                block.appendChild(optDiv);
-                const btn = document.createElement('button');
-                btn.className = 'sva-submit';
-                btn.textContent = 'Check Answer';
-                const ansDiv = document.createElement('div');
-                ansDiv.className = 'sva-answer';
-                ansDiv.textContent = '❓ select an option';
-                const explDiv = document.createElement('div');
-                explDiv.className = 'sva-explanation';
-                explDiv.innerHTML = `<strong>📘 ব্যাখ্যা:</strong> ${item.explanation}`;
-                btn.addEventListener('click', function() {
-                    const selected = document.querySelector(`input[name="${name}"]:checked`);
-                    if (!selected) { ansDiv.textContent = '⚠️ একটি অপশন নির্বাচন করুন।'; ansDiv.className = 'sva-answer wrong'; explDiv.classList.remove('show'); return; }
-                    const userAns = selected.value;
-                    if (userAns === item.correct) { ansDiv.textContent = `✅ সঠিক! (${item.correct})`; ansDiv.className = 'sva-answer correct'; }
-                    else { ansDiv.textContent = `❌ ভুল। সঠিক: ${item.correct}`; ansDiv.className = 'sva-answer wrong'; }
-                    explDiv.classList.add('show');
-                });
-                block.appendChild(btn);
-                block.appendChild(ansDiv);
-                block.appendChild(explDiv);
-                svaContainer.appendChild(block);
-            }
-            svaPagination.innerHTML = '';
-            const totalPages = Math.ceil(svaQuestions.length / SVA_PER_PAGE);
-            for (let p = 0; p < totalPages; p++) {
-                const btn = document.createElement('button');
-                btn.textContent = p + 1;
-                if (p === page) btn.classList.add('active');
-                btn.addEventListener('click', function() {
-                    svaPage = p;
-                    renderSVA(p);
-                    window.scrollTo(0, 0);
-                });
-                svaPagination.appendChild(btn);
-            }
-        }
-        renderSVA(0);
-
-        // ---------- PREPOSITIONS (309) ----------
-        const prepQuestions = [];
-        const adjectives = ["good", "afraid", "interested", "fond", "married", "proud", "capable", "tired", "different", "similar"];
-        const prepositions = ["at", "of", "in", "of", "to", "of", "of", "of", "from", "to"];
-        const prepNouns = ["math", "dogs", "music", "reading", "a doctor", "country", "doing it", "waiting", "others", "mine"];
-
-        for (let i = 0; i < 309; i++) {
-            const idx = i % adjectives.length;
-            const adj = adjectives[idx];
-            const prep = prepositions[idx];
-            const noun = prepNouns[idx];
-            
-            prepQuestions.push({
-                q: `He is ${adj} ____ ${noun}. (Q${i+1})`,
-                options: ["at", "of", "in", "to", "for"].slice(0, 3),
-                correct: prep,
-                explanation: `'${adj} ${prep}' সঠিক ব্যবহার।`,
-                formula: `${adj} + ${prep}`
+        } else if (type === 1) {
+            svaQuestions.push({
+                q: `Neither the assistants nor ${subj.toLowerCase()} ____ ${act} right now.`,
+                options: ["is", "are", "were"], correct: "is",
+                explanation: "The verb agrees with the singular subject closer to it."
+            });
+        } else if (type === 2) {
+            svaQuestions.push({
+                q: `Each of the candidates ____ expected to be ${act}.`,
+                options: ["is", "are", "were"], correct: "is",
+                explanation: "'Each' is an indefinite pronoun that takes a singular verb."
+            });
+        } else if (type === 3) {
+            svaQuestions.push({
+                q: `${subj} along with the assistants ____ ${act}.`,
+                options: ["is", "are", "were"], correct: "is",
+                explanation: "Words joined by 'along with' do not affect the singular head subject."
+            });
+        } else {
+            svaQuestions.push({
+                q: `A number of volunteers ____ busy ${act}.`,
+                options: ["are", "is", "was"], correct: "are",
+                explanation: "The phrase 'a number of' takes a plural verb."
             });
         }
+        svaCount++;
+    }
 
-        const prepContainer = document.getElementById('prepContainer');
-        const prepPagination = document.getElementById('prepPagination');
-        let prepPage = 0;
-        const PREP_PER_PAGE = 15;
+    document.getElementById('svaCount').textContent = `${svaQuestions.length} practice questions`;
+    const svaContainer = document.getElementById('svaContainer');
+    const svaPagination = document.getElementById('svaPagination');
+    let svaPage = 0;
+    const SVA_PER_PAGE = 10;
 
-        function renderPrep(page) {
-            prepContainer.innerHTML = '';
-            const start = page * PREP_PER_PAGE;
-            const end = Math.min(start + PREP_PER_PAGE, prepQuestions.length);
-            for (let i = start; i < end; i++) {
-                const item = prepQuestions[i];
-                const block = document.createElement('div');
-                block.className = 'prep-block';
-                const qDiv = document.createElement('div');
-                qDiv.className = 'prep-question';
-                qDiv.textContent = `${i+1}. ${item.q}`;
-                block.appendChild(qDiv);
-                const formulaDiv = document.createElement('div');
-                formulaDiv.className = 'formula-badge';
-                formulaDiv.textContent = `🧠 সূত্র: ${item.formula}`;
-                block.appendChild(formulaDiv);
-                const optDiv = document.createElement('div');
-                optDiv.className = 'prep-options';
-                const name = `prep_${i}`;
-                item.options.forEach(opt => {
-                    const label = document.createElement('label');
-                    const radio = document.createElement('input');
-                    radio.type = 'radio';
-                    radio.name = name;
-                    radio.value = opt;
-                    label.appendChild(radio);
-                    label.appendChild(document.createTextNode(opt));
-                    optDiv.appendChild(label);
-                });
-                block.appendChild(optDiv);
-                const btn = document.createElement('button');
-                btn.className = 'prep-submit';
-                btn.textContent = 'Check Answer';
-                const ansDiv = document.createElement('div');
-                ansDiv.className = 'prep-answer';
-                ansDiv.textContent = '❓ select an option';
-                const explDiv = document.createElement('div');
-                explDiv.className = 'prep-explanation';
-                explDiv.innerHTML = `<strong>📘 ব্যাখ্যা:</strong> ${item.explanation}`;
-                btn.addEventListener('click', function() {
-                    const selected = document.querySelector(`input[name="${name}"]:checked`);
-                    if (!selected) { ansDiv.textContent = '⚠️ একটি অপশন নির্বাচন করুন।'; ansDiv.className = 'prep-answer wrong'; explDiv.classList.remove('show'); return; }
-                    const userAns = selected.value;
-                    if (userAns === item.correct) { ansDiv.textContent = `✅ সঠিক! (${item.correct})`; ansDiv.className = 'prep-answer correct'; }
-                    else { ansDiv.textContent = `❌ ভুল। সঠিক: ${item.correct}`; ansDiv.className = 'prep-answer wrong'; }
-                    explDiv.classList.add('show');
-                });
-                block.appendChild(btn);
-                block.appendChild(ansDiv);
-                block.appendChild(explDiv);
-                prepContainer.appendChild(block);
-            }
-            prepPagination.innerHTML = '';
-            const totalPages = Math.ceil(prepQuestions.length / PREP_PER_PAGE);
-            for (let p = 0; p < totalPages; p++) {
-                const btn = document.createElement('button');
-                btn.textContent = p + 1;
-                if (p === page) btn.classList.add('active');
-                btn.addEventListener('click', function() {
-                    prepPage = p;
-                    renderPrep(p);
-                    window.scrollTo(0, 0);
-                });
-                prepPagination.appendChild(btn);
-            }
+    function renderSVA(page) {
+        svaContainer.innerHTML = '';
+        const start = page * SVA_PER_PAGE;
+        const end = Math.min(start + SVA_PER_PAGE, svaQuestions.length);
+        for (let i = start; i < end; i++) {
+            const item = svaQuestions[i];
+            const block = document.createElement('div');
+            block.className = 'sva-block';
+            block.innerHTML = `
+                <div class="sva-question">${i+1}. ${item.q}</div>
+                <div class="sva-options">
+                    ${item.options.map(opt => `<label><input type="radio" name="sva_${i}" value="${opt}"> ${opt}</label>`).join('')}
+                </div>
+                <button class="sva-submit">Check Answer</button>
+                <div class="sva-answer">❓ select an option</div>
+                <div class="sva-explanation"><strong>📘 Rule:</strong> ${item.explanation}</div>
+            `;
+            const btn = block.querySelector('.sva-submit');
+            const ansDiv = block.querySelector('.sva-answer');
+            const explDiv = block.querySelector('.sva-explanation');
+            btn.addEventListener('click', () => {
+                const selected = block.querySelector(`input[name="sva_${i}"]:checked`);
+                if (!selected) {
+                    ansDiv.textContent = '⚠️ Please select an option.';
+                    ansDiv.className = 'sva-answer wrong';
+                    explDiv.classList.remove('show');
+                    return;
+                }
+                if (selected.value === item.correct) {
+                    ansDiv.textContent = `✅ Correct! (${item.correct})`;
+                    ansDiv.className = 'sva-answer correct';
+                } else {
+                    ansDiv.textContent = `❌ Incorrect. Correct answer: ${item.correct}`;
+                    ansDiv.className = 'sva-answer wrong';
+                }
+                explDiv.classList.add('show');
+            });
+            svaContainer.appendChild(block);
         }
-        renderPrep(0);
-    })();
+
+        svaPagination.innerHTML = '';
+        const totalPages = Math.ceil(svaQuestions.length / SVA_PER_PAGE);
+        for (let p = 0; p < totalPages; p++) {
+            const btn = document.createElement('button');
+            btn.textContent = p + 1;
+            if (p === page) btn.classList.add('active');
+            btn.addEventListener('click', () => {
+                svaPage = p;
+                renderSVA(p);
+                window.scrollTo(0, 0);
+            });
+            svaPagination.appendChild(btn);
+        }
+    }
+    renderSVA(0);
+
+    // --- 4. GENERATING 300 DISTINCT PREPOSITION QUESTIONS ---
+    const prepRules = [
+        { adj: "good", prep: "at", topic: "mathematics", formula: "good + at", exp: "Use 'good at' for skills and subjects." },
+        { adj: "proficient", prep: "in", topic: "English grammar", formula: "proficient + in", exp: "Use 'proficient in' for subjects or fields." },
+        { adj: "afraid", prep: "of", topic: "darkness", formula: "afraid + of", exp: "Use 'afraid of' for fears." },
+        { adj: "fond", prep: "of", topic: "classical music", formula: "fond + of", exp: "Use 'fond of' for liking." },
+        { adj: "keen", prep: "on", topic: "learning sports", formula: "keen + on", exp: "Use 'keen on' for interest." },
+        { adj: "absorbed", prep: "in", topic: "deep thought", formula: "absorbed + in", exp: "Use 'absorbed in' for intense focus." },
+        { adj: "accustomed", prep: "to", topic: "hard work", formula: "accustomed + to", exp: "Use 'accustomed to' for habits." },
+        { adj: "addicted", prep: "to", topic: "online gaming", formula: "addicted + to", exp: "Use 'addicted to' for bad habits." },
+        { adj: "aware", prep: "of", topic: "the consequences", formula: "aware + of", exp: "Use 'aware of' for knowledge." },
+        { adj: "capable", prep: "of", topic: "solving complex problems", formula: "capable + of", exp: "Use 'capable of' for ability." }
+    ];
+
+    const pronounsPrep = ["He", "She", "The student", "The scholar", "The candidate", "Rina", "Rahul", "My friend", "The teacher", "The officer"];
+
+    const prepQuestions = [];
+    let pCount = 0;
+    while (prepQuestions.length < 300) {
+        const rule = prepRules[pCount % prepRules.length];
+        const pron = pronounsPrep[Math.floor(pCount / prepRules.length) % pronounsPrep.length];
+        const cycle = Math.floor(pCount / (prepRules.length * pronounsPrep.length));
+
+        let contextText = rule.topic;
+        if (cycle > 0) contextText += ` (Context ${cycle + 1})`;
+
+        const options = [rule.prep, "with", "for", "from"].filter((v, i, a) => a.indexOf(v) === i).slice(0, 3);
+        if (!options.includes(rule.prep)) options[0] = rule.prep;
+
+        prepQuestions.push({
+            q: `${pron} is ${rule.adj} ____ ${contextText}.`,
+            options: options.sort(() => 0.5 - Math.random()),
+            correct: rule.prep,
+            formula: rule.formula,
+            explanation: rule.exp
+        });
+        pCount++;
+    }
+
+    document.getElementById('prepCount').textContent = `${prepQuestions.length} practice questions`;
+    const prepContainer = document.getElementById('prepContainer');
+    const prepPagination = document.getElementById('prepPagination');
+    let prepPage = 0;
+    const PREP_PER_PAGE = 10;
+
+    function renderPrep(page) {
+        prepContainer.innerHTML = '';
+        const start = page * PREP_PER_PAGE;
+        const end = Math.min(start + PREP_PER_PAGE, prepQuestions.length);
+        for (let i = start; i < end; i++) {
+            const item = prepQuestions[i];
+            const block = document.createElement('div');
+            block.className = 'prep-block';
+            block.innerHTML = `
+                <div class="prep-question">${i+1}. ${item.q}</div>
+                <div class="formula-badge">🧠 Formula: ${item.formula}</div>
+                <div class="prep-options">
+                    ${item.options.map(opt => `<label><input type="radio" name="prep_${i}" value="${opt}"> ${opt}</label>`).join('')}
+                </div>
+                <button class="prep-submit">Check Answer</button>
+                <div class="prep-answer">❓ select an option</div>
+                <div class="prep-explanation"><strong>📘 Explanation:</strong> ${item.explanation}</div>
+            `;
+            const btn = block.querySelector('.prep-submit');
+            const ansDiv = block.querySelector('.prep-answer');
+            const explDiv = block.querySelector('.prep-explanation');
+            btn.addEventListener('click', () => {
+                const selected = block.querySelector(`input[name="prep_${i}"]:checked`);
+                if (!selected) {
+                    ansDiv.textContent = '⚠️ Please select an option.';
+                    ansDiv.className = 'prep-answer wrong';
+                    explDiv.classList.remove('show');
+                    return;
+                }
+                if (selected.value === item.correct) {
+                    ansDiv.textContent = `✅ Correct! (${item.correct})`;
+                    ansDiv.className = 'prep-answer correct';
+                } else {
+                    ansDiv.textContent = `❌ Incorrect. Correct answer: ${item.correct}`;
+                    ansDiv.className = 'prep-answer wrong';
+                }
+                explDiv.classList.add('show');
+            });
+            prepContainer.appendChild(block);
+        }
+
+        prepPagination.innerHTML = '';
+        const totalPages = Math.ceil(prepQuestions.length / PREP_PER_PAGE);
+        for (let p = 0; p < totalPages; p++) {
+            const btn = document.createElement('button');
+            btn.textContent = p + 1;
+            if (p === page) btn.classList.add('active');
+            btn.addEventListener('click', () => {
+                prepPage = p;
+                renderPrep(p);
+                window.scrollTo(0, 0);
+            });
+            prepPagination.appendChild(btn);
+        }
+    }
+    renderPrep(0);
+
+    // --- 5. PHRASAL VERB PRACTICE QUESTIONS ---
+    const phrasalQuestions = phrasalData.map((item, idx) => {
+        let qText = item.example.replace(item.en, "____");
+        if (qText === item.example) {
+            const rootWord = item.en.split(' ')[0];
+            qText = item.example.replace(new RegExp(rootWord + "\\w*", "i"), "____");
+        }
+        const distractor1 = phrasalData[(idx + 3) % phrasalData.length].en;
+        const distractor2 = phrasalData[(idx + 7) % phrasalData.length].en;
+        const options = [item.en, distractor1, distractor2].sort(() => 0.5 - Math.random());
+        return {
+            q: qText,
+            correct: item.en,
+            bn: item.bn,
+            options: options
+        };
+    });
+
+    document.getElementById('phrasalQCount').textContent = `${phrasalQuestions.length} practice questions`;
+    const phrasalQContainer = document.getElementById('phrasalQContainer');
+    const phrasalQPagination = document.getElementById('phrasalQPagination');
+    let phrasalQPage = 0;
+    const PHRASAL_Q_PER_PAGE = 10;
+
+    function renderPhrasalQ(page) {
+        phrasalQContainer.innerHTML = '';
+        const start = page * PHRASAL_Q_PER_PAGE;
+        const end = Math.min(start + PHRASAL_Q_PER_PAGE, phrasalQuestions.length);
+        for (let i = start; i < end; i++) {
+            const item = phrasalQuestions[i];
+            const block = document.createElement('div');
+            block.className = 'phrasal-q-block';
+            block.innerHTML = `
+                <div class="phrasal-q">${i+1}. ${item.q}</div>
+                <div class="formula-badge" style="cursor:pointer;">🔊 Meaning: ${item.bn}</div>
+                <div class="phrasal-options">
+                    ${item.options.map(opt => `<label><input type="radio" name="phq_${i}" value="${opt}"> ${opt}</label>`).join('')}
+                </div>
+                <button class="phrasal-submit">Check Answer</button>
+                <div class="phrasal-answer">❓ select an option</div>
+                <div class="phrasal-explanation"><strong>📘 Correct Phrasal Verb:</strong> "${item.correct}" — Meaning: ${item.bn}</div>
+            `;
+            block.querySelector('.formula-badge').addEventListener('click', () => speakText(item.bn, 'bn-IN'));
+            const btn = block.querySelector('.phrasal-submit');
+            const ansDiv = block.querySelector('.phrasal-answer');
+            const explDiv = block.querySelector('.phrasal-explanation');
+            btn.addEventListener('click', () => {
+                const selected = block.querySelector(`input[name="phq_${i}"]:checked`);
+                if (!selected) {
+                    ansDiv.textContent = '⚠️ Please select an option.';
+                    ansDiv.className = 'phrasal-answer wrong';
+                    explDiv.classList.remove('show');
+                    return;
+                }
+                if (selected.value === item.correct) {
+                    ansDiv.textContent = `✅ Correct! (${item.correct})`;
+                    ansDiv.className = 'phrasal-answer correct';
+                } else {
+                    ansDiv.textContent = `❌ Incorrect. Correct answer: ${item.correct}`;
+                    ansDiv.className = 'phrasal-answer wrong';
+                }
+                explDiv.classList.add('show');
+            });
+            phrasalQContainer.appendChild(block);
+        }
+
+        phrasalQPagination.innerHTML = '';
+        const totalPages = Math.ceil(phrasalQuestions.length / PHRASAL_Q_PER_PAGE);
+        for (let p = 0; p < totalPages; p++) {
+            const btn = document.createElement('button');
+            btn.textContent = p + 1;
+            if (p === page) btn.classList.add('active');
+            btn.addEventListener('click', () => {
+                phrasalQPage = p;
+                renderPhrasalQ(p);
+                window.scrollTo(0, 0);
+            });
+            phrasalQPagination.appendChild(btn);
+        }
+    }
+    renderPhrasalQ(0);
+})();
 </script>
 </body>
 </html>

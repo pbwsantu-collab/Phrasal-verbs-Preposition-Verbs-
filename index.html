@@ -274,8 +274,8 @@
     <div class="tab-bar">
         <button class="tab-btn active" data-tab="phrasal">🔹 Phrasal Verbs (150+)</button>
         <button class="tab-btn" data-tab="verbs">🔸 500 Verbs</button>
-        <button class="tab-btn" data-tab="sva">⚡ SVA (250+)</button>
-        <button class="tab-btn" data-tab="prep">📍 Prepositions (100)</button>
+        <button class="tab-btn" data-tab="sva">⚡ SVA (260+)</button>
+        <button class="tab-btn" data-tab="prep">📍 Prepositions (309)</button>
     </div>
 
     <!-- PHRASAL -->
@@ -292,14 +292,14 @@
 
     <!-- SVA -->
     <div id="sva" class="tab-content">
-        <p style="margin-bottom:1.2rem; font-weight:500;">⚡ Subject-Verb Agreement · 250+ unique questions with Bengali explanation</p>
+        <p style="margin-bottom:1.2rem; font-weight:500;">⚡ Subject-Verb Agreement · 260+ unique questions with Bengali explanation</p>
         <div id="svaContainer"></div>
         <div id="svaPagination" class="pagination"></div>
     </div>
 
     <!-- PREPOSITIONS -->
     <div id="prep" class="tab-content">
-        <p style="margin-bottom:1.2rem; font-weight:500;">📍 100 Preposition questions · formulas & Bengali explanations</p>
+        <p style="margin-bottom:1.2rem; font-weight:500;">📍 309 unique Preposition questions · formulas & Bengali explanations</p>
         <div id="prepContainer"></div>
         <div id="prepPagination" class="pagination"></div>
     </div>
@@ -382,7 +382,10 @@
             ["pass on", "পাঠানো"], ["pull over", "থামা"], ["settle down", "স্থির হওয়া"],
             ["show up", "উপস্থিত হওয়া"], ["stick to", "অনুসরণ করা"], ["switch off", "বন্ধ করা"],
             ["switch on", "চালু করা"], ["take in", "বোঝা"], ["think over", "বিবেচনা করা"],
-            ["try on", "চেষ্টা করা"], ["turn back", "ফিরে যাওয়া"], ["work on", "কাজ করা"]
+            ["try on", "চেষ্টা করা"], ["turn back", "ফিরে যাওয়া"], ["work on", "কাজ করা"],
+            ["keep off", "দূরে থাকা"], ["look into", "তদন্ত করা"], ["burst into", "ফেটে পড়া"],
+            ["carry away", "বহন করা"], ["come about", "ঘটা"], ["do away with", "বিলুপ্ত করা"],
+            ["fall through", "ব্যর্থ হওয়া"], ["get through", "সফল হওয়া"], ["give out", "শেষ হওয়া"]
         ];
         // Ensure 150+
         while(phrasalBase.length < 155) {
@@ -448,8 +451,11 @@
             verbsGrid.appendChild(card);
         });
 
-        // ---------- SVA (250+ unique) ----------
-        const svaBase = [
+        // ---------- SVA (260+ unique) ----------
+        // Build a unique set using Set to avoid repetition
+        const svaSet = new Set();
+        const svaQuestions = [];
+        const svaTemplates = [
             { q: "The cat ____ sleeping.", options: ["is", "are"], correct: "is", explanation: "Subject 'cat' singular → 'is'।" },
             { q: "My friends ____ coming.", options: ["is", "are"], correct: "are", explanation: "Plural subject → 'are'।" },
             { q: "Either the boys or the girl ____ responsible.", options: ["is", "are"], correct: "is", explanation: "Either...or → nearest subject 'girl' singular → 'is'।" },
@@ -491,42 +497,60 @@
             { q: "The public ____ demanding action.", options: ["is", "are"], correct: "are", explanation: "Public as individuals → plural 'are'।" },
             { q: "The youth ____ the future.", options: ["is", "are"], correct: "are", explanation: "Youth as a group → plural 'are'।" }
         ];
-        // Expand to 250+ by generating variations
-        const svaQuestions = [];
-        const extraOptions = [
-            ["is", "are"], ["was", "were"], ["has", "have"], ["does", "do"], ["goes", "go"]
-        ];
-        const extraSubjects = [
+        // Add templates
+        svaTemplates.forEach(q => {
+            const key = q.q + q.options.join('');
+            if (!svaSet.has(key)) {
+                svaSet.add(key);
+                svaQuestions.push({...q});
+            }
+        });
+        // Generate more unique questions
+        const subjects = [
             ["The dog", "The dogs"], ["My brother", "My brothers"], ["The child", "The children"],
             ["The bird", "The birds"], ["The teacher", "The teachers"], ["The student", "The students"],
-            ["The manager", "The managers"], ["The doctor", "The doctors"], ["The engineer", "The engineers"]
+            ["The manager", "The managers"], ["The doctor", "The doctors"], ["The engineer", "The engineers"],
+            ["The pilot", "The pilots"], ["The chef", "The chefs"], ["The nurse", "The nurses"],
+            ["The lawyer", "The lawyers"], ["The farmer", "The farmers"], ["The soldier", "The soldiers"],
+            ["The painter", "The painters"], ["The singer", "The singers"], ["The dancer", "The dancers"]
         ];
-        // Start with base
-        svaBase.forEach(q => svaQuestions.push({...q}));
-        // Generate more
+        const verbs = ["working", "studying", "playing", "singing", "dancing", "reading", "writing", "cooking", "painting", "driving"];
+        const optSets = [
+            ["is", "are"], ["was", "were"], ["has", "have"], ["does", "do"]
+        ];
         let idx = 0;
-        while (svaQuestions.length < 260) {
-            for (let sub of extraSubjects) {
-                if (svaQuestions.length >= 260) break;
-                const isPlural = idx % 2 === 1;
-                const subj = isPlural ? sub[1] : sub[0];
-                const optSet = extraOptions[idx % extraOptions.length];
-                const correct = isPlural ? optSet[1] : optSet[0];
-                svaQuestions.push({
-                    q: `${subj} ____ working hard.`,
-                    options: optSet,
-                    correct: correct,
-                    explanation: `Subject '${subj}' ${isPlural ? 'plural' : 'singular'} → '${correct}'।`
-                });
-                idx++;
+        while (svaQuestions.length < 265) {
+            for (let sub of subjects) {
+                if (svaQuestions.length >= 265) break;
+                for (let v of verbs) {
+                    if (svaQuestions.length >= 265) break;
+                    const isPlural = idx % 2 === 1;
+                    const subj = isPlural ? sub[1] : sub[0];
+                    const optSet = optSets[idx % optSets.length];
+                    const correct = isPlural ? optSet[1] : optSet[0];
+                    const qText = `${subj} ____ ${v} hard.`;
+                    const key = qText + optSet.join('');
+                    if (!svaSet.has(key)) {
+                        svaSet.add(key);
+                        svaQuestions.push({
+                            q: qText,
+                            options: optSet,
+                            correct: correct,
+                            explanation: `Subject '${subj}' ${isPlural ? 'plural' : 'singular'} → '${correct}'।`
+                        });
+                    }
+                    idx++;
+                }
             }
         }
-        svaQuestions.length = 260; // ensure at least 250
+        svaQuestions.length = Math.min(svaQuestions.length, 265);
 
-        // ---------- PREPOSITIONS (100 unique) ----------
-        const prepBase = [
+        // ---------- PREPOSITIONS (309 unique) ----------
+        const prepSet = new Set();
+        const prepQuestions = [];
+        const prepTemplates = [
             { q: "He is good ____ mathematics.", options: ["in", "at", "on"], correct: "at", explanation: "দক্ষতা 'good at'", formula: "good at + skill" },
-            { q: "She is afraid ____ dogs.", options: ["from", "of", "with"], correct: "of", explanation: "ভয় 'afraid of'", formula: "afraid of + thing" },
+            { q: "She is afraid ____ dogs.", options: ["from", "of", "with"], correct: "of", explanation: "ভয় 'afraid of'", formula: "afraid of + thing" },
             { q: "I am interested ____ Bengali.", options: ["in", "for", "about"], correct: "in", explanation: "আগ্রহ 'interested in'", formula: "interested in + V-ing" },
             { q: "He is fond ____ music.", options: ["of", "for", "with"], correct: "of", explanation: "পছন্দ 'fond of'", formula: "fond of + noun" },
             { q: "She is married ____ a doctor.", options: ["with", "to", "by"], correct: "to", explanation: "বিবাহ 'married to'", formula: "married to + person" },
@@ -537,7 +561,7 @@
             { q: "He is capable ____ doing it.", options: ["of", "for", "to"], correct: "of", explanation: "সক্ষমতা 'capable of'", formula: "capable of + V-ing" },
             { q: "She is tired ____ waiting.", options: ["of", "from", "with"], correct: "of", explanation: "ক্লান্ত 'tired of'", formula: "tired of + V-ing" },
             { q: "I agree ____ you.", options: ["with", "to", "on"], correct: "with", explanation: "একমত 'agree with' (ব্যক্তি)", formula: "agree with + person" },
-            { q: "We agreed ____ the plan.", options: ["on", "to", "with"], correct: "on", explanation: "বিষয়ে একমত 'agree on'", formula: "agree on + topic" },
+            { q: "We agreed ____ the plan.", options: ["on", "to", "with"], correct: "on", explanation: "বিষয়ে একমত 'agree on'", formula: "agree on + topic" },
             { q: "She suffers ____ fever.", options: ["from", "of", "with"], correct: "from", explanation: "অসুখ 'suffer from'", formula: "suffer from + disease" },
             { q: "He is different ____ his brother.", options: ["from", "than", "to"], correct: "from", explanation: "পার্থক্য 'different from'", formula: "different from + noun" },
             { q: "I prefer tea ____ coffee.", options: ["to", "than", "over"], correct: "to", explanation: "পছন্দ 'prefer to'", formula: "prefer A to B" },
@@ -545,26 +569,31 @@
             { q: "He is weak ____ grammar.", options: ["in", "at", "with"], correct: "in", explanation: "দুর্বল 'weak in'", formula: "weak in + subject" },
             { q: "I am sorry ____ being late.", options: ["for", "about", "of"], correct: "for", explanation: "দুঃখ 'sorry for'", formula: "sorry for + V-ing" },
             { q: "She is famous ____ her acting.", options: ["for", "by", "with"], correct: "for", explanation: "বিখ্যাত 'famous for'", formula: "famous for + noun" },
-            { q: "He is not afraid ____ anyone.", options: ["of", "from", "with"], correct: "of", explanation: "ভয় 'afraid of'", formula: "afraid of + noun" },
+            { q: "He is not afraid ____ anyone.", options: ["of", "from", "with"], correct: "of", explanation: "ভয় 'afraid of'", formula: "afraid of + noun" },
             { q: "I look forward ____ the party.", options: ["to", "for", "on"], correct: "to", explanation: "আশা 'look forward to'", formula: "look forward to + noun/V-ing" },
             { q: "She is keen ____ painting.", options: ["on", "in", "for"], correct: "on", explanation: "আগ্রহী 'keen on'", formula: "keen on + V-ing" },
             { q: "I am satisfied ____ your work.", options: ["with", "at", "for"], correct: "with", explanation: "সন্তুষ্ট 'satisfied with'", formula: "satisfied with + noun" },
             { q: "He is clever ____ puzzles.", options: ["at", "in", "with"], correct: "at", explanation: "দক্ষ 'clever at'", formula: "clever at + V-ing" },
             { q: "She is busy ____ her work.", options: ["with", "in", "about"], correct: "with", explanation: "ব্যস্ত 'busy with'", formula: "busy with + noun" },
             { q: "I am familiar ____ this area.", options: ["with", "to", "of"], correct: "with", explanation: "পরিচিতি 'familiar with'", formula: "familiar with + noun" },
-            { q: "He is responsible ____ the project.", options: ["for", "of", "to"], correct: "for", explanation: "দায়ী 'responsible for'", formula: "responsible for + noun" },
+            { q: "He is responsible ____ the project.", options: ["for", "of", "to"], correct: "for", explanation: "দায়ী 'responsible for'", formula: "responsible for + noun" },
             { q: "She is concerned ____ her health.", options: ["about", "for", "with"], correct: "about", explanation: "উদ্বিগ্ন 'concerned about'", formula: "concerned about + topic" },
             { q: "I am not interested ____ politics.", options: ["in", "for", "about"], correct: "in", explanation: "আগ্রহ 'interested in'", formula: "interested in + noun" },
             { q: "He is strict ____ his children.", options: ["with", "to", "on"], correct: "with", explanation: "কঠোর 'strict with' (ব্যক্তি)", formula: "strict with + person" },
-            { q: "She is strict ____ punctuality.", options: ["about", "in", "on"], correct: "about", explanation: "কঠোর 'strict about' (বিষয়)", formula: "strict about + topic" },
+            { q: "She is strict ____ punctuality.", options: ["about", "in", "on"], correct: "about", explanation: "কঠোর 'strict about' (বিষয়)", formula: "strict about + topic" },
             { q: "I am angry ____ him.", options: ["with", "at", "on"], correct: "with", explanation: "রাগ 'angry with' (ব্যক্তি)", formula: "angry with + person" },
-            { q: "I am angry ____ the situation.", options: ["about", "at", "on"], correct: "about", explanation: "রাগ 'angry about' (বিষয়)", formula: "angry about + topic" },
+            { q: "I am angry ____ the situation.", options: ["about", "at", "on"], correct: "about", explanation: "রাগ 'angry about' (বিষয়)", formula: "angry about + topic" },
             { q: "He is good ____ painting.", options: ["at", "in", "for"], correct: "at", explanation: "দক্ষ 'good at'", formula: "good at + V-ing" }
         ];
-        // Expand to 100
-        const prepQuestions = [];
-        prepBase.forEach(q => prepQuestions.push({...q}));
-        const extraPrep = [
+        prepTemplates.forEach(q => {
+            const key = q.q + q.options.join('');
+            if (!prepSet.has(key)) {
+                prepSet.add(key);
+                prepQuestions.push({...q});
+            }
+        });
+        // Generate 309 unique prepositions
+        const morePrep = [
             { q: "She is excited ____ the trip.", options: ["about", "for", "on"], correct: "about", explanation: "উত্তেজিত 'excited about'", formula: "excited about + noun" },
             { q: "He is worried ____ his exam.", options: ["about", "for", "with"], correct: "about", explanation: "চিন্তিত 'worried about'", formula: "worried about + noun" },
             { q: "I am sorry ____ what I said.", options: ["for", "about", "of"], correct: "for", explanation: "দুঃখ 'sorry for'", formula: "sorry for + V-ing" },
@@ -577,18 +606,73 @@
             { q: "I am pleased ____ your progress.", options: ["with", "at", "for"], correct: "with", explanation: "সন্তুষ্ট 'pleased with'", formula: "pleased with + noun" },
             { q: "He is displeased ____ your behavior.", options: ["with", "at", "for"], correct: "with", explanation: "অসন্তুষ্ট 'displeased with'", formula: "displeased with + noun" }
         ];
-        extraPrep.forEach(q => prepQuestions.push(q));
-        // Fill to 100
-        while (prepQuestions.length < 100) {
-            prepQuestions.push({
-                q: `The book is ____ the table.`,
-                options: ["on", "in", "at"],
-                correct: "on",
-                explanation: "পৃষ্ঠে 'on'",
-                formula: "on + surface"
-            });
+        morePrep.forEach(q => {
+            const key = q.q + q.options.join('');
+            if (!prepSet.has(key)) {
+                prepSet.add(key);
+                prepQuestions.push({...q});
+            }
+        });
+        // Generate many more unique prep questions
+        const prepCombos = [
+            { adj: "good", prep: "at", bn: "দক্ষ" },
+            { adj: "bad", prep: "at", bn: "অদক্ষ" },
+            { adj: "afraid", prep: "of", bn: "ভীত" },
+            { adj: "fond", prep: "of", bn: "প্রেমী" },
+            { adj: "interested", prep: "in", bn: "আগ্রহী" },
+            { adj: "proud", prep: "of", bn: "গর্বিত" },
+            { adj: "tired", prep: "of", bn: "ক্লান্ত" },
+            { adj: "angry", prep: "with", bn: "রাগান্বিত" },
+            { adj: "pleased", prep: "with", bn: "সন্তুষ্ট" },
+            { adj: "satisfied", prep: "with", bn: "সন্তুষ্ট" },
+            { adj: "strict", prep: "with", bn: "কঠোর" },
+            { adj: "strict", prep: "about", bn: "কঠোর" },
+            { adj: "famous", prep: "for", bn: "বিখ্যাত" },
+            { adj: "responsible", prep: "for", bn: "দায়ী" },
+            { adj: "sorry", prep: "for", bn: "দুঃখিত" },
+            { adj: "ready", prep: "for", bn: "প্রস্তুত" },
+            { adj: "known", prep: "for", bn: "পরিচিত" },
+            { adj: "known", prep: "to", bn: "পরিচিত" },
+            { adj: "married", prep: "to", bn: "বিবাহিত" },
+            { adj: "different", prep: "from", bn: "পার্থক্য" },
+            { adj: "capable", prep: "of", bn: "সক্ষম" },
+            { adj: "keen", prep: "on", bn: "আগ্রহী" },
+            { adj: "busy", prep: "with", bn: "ব্যস্ত" },
+            { adj: "familiar", prep: "with", bn: "পরিচিত" },
+            { adj: "concerned", prep: "about", bn: "উদ্বিগ্ন" },
+            { adj: "excited", prep: "about", bn: "উত্তেজিত" },
+            { adj: "worried", prep: "about", bn: "চিন্তিত" },
+            { adj: "grateful", prep: "to", bn: "কৃতজ্ঞ" },
+            { adj: "grateful", prep: "for", bn: "কৃতজ্ঞ" }
+        ];
+        const nouns = ["math", "science", "art", "music", "dance", "cricket", "football", "tennis", "chess", "painting", "singing", "cooking", "driving", "swimming", "running", "reading", "writing", "speaking", "listening", "watching"];
+        let prepIdx = 0;
+        while (prepQuestions.length < 309) {
+            for (let combo of prepCombos) {
+                if (prepQuestions.length >= 309) break;
+                for (let n of nouns) {
+                    if (prepQuestions.length >= 309) break;
+                    const optSet = ["in", "at", "on", "of", "for", "with", "about", "to", "from"];
+                    const options = [combo.prep, optSet[(prepIdx + 1) % optSet.length], optSet[(prepIdx + 2) % optSet.length]];
+                    // Shuffle options
+                    const shuffled = [...options].sort(() => Math.random() - 0.5);
+                    const qText = `He is ${combo.adj} ____ ${n}.`;
+                    const key = qText + shuffled.join('');
+                    if (!prepSet.has(key)) {
+                        prepSet.add(key);
+                        prepQuestions.push({
+                            q: qText,
+                            options: shuffled,
+                            correct: combo.prep,
+                            explanation: `${combo.bn} '${combo.adj} ${combo.prep}'`,
+                            formula: `${combo.adj} ${combo.prep} + noun`
+                        });
+                    }
+                    prepIdx++;
+                }
+            }
         }
-        prepQuestions.length = 100;
+        prepQuestions.length = 309;
 
         // ---------- RENDER SVA with pagination ----------
         const svaContainer = document.getElementById('svaContainer');
@@ -644,7 +728,6 @@
                 block.appendChild(explDiv);
                 svaContainer.appendChild(block);
             }
-            // Update pagination
             svaPagination.innerHTML = '';
             const totalPages = Math.ceil(svaQuestions.length / SVA_PER_PAGE);
             for (let p = 0; p < totalPages; p++) {

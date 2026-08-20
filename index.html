@@ -826,6 +826,7 @@
         const PHRASAL_Q_PER_PAGE = 15;
 
         function renderPhrasalQ(page) {
+            if (!phrasalQContainer) return;
             phrasalQContainer.innerHTML = '';
             const start = page * PHRASAL_Q_PER_PAGE;
             const end = Math.min(start + PHRASAL_Q_PER_PAGE, phrasalQuestions.length);
@@ -881,18 +882,20 @@
                 block.appendChild(explDiv);
                 phrasalQContainer.appendChild(block);
             }
-            phrasalQPagination.innerHTML = '';
-            const totalPages = Math.ceil(phrasalQuestions.length / PHRASAL_Q_PER_PAGE);
-            for (let p = 0; p < totalPages; p++) {
-                const btn = document.createElement('button');
-                btn.textContent = p + 1;
-                if (p === page) btn.classList.add('active');
-                btn.addEventListener('click', function() {
-                    phrasalQPage = p;
-                    renderPhrasalQ(p);
-                    window.scrollTo(0, 0);
-                });
-                phrasalQPagination.appendChild(btn);
+            if (phrasalQPagination) {
+                phrasalQPagination.innerHTML = '';
+                const totalPages = Math.ceil(phrasalQuestions.length / PHRASAL_Q_PER_PAGE);
+                for (let p = 0; p < totalPages; p++) {
+                    const btn = document.createElement('button');
+                    btn.textContent = p + 1;
+                    if (p === page) btn.classList.add('active');
+                    btn.addEventListener('click', function() {
+                        phrasalQPage = p;
+                        renderPhrasalQ(p);
+                        window.scrollTo(0, 0);
+                    });
+                    phrasalQPagination.appendChild(btn);
+                }
             }
         }
         renderPhrasalQ(0);

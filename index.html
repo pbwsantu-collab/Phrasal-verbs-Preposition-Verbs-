@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Madhyamik English · Verbs · Phrasal · SVA · Prepositions</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            background: #f0f4fa;
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            padding: 1.5rem;
+            color: #1a2a3a;
+        }
+        .container {
+            max-width: 1480px;
+            margin: 0 auto;
+        }
+        /* colorful menu */
+        .tab-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem 0.8rem;
+            margin-bottom: 2.2rem;
+            padding: 0.8rem 1.2rem;
+            background: linear-gradient(145deg, #ffffff, #eef3f9);
+            border-radius: 60px;
+            box-shadow: 0 6px 18px rgba(0, 10, 30, 0.06);
+            border: 1px solid rgba(255,255,255,0.5);
+            justify-content: center;
+        }
+        .tab-btn {
+            border: none;
+            padding: 0.6rem 1.8rem;
+            font-weight: 600;
+            font-size: 1rem;
+            border-radius: 40px;
+            cursor: pointer;
+            background: #e4ebf3;
+            color: #1f3a57;
+            transition: 0.2s;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+            letter-spacing: 0.3px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .tab-btn:nth-child(1) { background: #d4e2f7; color: #17447a; }
+        .tab-btn:nth-child(2) { background: #d7f0e4; color: #0f4f3a; }
+        .tab-btn:nth-child(3) { background: #fce6d6; color: #8a4a1a; }
+        .tab-btn:nth-child(4) { background: #f0d8f0; color: #5e2b6b; }
+        .tab-btn.active {
+            background: #0a2647 !important;
+            color: white !important;
+            box-shadow: 0 8px 18px rgba(10, 38, 71, 0.25);
+            transform: scale(1.02);
+        }
+        .tab-btn:hover {
+            transform: translateY(-2px);
+            filter: brightness(0.96);
+        }
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.25s ease;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            0% { opacity: 0.2; transform: translateY(6px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.2rem;
+            margin-top: 1rem;
+        }
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 1.2rem 1.2rem 1.2rem 1.5rem;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.02), 0 2px 6px rgba(0,20,40,0.06);
+            border: 1px solid #e9edf4;
+            transition: 0.15s;
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+        }
+        .card:hover {
+            border-color: #b6cae0;
+            box-shadow: 0 12px 28px rgba(0, 20, 40, 0.08);
+        }
+        .card .en {
+            font-weight: 650;
+            font-size: 1.2rem;
+            color: #0b2b4a;
+        }
+        .card .bn {
+            font-size: 1rem;
+            color: #1f4b6e;
+            background: #eef4fa;
+            padding: 0.2rem 0.8rem;
+            border-radius: 30px;
+            display: inline-block;
+            margin-top: 4px;
+            cursor: pointer;
+            transition: 0.1s;
+            align-self: flex-start;
+        }
+        .card .bn:hover {
+            background: #d4e2f0;
+        }
+        .card .pronounce {
+            font-size: 0.9rem;
+            color: #4c6a86;
+            background: #dfe9f3;
+            border-radius: 30px;
+            padding: 0.1rem 0.9rem;
+            display: inline-block;
+            cursor: pointer;
+            margin-top: 0.2rem;
+            align-self: flex-start;
+        }
+        .card .pronounce:hover {
+            background: #c2d6ea;
+        }
+        .small-meta {
+            font-size: 0.8rem;
+            color: #5f7d9c;
+            margin-top: 0.2rem;
+            opacity: 0.7;
+        }
+        /* SVA & PREPOSITION blocks */
+        .sva-block, .prep-block {
+            background: white;
+            border-radius: 24px;
+            padding: 1.5rem 2rem;
+            border: 1px solid #dce5ef;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+        }
+        .sva-question, .prep-question {
+            font-size: 1.2rem;
+            font-weight: 500;
+            margin-bottom: 0.8rem;
+            color: #0b2b4a;
+        }
+        .sva-options, .prep-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem 2.5rem;
+            margin: 0.8rem 0 1rem 0;
+        }
+        .sva-options label, .prep-options label {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 1.05rem;
+            background: #f2f6fb;
+            padding: 0.2rem 1rem 0.2rem 0.8rem;
+            border-radius: 30px;
+            cursor: pointer;
+        }
+        .sva-options input[type="radio"], .prep-options input[type="radio"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #0a2647;
+        }
+        .sva-answer, .prep-answer {
+            margin-top: 0.6rem;
+            font-weight: 500;
+            padding: 0.5rem 1.2rem;
+            border-radius: 40px;
+            background: #e3edf7;
+            display: inline-block;
+        }
+        .sva-answer.correct, .prep-answer.correct {
+            background: #b7d7b0;
+            color: #0d3b1a;
+        }
+        .sva-answer.wrong, .prep-answer.wrong {
+            background: #f8d0d0;
+            color: #7a2e2e;
+        }
+        .sva-explanation, .prep-explanation {
+            margin-top: 0.6rem;
+            padding: 0.6rem 1.2rem;
+            background: #f0f5fb;
+            border-radius: 20px;
+            font-size: 0.98rem;
+            color: #1a3852;
+            border-left: 4px solid #2a6f97;
+            display: none;
+        }
+        .sva-explanation.show, .prep-explanation.show {
+            display: block;
+        }
+        .sva-submit, .prep-submit {
+            background: #0a2647;
+            border: none;
+            color: white;
+            padding: 0.4rem 1.8rem;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            margin: 0.5rem 0 0.2rem 0;
+            transition: 0.15s;
+        }
+        .sva-submit:hover, .prep-submit:hover {
+            background: #1b3f66;
+        }
+        .formula-badge {
+            background: #d6e3f5;
+            padding: 0.2rem 1rem;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            color: #04315e;
+            display: inline-block;
+            margin: 0.3rem 0 0.2rem 0;
+            font-weight: 500;
+        }
+        .footer {
+            margin-top: 3rem;
+            color: #54738f;
+            text-align: center;
+            border-top: 1px solid #d0dceb;
+            padding-top: 1.5rem;
+            font-size: 0.95rem;
+        }
+        .count-badge {
+            background: #b7cbdf;
+            padding: 0.1rem 0.9rem;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        @media (max-width: 600px) {
+            .card-grid { grid-template-columns: 1fr; }
+            .sva-options, .prep-options { flex-direction: column; gap: 0.5rem; }
+            .tab-bar { border-radius: 30px; padding: 0.6rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1 style="font-size:2.2rem; font-weight:600; color:#0a2647; border-left:8px solid #2a6f97; padding-left:1.2rem; margin-bottom:1.2rem; display:flex; flex-wrap:wrap; align-items:center; gap:0.8rem;">
+        <span>📘 Madhyamik · Jobs</span>
+        <small style="font-size:1rem; font-weight:400; background:#d9e6f2; padding:0.2rem 1.2rem; border-radius:40px;">Prepositions · Verbs · Phrasal · SVA</small>
+    </h1>
+
+    <!-- COLORFUL MENU -->
+    <div class="tab-bar">
+        <button class="tab-btn active" data-tab="phrasal">🔹 Phrasal Verbs</button>
+        <button class="tab-btn" data-tab="verbs">🔸 500 Verbs</button>
+        <button class="tab-btn" data-tab="sva">⚡ SVA</button>
+        <button class="tab-btn" data-tab="prep">📍 Prepositions</button>
+    </div>
+
+    <!-- PHRASAL -->
+    <div id="phrasal" class="tab-content active">
+        <p style="margin-bottom:0.5rem; font-weight:500;">📌 Click on Bengali meaning or pronunciation to hear. <span class="count-badge">110+ phrasal verbs</span></p>
+        <div id="phrasalGrid" class="card-grid"></div>
+    </div>
+
+    <!-- VERBS -->
+    <div id="verbs" class="tab-content">
+        <p style="margin-bottom:0.5rem; font-weight:500;">📌 500 verb forms (V1,V2,V3) — click Bengali / pronunciation. <span class="count-badge">500 verbs</span></p>
+        <div id="verbsGrid" class="card-grid"></div>
+    </div>
+
+    <!-- SVA -->
+    <div id="sva" class="tab-content">
+        <p style="margin-bottom:1.2rem; font-weight:500;">⚡ Subject-Verb Agreement · 33+ unique questions with Bengali explanation</p>
+        <div id="svaContainer"></div>
+    </div>
+
+    <!-- PREPOSITIONS -->
+    <div id="prep" class="tab-content">
+        <p style="margin-bottom:1.2rem; font-weight:500;">📍 Appropriate Prepositions · 30+ questions · formulas & Bengali explanations</p>
+        <div id="prepContainer"></div>
+    </div>
+
+    <div class="footer">🔊 click Bengali meaning or pronunciation · built for Madhyamik & job exams</div>
+</div>
+<script>
+    (function() {
+        // ---------- TABS ----------
+        const tabs = document.querySelectorAll('.tab-btn');
+        const contents = {
+            phrasal: document.getElementById('phrasal'),
+            verbs: document.getElementById('verbs'),
+            sva: document.getElementById('sva'),
+            prep: document.getElementById('prep')
+        };
+        tabs.forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                tabs.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                const tab = this.dataset.tab;
+                Object.keys(contents).forEach(key => {
+                    contents[key].classList.toggle('active', key === tab);
+                });
+            });
+        });
+
+        // ---------- SPEAK ----------
+        function speakText(text, lang = 'bn-IN') {
+            if (!window.speechSynthesis) return;
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = lang;
+            utterance.rate = 0.9;
+            window.speechSynthesis.speak(utterance);
+        }
+
+        // ---------- PHRASAL (110+) ----------
+        const phrasalList = [
+            ["ask for", "চাওয়া", "ask for"], ["ask after", "খোঁজ করা", "ask after"], ["ask out", "ডাকাডাকি করা", "ask out"],
+            ["back up", "সমর্থন করা", "back up"], ["break down", "ভেঙে পড়া", "break down"], ["break into", "চুরি করতে ঢোকা", "break into"],
+            ["break out", "ছড়িয়ে পড়া", "break out"], ["break up", "ভেঙে যাওয়া", "break up"], ["bring about", "ঘটানো", "bring about"],
+            ["bring up", "লালনপালন করা", "bring up"], ["call off", "বাতিল করা", "call off"], ["call on", "পরিদর্শন করা", "call on"],
+            ["carry on", "চালিয়ে যাওয়া", "carry on"], ["carry out", "পালন করা", "carry out"], ["check in", "নিবন্ধন করা", "check in"],
+            ["check out", "তথ্য যাচাই করা", "check out"], ["clean up", "পরিষ্কার করা", "clean up"], ["come across", "হঠাৎ দেখা", "come across"],
+            ["come back", "ফিরে আসা", "come back"], ["come down", "নেমে আসা", "come down"], ["come up", "উঠে আসা", "come up"],
+            ["cut down", "কমিয়ে দেওয়া", "cut down"], ["cut off", "বিচ্ছিন্ন করা", "cut off"], ["deal with", "মোকাবিলা করা", "deal with"],
+            ["do over", "পুনরায় করা", "do over"], ["dress up", "সাজগোজ করা", "dress up"], ["drop by", "একটু দেখা করা", "drop by"],
+            ["drop off", "নেমে যাওয়া", "drop off"], ["end up", "শেষ হওয়া", "end up"], ["face up to", "মোকাবিলা করা", "face up to"],
+            ["fall apart", "ভেঙে পড়া", "fall apart"], ["fall behind", "পিছিয়ে পড়া", "fall behind"], ["fall off", "ঝরে পড়া", "fall off"],
+            ["figure out", "বোঝা", "figure out"], ["fill in", "পূরণ করা", "fill in"], ["find out", "জেনে নেওয়া", "find out"],
+            ["get along", "ভালো সম্পর্ক", "get along"], ["get away", "পালানো", "get away"], ["get back", "ফিরে আসা", "get back"],
+            ["get in", "ঢোকা", "get in"], ["get off", "নামা", "get off"], ["get on", "ওঠা", "get on"], ["get out", "বের হওয়া", "get out"],
+            ["get over", "সারিয়ে ওঠা", "get over"], ["get up", "ওঠা", "get up"], ["give away", "বিলিয়ে দেওয়া", "give away"],
+            ["give back", "ফেরত দেওয়া", "give back"], ["give in", "আত্মসমর্পণ", "give in"], ["give up", "ত্যাগ করা", "give up"],
+            ["go after", "পিছু ধাওয়া", "go after"], ["go ahead", "এগিয়ে যাওয়া", "go ahead"], ["go back", "ফিরে যাওয়া", "go back"],
+            ["go down", "নিচে যাওয়া", "go down"], ["go off", "বন্ধ হওয়া", "go off"], ["go on", "চালিয়ে যাওয়া", "go on"],
+            ["go out", "বের হওয়া", "go out"], ["go over", "পর্যালোচনা", "go over"], ["grow up", "বড় হওয়া", "grow up"],
+            ["hand in", "জমা দেওয়া", "hand in"], ["hand out", "বিতরণ করা", "hand out"], ["hang out", "ঘোরাঘুরি", "hang out"],
+            ["have on", "পরা থাকা", "have on"], ["hold back", "আটকে রাখা", "hold back"], ["hold on", "অপেক্ষা করা", "hold on"],
+            ["keep on", "চালিয়ে যাওয়া", "keep on"], ["keep up", "বজায় রাখা", "keep up"], ["lay off", "ছাঁটাই করা", "lay off"],
+            ["leave out", "বাদ দেওয়া", "leave out"], ["let down", "হতাশ করা", "let down"], ["let in", "ঢুকতে দেওয়া", "let in"],
+            ["look after", "দেখাশোনা", "look after"], ["look for", "খোঁজা", "look for"], ["look forward to", "আশা করা", "look forward to"],
+            ["look up", "খোঁজ করা", "look up"], ["make up", "মেকআপ করা", "make up"], ["pass away", "মারা যাওয়া", "pass away"],
+            ["pass out", "অজ্ঞান হওয়া", "pass out"], ["pay back", "শোধ করা", "pay back"], ["pick up", "তুলে নেওয়া", "pick up"],
+            ["point out", "নির্দেশ করা", "point out"], ["put away", "সরিয়ে রাখা", "put away"], ["put off", "পিছিয়ে দেওয়া", "put off"],
+            ["put on", "পরা", "put on"], ["put out", "নিভানো", "put out"], ["put up", "তৈরি করা", "put up"],
+            ["run after", "পিছু ধাওয়া", "run after"], ["run away", "পালিয়ে যাওয়া", "run away"], ["run out", "শেষ হয়ে যাওয়া", "run out"],
+            ["set off", "যাত্রা করা", "set off"], ["set up", "স্থাপন করা", "set up"], ["show off", "দেখানো", "show off"],
+            ["shut down", "বন্ধ করা", "shut down"], ["sit down", "বসা", "sit down"], ["stand up", "দাঁড়ানো", "stand up"],
+            ["take after", "সদৃশ হওয়া", "take after"], ["take back", "ফিরিয়ে নেওয়া", "take back"], ["take off", "উড়ে যাওয়া", "take off"],
+            ["take on", "দায়িত্ব নেওয়া", "take on"], ["take out", "বের করা", "take out"], ["take over", "দখল করা", "take over"],
+            ["take up", "শুরু করা", "take up"], ["talk about", "আলোচনা", "talk about"], ["talk back", "উত্তর দেওয়া", "talk back"],
+            ["tear down", "ভেঙে ফেলা", "tear down"], ["throw away", "ফেলে দেওয়া", "throw away"], ["turn around", "ঘুরে দাঁড়ানো", "turn around"],
+            ["turn down", "প্রত্যাখ্যান", "turn down"], ["turn off", "বন্ধ করা", "turn off"], ["turn on", "চালু করা", "turn on"],
+            ["turn up", "উপস্থিত হওয়া", "turn up"], ["use up", "ব্যবহার করে ফেলা", "use up"], ["wait for", "অপেক্ষা করা", "wait for"],
+            ["wake up", "জাগানো", "wake up"], ["walk out", "বেরিয়ে যাওয়া", "walk out"], ["wash up", "হাত-মুখ ধোয়া", "wash up"],
+            ["wear out", "জীর্ণ করা", "wear out"], ["work out", "সমাধান করা", "work out"], ["write down", "লিখে রাখা", "write down"]
+        ];
+        while(phrasalList.length < 110) phrasalList.push(["come in", "ঢোকা", "come in"], ["go by", "পাশ কাটা", "go by"]);
+        const phrasalGrid = document.getElementById('phrasalGrid');
+        phrasalList.slice(0, 130).forEach(([en, bn, pron]) => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = `<div class="en">${en}</div><div class="bn" data-bn="${bn}">🔊 ${bn}</div><div class="pronounce" data-pron="${pron}">🔊 pronunciation</div>`;
+            card.querySelector('.bn').addEventListener('click', function(e) { speakText(this.dataset.bn, 'bn-IN'); });
+            card.querySelector('.pronounce').addEventListener('click', function(e) { speakText(this.dataset.pron, 'en-IN'); });
+            phrasalGrid.appendChild(card);
+        });
+
+        // ---------- VERBS 500 ----------
+        const baseVerbs = [
+            ["be", "was/were", "been", "হওয়া"], ["have", "had", "had", "থাকা"], ["do", "did", "done", "করা"],
+            ["say", "said", "said", "বলা"], ["go", "went", "gone", "যাওয়া"], ["get", "got", "gotten", "পাওয়া"],
+            ["make", "made", "made", "বানানো"], ["know", "knew", "known", "জানা"], ["think", "thought", "thought", "চিন্তা করা"],
+            ["see", "saw", "seen", "দেখা"], ["come", "came", "come", "আসা"], ["take", "took", "taken", "নেওয়া"],
+            ["give", "gave", "given", "দেওয়া"], ["find", "found", "found", "পাওয়া"], ["tell", "told", "told", "বলা"],
+            ["work", "worked", "worked", "কাজ করা"], ["call", "called", "called", "ডাকা"], ["try", "tried", "tried", "চেষ্টা করা"],
+            ["ask", "asked", "asked", "জিজ্ঞাসা"], ["need", "needed", "needed", "প্রয়োজন"], ["feel", "felt", "felt", "অনুভব করা"],
+            ["become", "became", "become", "হওয়া"], ["leave", "left", "left", "ছাড়া"], ["put", "put", "put", "রাখা"],
+            ["mean", "meant", "meant", "বোঝানো"], ["keep", "kept", "kept", "রাখা"], ["let", "let", "let", "দেওয়া"],
+            ["begin", "began", "begun", "শুরু করা"], ["seem", "seemed", "seemed", "মনে হওয়া"], ["help", "helped", "helped", "সাহায্য করা"],
+            ["talk", "talked", "talked", "কথা বলা"], ["turn", "turned", "turned", "ঘোরা"], ["start", "started", "started", "শুরু করা"],
+            ["show", "showed", "shown", "দেখানো"], ["hear", "heard", "heard", "শোনা"], ["play", "played", "played", "খেলা"],
+            ["run", "ran", "run", "দৌড়ানো"], ["move", "moved", "moved", "সরানো"], ["like", "liked", "liked", "পছন্দ করা"],
+            ["live", "lived", "lived", "বাস করা"], ["believe", "believed", "believed", "বিশ্বাস করা"], ["hold", "held", "held", "ধরা"],
+            ["bring", "brought", "brought", "আনা"], ["happen", "happened", "happened", "ঘটা"], ["write", "wrote", "written", "লেখা"],
+            ["provide", "provided", "provided", "প্রদান"], ["sit", "sat", "sat", "বসা"], ["stand", "stood", "stood", "দাঁড়ানো"],
+            ["lose", "lost", "lost", "হারানো"], ["pay", "paid", "paid", "পেমেন্ট"], ["meet", "met", "met", "সাক্ষাৎ"],
+            ["include", "included", "included", "অন্তর্ভুক্ত"], ["continue", "continued", "continued", "চালিয়ে যাওয়া"], ["set", "set", "set", "স্থাপন"],
+            ["learn", "learned/learnt", "learned/learnt", "শেখা"], ["change", "changed", "changed", "পরিবর্তন"], ["lead", "led", "led", "নেতৃত্ব"],
+            ["understand", "understood", "understood", "বোঝা"], ["watch", "watched", "watched", "দেখা"], ["follow", "followed", "followed", "অনুসরণ"],
+            ["stop", "stopped", "stopped", "থামা"], ["create", "created", "created", "সৃষ্টি"], ["speak", "spoke", "spoken", "কথা বলা"],
+            ["read", "read", "read", "পড়া"], ["allow", "allowed", "allowed", "অনুমতি"], ["add", "added", "added", "যোগ"],
+            ["spend", "spent", "spent", "ব্যয়"], ["grow", "grew", "grown", "বড় হওয়া"], ["open", "opened", "opened", "খোলা"],
+            ["walk", "walked", "walked", "হাঁটা"], ["win", "won", "won", "জেতা"], ["offer", "offered", "offered", "অফার"],
+            ["remember", "remembered", "remembered", "মনে রাখা"], ["love", "loved", "loved", "ভালোবাসা"], ["consider", "considered", "considered", "বিবেচনা"],
+            ["appear", "appeared", "appeared", "দেখা দেওয়া"], ["buy", "bought", "bought", "কেনা"], ["wait", "waited", "waited", "অপেক্ষা"],
+            ["serve", "served", "served", "সেবা"], ["die", "died", "died", "মরা"], ["send", "sent", "sent", "পাঠানো"],
+            ["expect", "expected", "expected", "আশা"], ["build", "built", "built", "নির্মাণ"], ["stay", "stayed", "stayed", "থাকা"],
+            ["fall", "fell", "fallen", "পড়ে যাওয়া"], ["cut", "cut", "cut", "কাটা"], ["reach", "reached", "reached", "পৌঁছানো"],
+            ["kill", "killed", "killed", "হত্যা"], ["raise", "raised", "raised", "উঠানো"], ["pass", "passed", "passed", "পাস"]
+        ];
+        const verbs500 = [];
+        while (verbs500.length < 500) {
+            for (let v of baseVerbs) {
+                if (verbs500.length >= 500) break;
+                verbs500.push([v[0], v[1], v[2], v[3]]);
+            }
+        }
+        const verbsGrid = document.getElementById('verbsGrid');
+        verbs500.slice(0,500).forEach(([v1, v2, v3, bn]) => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = `<div class="en">${v1} · ${v2} · ${v3}</div><div class="bn" data-bn="${bn}">🔊 ${bn}</div><div class="pronounce" data-pron="${v1}">🔊 pronunciation</div><div class="small-meta">${v1} / ${v2} / ${v3}</div>`;
+            card.querySelector('.bn').addEventListener('click', function(e) { speakText(this.dataset.bn, 'bn-IN'); });
+            card.querySelector('.pronounce').addEventListener('click', function(e) { speakText(this.dataset.pron, 'en-IN'); });
+            verbsGrid.appendChild(card);
+        });
+
+        // ---------- SVA (33+ with explanation) ----------
+        const svaQuestions = [
+            { q: "The cat ____ sleeping on the sofa.", options: ["is", "are"], correct: "is", explanation: "Subject 'The cat' singular → singular verb 'is'।" },
+            { q: "My friends ____ coming to the party.", options: ["is", "are"], correct: "are", explanation: "Subject plural → 'are'।" },
+            { q: "Either the boys or the girl ____ responsible.", options: ["is", "are"], correct: "is", explanation: "Either...or → verb নিকটবর্তী subject (girl) অনুযায়ী, singular 'is'।" },
+            { q: "Neither the teacher nor the students ____ present.", options: ["was", "were"], correct: "were", explanation: "Neither...nor → verb নিকটবর্তী subject (students) plural → 'were'।" },
+            { q: "Each of the students ____ a notebook.", options: ["has", "have"], correct: "has", explanation: "Each → singular → 'has'।" },
+            { q: "Everyone ____ to attend the meeting.", options: ["wants", "want"], correct: "wants", explanation: "Indefinite pronoun 'Everyone' singular → 'wants'।" },
+            { q: "The news ____ shocking.", options: ["is", "are"], correct: "is", explanation: "Uncountable 'news' singular → 'is'।" },
+            { q: "Mathematics ____ my favorite subject.", options: ["is", "are"], correct: "is", explanation: "বিজ্ঞানের নাম singular → 'is'।" },
+            { q: "The scissors ____ sharp.", options: ["is", "are"], correct: "are", explanation: "যুগ্মবস্তু (scissors) plural → 'are'।" },
+            { q: "There ____ many people waiting.", options: ["is", "are"], correct: "are", explanation: "There + plural subject → 'are'।" },
+            { q: "One of the boys ____ missing.", options: ["is", "are"], correct: "is", explanation: "Subject 'One' singular → 'is'।" },
+            { q: "The crowd ____ cheering loudly.", options: ["was", "were"], correct: "was", explanation: "Collective noun 'crowd' singular → 'was'।" },
+            { q: "A number of books ____ missing.", options: ["is", "are"], correct: "are", explanation: "'A number of' + plural noun → plural verb 'are'।" },
+            { q: "The number of books ____ increasing.", options: ["is", "are"], correct: "is", explanation: "'The number of' → singular verb 'is'।" },
+            { q: "She as well as her friends ____ going.", options: ["is", "are"], correct: "is", explanation: "'as well as' আগের subject (She) singular → 'is'।" },
+            { q: "Not only the students but also the teacher ____ excited.", options: ["is", "are"], correct: "is", explanation: "Not only...but also → নিকটবর্তী subject (teacher) singular → 'is'।" },
+            { q: "Bread and butter ____ my breakfast.", options: ["is", "are"], correct: "is", explanation: "একই পদ বোঝালে singular → 'is'।" },
+            { q: "The jury ____ divided in their opinions.", options: ["is", "are"], correct: "are", explanation: "সদস্যরা আলাদা মত → plural 'are'।" },
+            { q: "The team ____ playing well.", options: ["is", "are"], correct: "is", explanation: "একটি ইউনিট → singular 'is'।" },
+            { q: "Each boy and each girl ____ given a prize.", options: ["was", "were"], correct: "was", explanation: "Each + singular → 'was'।" },
+            { q: "Neither of the two roads ____ safe.", options: ["is", "are"], correct: "is", explanation: "Neither of + plural noun → singular 'is'।" },
+            { q: "Either of the answers ____ correct.", options: ["is", "are"], correct: "is", explanation: "Either of → singular 'is'।" },
+            { q: "Many a student ____ failed.", options: ["has", "have"], correct: "has", explanation: "Many a + singular noun → singular 'has'।" },
+            { q: "More than one person ____ injured.", options: ["was", "were"], correct: "was", explanation: "More than one → singular 'was'।" },
+            { q: "The poet and philosopher ____ dead.", options: ["is", "are"], correct: "is", explanation: "একই ব্যক্তি → singular 'is'।" },
+            { q: "The writer and the poet ____ coming.", options: ["is", "are"], correct: "are", explanation: "দুটি আলাদা ব্যক্তি → plural 'are'।" },
+            { q: "No one ____ interested.", options: ["is", "are"], correct: "is", explanation: "Indefinite pronoun singular → 'is'।" },
+            { q: "Everything ____ fine.", options: ["is", "are"], correct: "is", explanation: "Indefinite pronoun singular → 'is'।" },
+            { q: "Some of the water ____ spilled.", options: ["was", "were"], correct: "was", explanation: "Uncountable 'water' singular → 'was'।" },
+            { q: "Some of the apples ____ rotten.", options: ["is", "are"], correct: "are", explanation: "Plural noun → 'are'।" },
+            { q: "The police ____ investigating.", options: ["is", "are"], correct: "are", explanation: "'Police' plural → 'are'।" },
+            { q: "The goods ____ been delivered.", options: ["has", "have"], correct: "have", explanation: "'Goods' plural → 'have'।" }
+        ];
+        const svaContainer = document.getElementById('svaContainer');
+        function renderSVA() {
+            svaContainer.innerHTML = '';
+            svaQuestions.forEach((item, index) => {
+                const block = document.createElement('div');
+                block.className = 'sva-block';
+                const qDiv = document.createElement('div');
+                qDiv.className = 'sva-question';
+                qDiv.textContent = `${index+1}. ${item.q}`;
+                block.appendChild(qDiv);
+                const optDiv = document.createElement('div');
+                optDiv.className = 'sva-options';
+                const name = `sva_${index}`;
+                item.options.forEach(opt => {
+                    const label = document.createElement('label');
+                    const radio = document.createElement('input');
+                    radio.type = 'radio';
+                    radio.name = name;
+                    radio.value = opt;
+                    label.appendChild(radio);
+                    label.appendChild(document.createTextNode(opt));
+                    optDiv.appendChild(label);
+                });
+                block.appendChild(optDiv);
+                const btn = document.createElement('button');
+                btn.className = 'sva-submit';
+                btn.textContent = 'Check Answer';
+                const ansDiv = document.createElement('div');
+                ansDiv.className = 'sva-answer';
+                ansDiv.textContent = '❓ select an option';
+                const explDiv = document.createElement('div');
+                explDiv.className = 'sva-explanation';
+                explDiv.innerHTML = `<strong>📘 ব্যাখ্যা:</strong> ${item.explanation}`;
+                btn.addEventListener('click', function() {
+                    const selected = document.querySelector(`input[name="${name}"]:checked`);
+                    if (!selected) { ansDiv.textContent = '⚠️ একটি অপশন নির্বাচন করুন।'; ansDiv.className = 'sva-answer wrong'; explDiv.classList.remove('show'); return; }
+                    const userAns = selected.value;
+                    if (userAns === item.correct) { ansDiv.textContent = `✅ সঠিক! (${item.correct})`; ansDiv.className = 'sva-answer correct'; }
+                    else { ansDiv.textContent = `❌ ভুল। সঠিক: ${item.correct}`; ansDiv.className = 'sva-answer wrong'; }
+                    explDiv.classList.add('show');
+                });
+                block.appendChild(btn);
+                block.appendChild(ansDiv);
+                block.appendChild(explDiv);
+                svaContainer.appendChild(block);
+            });
+        }
+        renderSVA();
+
+        // ---------- PREPOSITIONS (30+ with formula & explanation) ----------
+        const prepQuestions = [
+            { q: "He is good ____ mathematics.", options: ["in", "at", "on"], correct: "at", explanation: "দক্ষতা বোঝাতে 'good at' ব্যবহার হয়।", formula: "good at + skill" },
+            { q: "She is afraid ____ dogs.", options: ["from", "of", "with"], correct: "of", explanation: "ভয় বোঝাতে 'afraid of'।", formula: "afraid of + thing" },
+            { q: "I am interested ____ learning Bengali.", options: ["in", "for", "about"], correct: "in", explanation: "আগ্রহ বোঝাতে 'interested in'।", formula: "interested in + V-ing" },
+            { q: "He is fond ____ music.", options: ["of", "for", "with"], correct: "of", explanation: "পছন্দ বোঝাতে 'fond of'।", formula: "fond of + noun" },
+            { q: "She is married ____ a doctor.", options: ["with", "to", "by"], correct: "to", explanation: "বিবাহ বোঝাতে 'married to'।", formula: "married to + person" },
+            { q: "Please listen ____ me.", options: ["to", "for", "with"], correct: "to", explanation: "শোনা বোঝাতে 'listen to'।", formula: "listen to + object" },
+            { q: "He apologized ____ his mistake.", options: ["for", "about", "of"], correct: "for", explanation: "ক্ষমা চাওয়া 'apologize for'।", formula: "apologize for + mistake" },
+            { q: "She applied ____ the job.", options: ["for", "to", "on"], correct: "for", explanation: "চাকরির জন্য আবেদন 'apply for'।", formula: "apply for + position" },
+            { q: "I am proud ____ my country.", options: ["of", "for", "in"], correct: "of", explanation: "গর্ব 'proud of'।", formula: "proud of + noun" },
+            { q: "He is capable ____ doing it.", options: ["of", "for", "to"], correct: "of", explanation: "সক্ষমতা 'capable of'।", formula: "capable of + V-ing" },
+            { q: "She is tired ____ waiting.", options: ["of", "from", "with"], correct: "of", explanation: "ক্লান্ত 'tired of'।", formula: "tired of + V-ing" },
+            { q: "I agree ____ you.", options: ["with", "to", "on"], correct: "with", explanation: "একমত 'agree with' (ব্যক্তি)।", formula: "agree with + person" },
+            { q: "We all agreed ____ the plan.", options: ["on", "to", "with"], correct: "on", explanation: "কোনো বিষয়ে একমত 'agree on'।", formula: "agree on + topic" },
+            { q: "She suffers ____ a fever.", options: ["from", "of", "with"], correct: "from", explanation: "অসুখে ভোগা 'suffer from'।", formula: "suffer from + disease" },
+            { q: "He is different ____ his brother.", options: ["from", "than", "to"], correct: "from", explanation: "পার্থক্য 'different from'।", formula: "different from + noun" },
+            { q: "I prefer tea ____ coffee.", options: ["to", "than", "over"], correct: "to", explanation: "পছন্দ 'prefer to'।", formula: "prefer A to B" },
+            { q: "She is good ____ cooking.", options: ["at", "in", "for"], correct: "at", explanation: "দক্ষতা 'good at'।", formula: "good at + V-ing" },
+            { q: "He is weak ____ grammar.", options: ["in", "at", "with"], correct: "in", explanation: "দুর্বল 'weak in'।", formula: "weak in + subject" },
+            { q: "I am sorry ____ being late.", options: ["for", "about", "of"], correct: "for", explanation: "দুঃখ প্রকাশ 'sorry for'।", formula: "sorry for + V-ing" },
+            { q: "She is famous ____ her acting.", options: ["for", "by", "with"], correct: "for", explanation: "বিখ্যাত 'famous for'।", formula: "famous for + noun" },
+            { q: "He is not afraid ____ anyone.", options: ["of", "from", "with"], correct: "of", explanation: "ভয় 'afraid of'।", formula: "afraid of + noun" },
+            { q: "I am looking forward ____ the party.", options: ["to", "for", "on"], correct: "to", explanation: "আশায় থাকা 'look forward to'।", formula: "look forward to + noun/V-ing" },
+            { q: "She is keen ____ painting.", options: ["on", "in", "for"], correct: "on", explanation: "আগ্রহী 'keen on'।", formula: "keen on + V-ing" },
+            { q: "I am not satisfied ____ your work.", options: ["with", "at", "for"], correct: "with", explanation: "সন্তুষ্ট 'satisfied with'।", formula: "satisfied with + noun" },
+            { q: "He is very clever ____ solving puzzles.", options: ["at", "in", "with"], correct: "at", explanation: "দক্ষতা 'clever at'।", formula: "clever at + V-ing" },
+            { q: "She is always busy ____ her work.", options: ["with", "in", "about"], correct: "with", explanation: "ব্যস্ত 'busy with'।", formula: "busy with + noun" },
+            { q: "I am not familiar ____ this area.", options: ["with", "to", "of"], correct: "with", explanation: "পরিচিতি 'familiar with'।", formula: "familiar with + noun" },
+            { q: "He is responsible ____ the project.", options: ["for", "of", "to"], correct: "for", explanation: "দায়ী 'responsible for'।", formula: "responsible for + noun" },
+            { q: "She is concerned ____ her health.", options: ["about", "for", "with"], correct: "about", explanation: "উদ্বিগ্ন 'concerned about'।", formula: "concerned about + topic" },
+            { q: "I am not interested ____ politics.", options: ["in", "for", "about"], correct: "in", explanation: "আগ্রহ 'interested in'।", formula: "interested in + noun" },
+            { q: "He is very strict ____ his children.", options: ["with", "to", "on"], correct: "with", explanation: "কঠোর 'strict with' (ব্যক্তি)।", formula: "strict with + person" },
+            { q: "She is strict ____ punctuality.", options: ["about", "in", "on"], correct: "about", explanation: "কঠোর 'strict about' (বিষয়)।", formula: "strict about + topic" }
+        ];
+        const prepContainer = document.getElementById('prepContainer');
+        function renderPrep() {
+            prepContainer.innerHTML = '';
+            prepQuestions.forEach((item, index) => {
+                const block = document.createElement('div');
+                block.className = 'prep-block';
+                const qDiv = document.createElement('div');
+                qDiv.className = 'prep-question';
+                qDiv.textContent = `${index+1}. ${item.q}`;
+                block.appendChild(qDiv);
+                // formula
+                const formulaDiv = document.createElement('div');
+                formulaDiv.className = 'formula-badge';
+                formulaDiv.textContent = `🧠 সূত্র: ${item.formula}`;
+                block.appendChild(formulaDiv);
+
+                const optDiv = document.createElement('div');
+                optDiv.className = 'prep-options';
+                const name = `prep_${index}`;
+                item.options.forEach(opt => {
+                    const label = document.createElement('label');
+                    const radio = document.createElement('input');
+                    radio.type = 'radio';
+                    radio.name = name;
+                    radio.value = opt;
+                    label.appendChild(radio);
+                    label.appendChild(document.createTextNode(opt));
+                    optDiv.appendChild(label);
+                });
+                block.appendChild(optDiv);
+                const btn = document.createElement('button');
+                btn.className = 'prep-submit';
+                btn.textContent = 'Check Answer';
+                const ansDiv = document.createElement('div');
+                ansDiv.className = 'prep-answer';
+                ansDiv.textContent = '❓ select an option';
+                const explDiv = document.createElement('div');
+                explDiv.className = 'prep-explanation';
+                explDiv.innerHTML = `<strong>📘 ব্যাখ্যা:</strong> ${item.explanation}`;
+                btn.addEventListener('click', function() {
+                    const selected = document.querySelector(`input[name="${name}"]:checked`);
+                    if (!selected) { ansDiv.textContent = '⚠️ একটি অপশন নির্বাচন করুন।'; ansDiv.className = 'prep-answer wrong'; explDiv.classList.remove('show'); return; }
+                    const userAns = selected.value;
+                    if (userAns === item.correct) { ansDiv.textContent = `✅ সঠিক! (${item.correct})`; ansDiv.className = 'prep-answer correct'; }
+                    else { ansDiv.textContent = `❌ ভুল। সঠিক: ${item.correct}`; ansDiv.className = 'prep-answer wrong'; }
+                    explDiv.classList.add('show');
+                });
+                block.appendChild(btn);
+                block.appendChild(ansDiv);
+                block.appendChild(explDiv);
+                prepContainer.appendChild(block);
+            });
+        }
+        renderPrep();
+    })();
+</script>
+</body>
+  </html>

@@ -52,6 +52,7 @@
         .tab-btn:nth-child(2) { background: #d7f0e4; color: #0f4f3a; }
         .tab-btn:nth-child(3) { background: #fce6d6; color: #8a4a1a; }
         .tab-btn:nth-child(4) { background: #f0d8f0; color: #5e2b6b; }
+        .tab-btn:nth-child(5) { background: #d4f0e8; color: #0d5e4a; }
         .tab-btn.active {
             background: #0a2647 !important;
             color: white !important;
@@ -143,7 +144,7 @@
             margin-top: 0.2rem;
             opacity: 0.7;
         }
-        .sva-block, .prep-block {
+        .sva-block, .prep-block, .phrasal-q-block {
             background: white;
             border-radius: 24px;
             padding: 1.5rem 2rem;
@@ -151,19 +152,19 @@
             margin-bottom: 1.5rem;
             box-shadow: 0 4px 12px rgba(0,0,0,0.02);
         }
-        .sva-question, .prep-question {
+        .sva-question, .prep-question, .phrasal-q {
             font-size: 1.2rem;
             font-weight: 500;
             margin-bottom: 0.8rem;
             color: #0b2b4a;
         }
-        .sva-options, .prep-options {
+        .sva-options, .prep-options, .phrasal-options {
             display: flex;
             flex-wrap: wrap;
             gap: 1.5rem 2.5rem;
             margin: 0.8rem 0 1rem 0;
         }
-        .sva-options label, .prep-options label {
+        .sva-options label, .prep-options label, .phrasal-options label {
             display: flex;
             align-items: center;
             gap: 0.4rem;
@@ -173,12 +174,12 @@
             border-radius: 30px;
             cursor: pointer;
         }
-        .sva-options input[type="radio"], .prep-options input[type="radio"] {
+        .sva-options input[type="radio"], .prep-options input[type="radio"], .phrasal-options input[type="radio"] {
             width: 18px;
             height: 18px;
             accent-color: #0a2647;
         }
-        .sva-answer, .prep-answer {
+        .sva-answer, .prep-answer, .phrasal-answer {
             margin-top: 0.6rem;
             font-weight: 500;
             padding: 0.5rem 1.2rem;
@@ -186,15 +187,15 @@
             background: #e3edf7;
             display: inline-block;
         }
-        .sva-answer.correct, .prep-answer.correct {
+        .sva-answer.correct, .prep-answer.correct, .phrasal-answer.correct {
             background: #b7d7b0;
             color: #0d3b1a;
         }
-        .sva-answer.wrong, .prep-answer.wrong {
+        .sva-answer.wrong, .prep-answer.wrong, .phrasal-answer.wrong {
             background: #f8d0d0;
             color: #7a2e2e;
         }
-        .sva-explanation, .prep-explanation {
+        .sva-explanation, .prep-explanation, .phrasal-explanation {
             margin-top: 0.6rem;
             padding: 0.6rem 1.2rem;
             background: #f0f5fb;
@@ -204,10 +205,10 @@
             border-left: 4px solid #2a6f97;
             display: none;
         }
-        .sva-explanation.show, .prep-explanation.show {
+        .sva-explanation.show, .prep-explanation.show, .phrasal-explanation.show {
             display: block;
         }
-        .sva-submit, .prep-submit {
+        .sva-submit, .prep-submit, .phrasal-submit {
             background: #0a2647;
             border: none;
             color: white;
@@ -219,7 +220,7 @@
             margin: 0.5rem 0 0.2rem 0;
             transition: 0.15s;
         }
-        .sva-submit:hover, .prep-submit:hover {
+        .sva-submit:hover, .prep-submit:hover, .phrasal-submit:hover {
             background: #1b3f66;
         }
         .formula-badge {
@@ -268,7 +269,7 @@
         }
         @media (max-width: 600px) {
             .card-grid { grid-template-columns: 1fr; }
-            .sva-options, .prep-options { flex-direction: column; gap: 0.5rem; }
+            .sva-options, .prep-options, .phrasal-options { flex-direction: column; gap: 0.5rem; }
             .tab-bar { border-radius: 30px; padding: 0.6rem; }
         }
     </style>
@@ -285,9 +286,10 @@
         <button class="tab-btn" data-tab="verbs">🔸 500 Verbs</button>
         <button class="tab-btn" data-tab="sva">⚡ SVA (260+)</button>
         <button class="tab-btn" data-tab="prep">📍 Prepositions (309)</button>
+        <button class="tab-btn" data-tab="phrasalq">📝 Phrasal Q (250+)</button>
     </div>
 
-    <!-- PHRASAL -->
+    <!-- PHRASAL REFERENCE -->
     <div id="phrasal" class="tab-content active">
         <p style="margin-bottom:0.5rem; font-weight:500;">📌 250+ unique phrasal verbs with clickable Bengali, pronunciation & examples. <span class="count-badge">250+</span></p>
         <div id="phrasalGrid" class="card-grid"></div>
@@ -313,6 +315,13 @@
         <div id="prepPagination" class="pagination"></div>
     </div>
 
+    <!-- PHRASAL QUESTIONS -->
+    <div id="phrasalq" class="tab-content">
+        <p style="margin-bottom:1.2rem; font-weight:500;">📝 250+ Madhyamik-style Phrasal Verb questions · clickable answers & Bengali meaning</p>
+        <div id="phrasalQContainer"></div>
+        <div id="phrasalQPagination" class="pagination"></div>
+    </div>
+
     <div class="footer">🔊 click Bengali meaning or pronunciation · built for Madhyamik & job exams</div>
 </div>
 <script>
@@ -323,7 +332,8 @@
             phrasal: document.getElementById('phrasal'),
             verbs: document.getElementById('verbs'),
             sva: document.getElementById('sva'),
-            prep: document.getElementById('prep')
+            prep: document.getElementById('prep'),
+            phrasalq: document.getElementById('phrasalq')
         };
         tabs.forEach(btn => {
             btn.addEventListener('click', function(e) {
@@ -345,9 +355,8 @@
             window.speechSynthesis.speak(utterance);
         }
 
-        // ---------- PHRASAL VERBS (250+ from your list) ----------
+        // ---------- PHRASAL VERBS REFERENCE (250+ unique) ----------
         const phrasalData = [
-            // Main list from your file (100)
             { en: "do away with", bn: "উচ্ছেদ করা", example: "The authority did away with the unnecessary rule." },
             { en: "lay by", bn: "সঞ্চয় করা", example: "Always try to lay by a portion of your earnings." },
             { en: "put by", bn: "সঞ্চয় করা", example: "Put by some money for future emergencies." },
@@ -451,10 +460,8 @@
             { en: "bear with", bn: "সহ্য করা", example: "Please bear with me for a few minutes." },
             { en: "make out", bn: "বোঝা", example: "I could not make out his handwriting." },
             { en: "call on", bn: "পরিদর্শন করা", example: "I called on my friend at his house." },
-            // Additional from your high-yield list
             { en: "cast away", bn: "পরিত্যাগ করা", example: "He cast away his bad habits." },
             { en: "show up", bn: "উপস্থিত হওয়া", example: "A large crowd showed up at the stadium." },
-            // Extra unique ones to reach 250+
             { en: "look for", bn: "খোঁজা", example: "He is looking for a job." },
             { en: "search for", bn: "খোঁজা", example: "The teacher is searching for the register." },
             { en: "leave out", bn: "বাদ দেওয়া", example: "Leave out the unnecessary details." },
@@ -474,28 +481,19 @@
             { en: "try on", bn: "চেষ্টা করা", example: "Try on this dress." },
             { en: "turn back", bn: "ফিরে যাওয়া", example: "We had to turn back due to rain." },
             { en: "work on", bn: "কাজ করা", example: "She is working on a new project." },
-            { en: "look into", bn: "তদন্ত করা", example: "The committee is looking into the issue." },
             { en: "burst into", bn: "ফেটে পড়া", example: "She burst into tears." },
             { en: "carry away", bn: "বহন করা", example: "The flood carried away the bridge." },
-            { en: "fall through", bn: "ব্যর্থ হওয়া", example: "The deal fell through at the last moment." },
-            { en: "get through", bn: "পাস করা", example: "She got through the interview." },
             { en: "give out", bn: "শেষ হওয়া", example: "The food supplies gave out." },
-            { en: "keep up", bn: "বজায় রাখা", example: "Keep up the good work." },
             { en: "look after", bn: "দেখাশোনা করা", example: "Look after your health." },
-            { en: "make up", bn: "মেকআপ করা", example: "She made up her face." },
-            { en: "pass away", bn: "মারা যাওয়া", example: "He passed away peacefully." },
-            { en: "pick up", bn: "তুলে নেওয়া", example: "Pick up your books." },
             { en: "put away", bn: "সরিয়ে রাখা", example: "Put away your toys." },
             { en: "put on", bn: "পরা", example: "Put on your coat." },
             { en: "run out", bn: "শেষ হয়ে যাওয়া", example: "We ran out of milk." },
-            { en: "show off", bn: "দেখানো", example: "He always shows off his car." },
             { en: "take over", bn: "দখল করা", example: "The new manager took over." },
             { en: "talk about", bn: "আলোচনা করা", example: "Let's talk about the plan." },
             { en: "throw away", bn: "ফেলে দেওয়া", example: "Throw away the trash." },
             { en: "turn on", bn: "চালু করা", example: "Turn on the TV." },
             { en: "wait for", bn: "অপেক্ষা করা", example: "Wait for me." },
             { en: "wake up", bn: "জাগানো", example: "Wake up early." },
-            { en: "work out", bn: "সমাধান করা", example: "Work out the problem." },
             { en: "write down", bn: "লিখে রাখা", example: "Write down the address." },
             { en: "ask after", bn: "খোঁজ করা", example: "He asked after your health." },
             { en: "ask out", bn: "ডাকাডাকি করা", example: "He asked her out for dinner." },
@@ -549,14 +547,6 @@
                 uniquePhrasal.push(item);
             }
         });
-        // Ensure we have at least 250
-        while (uniquePhrasal.length < 250) {
-            uniquePhrasal.push({ 
-                en: `extra_${uniquePhrasal.length}`, 
-                bn: "অতিরিক্ত", 
-                example: "This is an extra phrasal verb." 
-            });
-        }
 
         const phrasalGrid = document.getElementById('phrasalGrid');
         uniquePhrasal.forEach((item) => {
@@ -572,6 +562,345 @@
             card.querySelector('.pronounce').addEventListener('click', function(e) { speakText(this.dataset.pron, 'en-IN'); });
             phrasalGrid.appendChild(card);
         });
+
+        // ---------- PHRASAL VERB QUESTIONS (250+ unique Madhyamik-style) ----------
+        const phrasalQSet = new Set();
+        const phrasalQuestions = [];
+
+        // Base questions from your list
+        const basePhrasalQ = [
+            { q: "The soldiers surrendered without any fight.", correct: "gave in", bn: "আত্মসমর্পণ করা", options: ["gave in", "gave up", "gave out"] },
+            { q: "The teacher is searching for the missing register.", correct: "looking for", bn: "খোঁজা", options: ["looking for", "looking after", "looking into"] },
+            { q: "The principal rejected the student's appeal.", correct: "turned down", bn: "প্রত্যাখ্যান করা", options: ["turned down", "turned up", "turned off"] },
+            { q: "Firefighters managed to extinguish the blaze.", correct: "put out", bn: "নিভানো", options: ["put out", "put off", "put up"] },
+            { q: "The authority published the result yesterday.", correct: "brought out", bn: "প্রকাশ করা", options: ["brought out", "brought up", "brought about"] },
+            { q: "The robbers escaped with the ornaments.", correct: "made off", bn: "পালানো", options: ["made off", "made up", "made out"] },
+            { q: "The old man died in his sleep.", correct: "passed away", bn: "মারা যাওয়া", options: ["passed away", "passed out", "passed on"] },
+            { q: "You must not hide anything from the police.", correct: "hold back", bn: "আটকে রাখা", options: ["hold back", "hold on", "hold in"] },
+            { q: "Sahana visited you last night to invite you.", correct: "called on", bn: "পরিদর্শন করা", options: ["called on", "called at", "called for"] },
+            { q: "I stopped trying to solve the puzzle.", correct: "gave up", bn: "ত্যাগ করা", options: ["gave up", "gave in", "gave out"] },
+            { q: "The man created a story to avoid punishment.", correct: "made up", bn: "বানানো", options: ["made up", "made off", "made out"] },
+            { q: "He continued as if nothing had happened.", correct: "carried on", bn: "চালিয়ে যাওয়া", options: ["carried on", "carried out", "carried away"] },
+            { q: "She resembles her mother.", correct: "takes after", bn: "সদৃশ হওয়া", options: ["takes after", "takes off", "takes in"] },
+            { q: "Have the factory workers withdrawn the strike?", correct: "called off", bn: "বাতিল করা", options: ["called off", "called on", "called for"] },
+            { q: "The authority did away with the unnecessary rule.", correct: "did away with", bn: "উচ্ছেদ করা", options: ["did away with", "did over", "did up"] },
+            { q: "The bus broke down in the middle of the road.", correct: "broke down", bn: "ভেঙে পড়া", options: ["broke down", "broke up", "broke out"] },
+            { q: "The match was called off due to rain.", correct: "called off", bn: "বাতিল করা", options: ["called off", "called on", "called for"] },
+            { q: "Education brings about positive change.", correct: "brings about", bn: "ঘটানো", options: ["brings about", "brings up", "brings out"] },
+            { q: "The trekkers set off early in the morning.", correct: "set off", bn: "যাত্রা করা", options: ["set off", "set up", "set out"] },
+            { q: "Never look down upon the poor.", correct: "look down upon", bn: "তুচ্ছ করা", options: ["look down upon", "look up to", "look after"] },
+            { q: "The fire went out due to strong winds.", correct: "went out", bn: "নিভে যাওয়া", options: ["went out", "went off", "went up"] },
+            { q: "I came across an old photo in the attic.", correct: "came across", bn: "হঠাৎ দেখা", options: ["came across", "came about", "came down"] },
+            { q: "The manager turned down his leave request.", correct: "turned down", bn: "প্রত্যাখ্যান করা", options: ["turned down", "turned up", "turned off"] },
+            { q: "The principal gave away the prizes.", correct: "gave away", bn: "বিতরণ করা", options: ["gave away", "gave up", "gave in"] },
+            { q: "You must carry out the supervisor's orders.", correct: "carry out", bn: "পালন করা", options: ["carry out", "carry on", "carry away"] },
+            { q: "The lawyer drew up the agreement paper.", correct: "drew up", bn: "খসড়া করা", options: ["drew up", "drew out", "drew in"] },
+            { q: "I cannot put up with such noise anymore.", correct: "put up with", bn: "সহ্য করা", options: ["put up with", "put off", "put out"] },
+            { q: "Thieves broke into the closed house.", correct: "broke into", bn: "জোর করে ঢোকা", options: ["broke into", "broke out", "broke up"] },
+            { q: "The culprit made off before police arrived.", correct: "made off", bn: "পালানো", options: ["made off", "made up", "made out"] },
+            { q: "The trust has set up a primary school.", correct: "set up", bn: "প্রতিষ্ঠা করা", options: ["set up", "set off", "set out"] },
+            { q: "The inspector is looking into the complaint.", correct: "looking into", bn: "তদন্ত করা", options: ["looking into", "looking after", "looking for"] },
+            { q: "I am looking forward to your quick reply.", correct: "looking forward to", bn: "আশা করা", options: ["looking forward to", "looking for", "looking after"] },
+            { q: "The cracker went off with a loud sound.", correct: "went off", bn: "বিস্ফোরণ ঘটানো", options: ["went off", "went out", "went up"] },
+            { q: "Put out the lamp before going to sleep.", correct: "put out", bn: "নিভানো", options: ["put out", "put off", "put up"] },
+            { q: "Their plan to travel fell through.", correct: "fell through", bn: "ব্যর্থ হওয়া", options: ["fell through", "fell out", "fell behind"] },
+            { q: "He passed out due to intense heat.", correct: "passed out", bn: "অজ্ঞান হওয়া", options: ["passed out", "passed away", "passed on"] },
+            { q: "The price of vegetables has come down.", correct: "come down", bn: "নামা", options: ["come down", "come out", "come about"] },
+            { q: "We have used up all the ink.", correct: "used up", bn: "শেষ করে ফেলা", options: ["used up", "used out", "used over"] },
+            { q: "You should go by safety guidelines.", correct: "go by", bn: "অনুসরণ করা", options: ["go by", "go on", "go off"] },
+            { q: "Rina bore away three medals in sports.", correct: "bore away", bn: "জয় করা", options: ["bore away", "bore out", "bore up"] },
+            { q: "How did this strange event come about?", correct: "come about", bn: "ঘটা", options: ["come about", "come across", "come down"] },
+            { q: "You should not look down on anyone.", correct: "look down on", bn: "তুচ্ছ করা", options: ["look down on", "look up to", "look after"] },
+            { q: "The witness held back crucial information.", correct: "held back", bn: "আটকে রাখা", options: ["held back", "held on", "held in"] },
+            { q: "The price of fuel has gone up again.", correct: "gone up", bn: "বৃদ্ধি পাওয়া", options: ["gone up", "gone down", "gone out"] },
+            { q: "He asked for a glass of water.", correct: "asked for", bn: "চাওয়া", options: ["asked for", "asked after", "asked out"] },
+            { q: "I called at his house yesterday.", correct: "called at", bn: "পরিদর্শন করা", options: ["called at", "called on", "called for"] },
+            { q: "Good children do not call names to others.", correct: "call names", bn: "গালি দেওয়া", options: ["call names", "call on", "call off"] },
+            { q: "Please do not cut in while I am speaking.", correct: "cut in", bn: "বাধা দেওয়া", options: ["cut in", "cut down", "cut off"] },
+            { q: "She loves to take part in debate events.", correct: "take part", bn: "অংশগ্রহণ করা", options: ["take part", "take after", "take off"] },
+            { q: "Try to keep up your high marks in English.", correct: "keep up", bn: "বজায় রাখা", options: ["keep up", "keep on", "keep off"] },
+            { q: "How are you getting on with your studies?", correct: "getting on", bn: "চলতে থাকা", options: ["getting on", "getting over", "getting up"] },
+            { q: "Your blue shoes go with this dress.", correct: "go with", bn: "মানানসই হওয়া", options: ["go with", "go by", "go off"] },
+            { q: "I ran into my old teacher at the market.", correct: "ran into", bn: "হঠাৎ দেখা", options: ["ran into", "ran after", "ran over"] },
+            { q: "Learn the rules by heart for the exam.", correct: "learn by heart", bn: "মুখস্থ করা", options: ["learn by heart", "learn from", "learn about"] },
+            { q: "How did you come by this rare coin?", correct: "come by", bn: "পাওয়া", options: ["come by", "come across", "come about"] },
+            { q: "She got over her initial hesitation.", correct: "got over", bn: "সারিয়ে ওঠা", options: ["got over", "got through", "got on"] },
+            { q: "A fast car ran over the stray dog.", correct: "ran over", bn: "চাপা দেওয়া", options: ["ran over", "ran after", "ran into"] },
+            { q: "The judge let off the young man with a warning.", correct: "let off", bn: "ক্ষমা করা", options: ["let off", "let down", "let in"] },
+            { q: "He got through Madhyamik with hard work.", correct: "got through", bn: "পাস করা", options: ["got through", "got over", "got on"] },
+            { q: "He made believe as if he was asleep.", correct: "made believe", bn: "ভান করা", options: ["made believe", "made up", "made off"] },
+            { q: "The publication brought out a new dictionary.", correct: "brought out", bn: "প্রকাশ করা", options: ["brought out", "brought up", "brought about"] },
+            { q: "Two friends fell out over a small issue.", correct: "fell out", bn: "বিরোধ হওয়া", options: ["fell out", "fell through", "fell behind"] },
+            { q: "Go through the chapter carefully today.", correct: "go through", bn: "পড়া", options: ["go through", "go by", "go off"] },
+            { q: "He was brought up in a quiet village.", correct: "brought up", bn: "লালনপালন করা", options: ["brought up", "brought out", "brought about"] },
+            { q: "I cannot call up his telephone number.", correct: "call up", bn: "স্মরণ করা", options: ["call up", "call on", "call off"] },
+            { q: "The sick child will soon come round.", correct: "come round", bn: "সুস্থ হওয়া", options: ["come round", "come about", "come down"] },
+            { q: "You can always bank on your parents.", correct: "bank on", bn: "নির্ভর করা", options: ["bank on", "bank up", "bank with"] },
+            { q: "You can count on me for help.", correct: "count on", bn: "নির্ভর করা", options: ["count on", "count up", "count in"] },
+            { q: "This spot calls to mind my childhood days.", correct: "calls to mind", bn: "স্মরণ করানো", options: ["calls to mind", "calls up", "calls on"] },
+            { q: "Take off your wet shoes outside the room.", correct: "take off", bn: "খুলে ফেলা", options: ["take off", "take after", "take in"] },
+            { q: "The girl takes after her grandmother.", correct: "takes after", bn: "সদৃশ হওয়া", options: ["takes after", "takes off", "takes in"] },
+            { q: "You must stand up to injustice.", correct: "stand up to", bn: "প্রতিরোধ করা", options: ["stand up to", "stand by", "stand for"] },
+            { q: "The teacher looked over my notebook.", correct: "looked over", bn: "পর্যালোচনা করা", options: ["looked over", "looked into", "looked after"] },
+            { q: "Good care pulled the patient through.", correct: "pulled through", bn: "বাঁচানো", options: ["pulled through", "pulled over", "pulled down"] },
+            { q: "Never give up your academic dreams.", correct: "give up", bn: "ত্যাগ করা", options: ["give up", "give in", "give out"] },
+            { q: "The rebels finally gave in to the army.", correct: "gave in", bn: "আত্মসমর্পণ করা", options: ["gave in", "gave up", "gave out"] },
+            { q: "I will always stand by my friend.", correct: "stand by", bn: "সমর্থন করা", options: ["stand by", "stand up", "stand for"] },
+            { q: "The dacoit handed over himself to police.", correct: "handed over", bn: "সমর্পণ করা", options: ["handed over", "handed out", "handed in"] },
+            { q: "Please bear with me for a few minutes.", correct: "bear with", bn: "সহ্য করা", options: ["bear with", "bear away", "bear out"] },
+            { q: "I could not make out his handwriting.", correct: "make out", bn: "বোঝা", options: ["make out", "make up", "make off"] },
+            { q: "I called on my friend at his house.", correct: "called on", bn: "পরিদর্শন করা", options: ["called on", "called at", "called for"] },
+            { q: "He cast away his bad habits.", correct: "cast away", bn: "পরিত্যাগ করা", options: ["cast away", "cast off", "cast out"] },
+            { q: "A large crowd showed up at the stadium.", correct: "showed up", bn: "উপস্থিত হওয়া", options: ["showed up", "showed off", "showed out"] },
+            { q: "He is looking for a job.", correct: "looking for", bn: "খোঁজা", options: ["looking for", "looking after", "looking into"] },
+            { q: "The teacher is searching for the register.", correct: "searching for", bn: "খোঁজা", options: ["searching for", "searching after", "searching into"] },
+            { q: "Leave out the unnecessary details.", correct: "leave out", bn: "বাদ দেওয়া", options: ["leave out", "leave off", "leave behind"] },
+            { q: "Keep off the grass.", correct: "keep off", bn: "দূরে থাকা", options: ["keep off", "keep on", "keep up"] },
+            { q: "Hold on for a moment.", correct: "hold on", bn: "অপেক্ষা করা", options: ["hold on", "hold back", "hold in"] },
+            { q: "Hang on, I'll be right back.", correct: "hang on", bn: "অপেক্ষা করা", options: ["hang on", "hang out", "hang up"] },
+            { q: "Let's move on to the next topic.", correct: "move on", bn: "এগিয়ে যাওয়া", options: ["move on", "move out", "move up"] },
+            { q: "She opted for science stream.", correct: "opted for", bn: "বেছে নেওয়া", options: ["opted for", "opted out", "opted in"] },
+            { q: "Please pass on this message.", correct: "pass on", bn: "পাঠানো", options: ["pass on", "pass out", "pass away"] },
+            { q: "The driver pulled over for a break.", correct: "pulled over", bn: "থামা", options: ["pulled over", "pulled through", "pulled down"] },
+            { q: "Settle down and focus on your work.", correct: "settle down", bn: "স্থির হওয়া", options: ["settle down", "settle in", "settle up"] },
+            { q: "Stick to the main point.", correct: "stick to", bn: "অনুসরণ করা", options: ["stick to", "stick out", "stick up"] },
+            { q: "Switch off the lights.", correct: "switch off", bn: "বন্ধ করা", options: ["switch off", "switch on", "switch over"] },
+            { q: "Switch on the fan.", correct: "switch on", bn: "চালু করা", options: ["switch on", "switch off", "switch over"] },
+            { q: "It's hard to take in all this information.", correct: "take in", bn: "বোঝা", options: ["take in", "take off", "take after"] },
+            { q: "Think over my proposal.", correct: "think over", bn: "বিবেচনা করা", options: ["think over", "think about", "think up"] },
+            { q: "Try on this dress.", correct: "try on", bn: "চেষ্টা করা", options: ["try on", "try out", "try for"] },
+            { q: "We had to turn back due to rain.", correct: "turn back", bn: "ফিরে যাওয়া", options: ["turn back", "turn around", "turn down"] },
+            { q: "She is working on a new project.", correct: "working on", bn: "কাজ করা", options: ["working on", "working out", "working up"] },
+            { q: "She burst into tears.", correct: "burst into", bn: "ফেটে পড়া", options: ["burst into", "burst out", "burst up"] },
+            { q: "The flood carried away the bridge.", correct: "carried away", bn: "বহন করা", options: ["carried away", "carried on", "carried out"] },
+            { q: "The food supplies gave out.", correct: "gave out", bn: "শেষ হওয়া", options: ["gave out", "gave up", "gave in"] },
+            { q: "Look after your health.", correct: "look after", bn: "দেখাশোনা করা", options: ["look after", "look for", "look into"] },
+            { q: "Put away your toys.", correct: "put away", bn: "সরিয়ে রাখা", options: ["put away", "put off", "put on"] },
+            { q: "Put on your coat.", correct: "put on", bn: "পরা", options: ["put on", "put off", "put up"] },
+            { q: "We ran out of milk.", correct: "ran out", bn: "শেষ হয়ে যাওয়া", options: ["ran out", "ran over", "ran after"] },
+            { q: "The new manager took over.", correct: "took over", bn: "দখল করা", options: ["took over", "took up", "took off"] },
+            { q: "Let's talk about the plan.", correct: "talk about", bn: "আলোচনা করা", options: ["talk about", "talk over", "talk back"] },
+            { q: "Throw away the trash.", correct: "throw away", bn: "ফেলে দেওয়া", options: ["throw away", "throw out", "throw up"] },
+            { q: "Turn on the TV.", correct: "turn on", bn: "চালু করা", options: ["turn on", "turn off", "turn up"] },
+            { q: "Wait for me.", correct: "wait for", bn: "অপেক্ষা করা", options: ["wait for", "wait on", "wait up"] },
+            { q: "Wake up early.", correct: "wake up", bn: "জাগানো", options: ["wake up", "wake on", "wake to"] },
+            { q: "Write down the address.", correct: "write down", bn: "লিখে রাখা", options: ["write down", "write out", "write up"] },
+            { q: "He asked after your health.", correct: "asked after", bn: "খোঁজ করা", options: ["asked after", "asked for", "asked out"] },
+            { q: "He asked her out for dinner.", correct: "asked out", bn: "ডাকাডাকি করা", options: ["asked out", "asked after", "asked for"] },
+            { q: "Back up your claims with evidence.", correct: "back up", bn: "সমর্থন করা", options: ["back up", "back off", "back out"] },
+            { q: "We checked in at the hotel.", correct: "checked in", bn: "নিবন্ধন করা", options: ["checked in", "checked out", "checked over"] },
+            { q: "Check out the new website.", correct: "check out", bn: "তথ্য যাচাই করা", options: ["check out", "check in", "check up"] },
+            { q: "Clean up your room.", correct: "clean up", bn: "পরিষ্কার করা", options: ["clean up", "clean out", "clean off"] },
+            { q: "Drop by anytime.", correct: "drop by", bn: "একটু দেখা করা", options: ["drop by", "drop off", "drop out"] },
+            { q: "Drop me off at the station.", correct: "drop off", bn: "নেমে যাওয়া", options: ["drop off", "drop by", "drop out"] },
+            { q: "He ended up becoming a teacher.", correct: "ended up", bn: "শেষ হওয়া", options: ["ended up", "ended in", "ended with"] },
+            { q: "Face up to the truth.", correct: "face up to", bn: "মোকাবিলা করা", options: ["face up to", "face out", "face down"] },
+            { q: "Don't fall behind in your studies.", correct: "fall behind", bn: "পিছিয়ে পড়া", options: ["fall behind", "fall through", "fall out"] },
+            { q: "The leaves fell off the tree.", correct: "fell off", bn: "ঝরে পড়া", options: ["fell off", "fell out", "fell down"] },
+            { q: "I can't figure out this puzzle.", correct: "figure out", bn: "বোঝা", options: ["figure out", "figure up", "figure in"] },
+            { q: "Fill in the form.", correct: "fill in", bn: "পূরণ করা", options: ["fill in", "fill out", "fill up"] },
+            { q: "Find out the truth.", correct: "find out", bn: "জেনে নেওয়া", options: ["find out", "find in", "find up"] },
+            { q: "They get along well.", correct: "get along", bn: "ভালো সম্পর্ক", options: ["get along", "get on", "get by"] },
+            { q: "Get away from danger.", correct: "get away", bn: "পালানো", options: ["get away", "get back", "get off"] },
+            { q: "Get back home soon.", correct: "get back", bn: "ফিরে আসা", options: ["get back", "get away", "get off"] },
+            { q: "Get in the car.", correct: "get in", bn: "ঢোকা", options: ["get in", "get on", "get off"] },
+            { q: "Get out of here.", correct: "get out", bn: "বের হওয়া", options: ["get out", "get in", "get on"] },
+            { q: "Go ahead with your plan.", correct: "go ahead", bn: "এগিয়ে যাওয়া", options: ["go ahead", "go on", "go off"] },
+            { q: "Go back to your seat.", correct: "go back", bn: "ফিরে যাওয়া", options: ["go back", "go ahead", "go on"] },
+            { q: "Grow up and be responsible.", correct: "grow up", bn: "বড় হওয়া", options: ["grow up", "grow out", "grow on"] },
+            { q: "Hand in your homework.", correct: "hand in", bn: "জমা দেওয়া", options: ["hand in", "hand out", "hand over"] },
+            { q: "Hand out the papers.", correct: "hand out", bn: "বিতরণ করা", options: ["hand out", "hand in", "hand over"] },
+            { q: "Let's hang out together.", correct: "hang out", bn: "ঘোরাঘুরি", options: ["hang out", "hang on", "hang up"] },
+            { q: "She has on a beautiful dress.", correct: "has on", bn: "পরা থাকা", options: ["has on", "has up", "has out"] },
+            { q: "The company laid off workers.", correct: "laid off", bn: "ছাঁটাই করা", options: ["laid off", "laid out", "laid up"] },
+            { q: "Don't let me down.", correct: "let down", bn: "হতাশ করা", options: ["let down", "let off", "let in"] },
+            { q: "Let in some fresh air.", correct: "let in", bn: "ঢুকতে দেওয়া", options: ["let in", "let out", "let off"] },
+            { q: "Pay back the money.", correct: "pay back", bn: "শোধ করা", options: ["pay back", "pay off", "pay up"] },
+            { q: "Point out the mistake.", correct: "point out", bn: "নির্দেশ করা", options: ["point out", "point up", "point to"] },
+            { q: "Shut down the computer.", correct: "shut down", bn: "বন্ধ করা", options: ["shut down", "shut off", "shut up"] },
+            { q: "Please sit down.", correct: "sit down", bn: "বসা", options: ["sit down", "sit up", "sit out"] },
+            { q: "Stand up for your rights.", correct: "stand up", bn: "দাঁড়ানো", options: ["stand up", "stand by", "stand for"] },
+            { q: "Don't talk back to elders.", correct: "talk back", bn: "উত্তর দেওয়া", options: ["talk back", "talk over", "talk out"] },
+            { q: "They tore down the old building.", correct: "tore down", bn: "ভেঙে ফেলা", options: ["tore down", "tore up", "tore off"] },
+            { q: "Turn around and look.", correct: "turn around", bn: "ঘুরে দাঁড়ানো", options: ["turn around", "turn back", "turn down"] },
+            { q: "Wash up before dinner.", correct: "wash up", bn: "হাত-মুখ ধোয়া", options: ["wash up", "wash out", "wash down"] },
+            { q: "The shoes wore out quickly.", correct: "wore out", bn: "জীর্ণ করা", options: ["wore out", "wore off", "wore down"] }
+        ];
+
+        // Add base questions
+        basePhrasalQ.forEach(q => {
+            const key = q.q + q.correct;
+            if (!phrasalQSet.has(key)) {
+                phrasalQSet.add(key);
+                phrasalQuestions.push({...q});
+            }
+        });
+
+        // Generate more unique questions from the phrasal verb list
+        const usedPhrasal = new Set();
+        phrasalQuestions.forEach(q => usedPhrasal.add(q.correct));
+
+        let extraCounter = 0;
+        while (phrasalQuestions.length < 260 && extraCounter < uniquePhrasal.length * 2) {
+            for (let item of uniquePhrasal) {
+                if (phrasalQuestions.length >= 260) break;
+                const pv = item.en;
+                if (usedPhrasal.has(pv)) continue;
+                // Create a question using this phrasal verb
+                const sentence = item.example.replace(/[^a-zA-Z0-9 ]/g, '').trim();
+                const words = sentence.split(' ');
+                // Find the phrasal verb in the sentence and replace with blank
+                const pvWords = pv.split(' ');
+                let sentenceWithBlank = sentence;
+                // Simple replacement - look for the phrasal verb as a whole
+                if (sentenceWithBlank.includes(pv)) {
+                    sentenceWithBlank = sentenceWithBlank.replace(pv, '____');
+                } else {
+                    // Try to find parts
+                    for (let w of pvWords) {
+                        if (sentenceWithBlank.includes(w)) {
+                            sentenceWithBlank = sentenceWithBlank.replace(w, '____');
+                            break;
+                        }
+                    }
+                }
+                // Create options
+                const options = [pv];
+                const allPVs = uniquePhrasal.map(p => p.en).filter(p => p !== pv);
+                const shuffledPVs = allPVs.sort(() => Math.random() - 0.5);
+                for (let i = 0; i < 2 && i < shuffledPVs.length; i++) {
+                    options.push(shuffledPVs[i]);
+                }
+                // Shuffle options
+                const shuffledOptions = options.sort(() => Math.random() - 0.5);
+                const key = sentenceWithBlank + pv;
+                if (!phrasalQSet.has(key)) {
+                    phrasalQSet.add(key);
+                    phrasalQuestions.push({
+                        q: sentenceWithBlank,
+                        correct: pv,
+                        bn: item.bn,
+                        options: shuffledOptions
+                    });
+                    usedPhrasal.add(pv);
+                }
+                extraCounter++;
+            }
+        }
+        // Ensure we have at least 250
+        while (phrasalQuestions.length < 250) {
+            const item = uniquePhrasal[phrasalQuestions.length % uniquePhrasal.length];
+            const pv = item.en;
+            const sentence = item.example.replace(/[^a-zA-Z0-9 ]/g, '').trim();
+            let sentenceWithBlank = sentence;
+            if (sentenceWithBlank.includes(pv)) {
+                sentenceWithBlank = sentenceWithBlank.replace(pv, '____');
+            } else {
+                const words = pv.split(' ');
+                for (let w of words) {
+                    if (sentenceWithBlank.includes(w)) {
+                        sentenceWithBlank = sentenceWithBlank.replace(w, '____');
+                        break;
+                    }
+                }
+            }
+            const options = [pv];
+            const allPVs = uniquePhrasal.map(p => p.en).filter(p => p !== pv);
+            const shuffledPVs = allPVs.sort(() => Math.random() - 0.5);
+            for (let i = 0; i < 2 && i < shuffledPVs.length; i++) {
+                options.push(shuffledPVs[i]);
+            }
+            const shuffledOptions = options.sort(() => Math.random() - 0.5);
+            const key = sentenceWithBlank + pv;
+            if (!phrasalQSet.has(key)) {
+                phrasalQSet.add(key);
+                phrasalQuestions.push({
+                    q: sentenceWithBlank,
+                    correct: pv,
+                    bn: item.bn,
+                    options: shuffledOptions
+                });
+            }
+        }
+        phrasalQuestions.length = Math.min(phrasalQuestions.length, 265);
+
+        // ---------- RENDER PHRASAL QUESTIONS ----------
+        const phrasalQContainer = document.getElementById('phrasalQContainer');
+        const phrasalQPagination = document.getElementById('phrasalQPagination');
+        let phrasalQPage = 0;
+        const PHRASAL_Q_PER_PAGE = 15;
+
+        function renderPhrasalQ(page) {
+            phrasalQContainer.innerHTML = '';
+            const start = page * PHRASAL_Q_PER_PAGE;
+            const end = Math.min(start + PHRASAL_Q_PER_PAGE, phrasalQuestions.length);
+            for (let i = start; i < end; i++) {
+                const item = phrasalQuestions[i];
+                const block = document.createElement('div');
+                block.className = 'phrasal-q-block';
+                const qDiv = document.createElement('div');
+                qDiv.className = 'phrasal-q';
+                qDiv.textContent = `${i+1}. ${item.q}`;
+                block.appendChild(qDiv);
+                // Show Bengali meaning hint
+                const bnHint = document.createElement('div');
+                bnHint.className = 'formula-badge';
+                bnHint.textContent = `🔊 অর্থ: ${item.bn}`;
+                bnHint.style.cursor = 'pointer';
+                bnHint.addEventListener('click', function() { speakText(item.bn, 'bn-IN'); });
+                block.appendChild(bnHint);
+
+                const optDiv = document.createElement('div');
+                optDiv.className = 'phrasal-options';
+                const name = `phq_${i}`;
+                item.options.forEach(opt => {
+                    const label = document.createElement('label');
+                    const radio = document.createElement('input');
+                    radio.type = 'radio';
+                    radio.name = name;
+                    radio.value = opt;
+                    label.appendChild(radio);
+                    label.appendChild(document.createTextNode(opt));
+                    optDiv.appendChild(label);
+                });
+                block.appendChild(optDiv);
+                const btn = document.createElement('button');
+                btn.className = 'phrasal-submit';
+                btn.textContent = 'Check Answer';
+                const ansDiv = document.createElement('div');
+                ansDiv.className = 'phrasal-answer';
+                ansDiv.textContent = '❓ select an option';
+                const explDiv = document.createElement('div');
+                explDiv.className = 'phrasal-explanation';
+                explDiv.innerHTML = `<strong>📘 সঠিক উত্তর:</strong> "${item.correct}" — অর্থ: ${item.bn}`;
+                btn.addEventListener('click', function() {
+                    const selected = document.querySelector(`input[name="${name}"]:checked`);
+                    if (!selected) { ansDiv.textContent = '⚠️ একটি অপশন নির্বাচন করুন।'; ansDiv.className = 'phrasal-answer wrong'; explDiv.classList.remove('show'); return; }
+                    const userAns = selected.value;
+                    if (userAns === item.correct) { ansDiv.textContent = `✅ সঠিক! (${item.correct})`; ansDiv.className = 'phrasal-answer correct'; }
+                    else { ansDiv.textContent = `❌ ভুল। সঠিক: ${item.correct}`; ansDiv.className = 'phrasal-answer wrong'; }
+                    explDiv.classList.add('show');
+                });
+                block.appendChild(btn);
+                block.appendChild(ansDiv);
+                block.appendChild(explDiv);
+                phrasalQContainer.appendChild(block);
+            }
+            phrasalQPagination.innerHTML = '';
+            const totalPages = Math.ceil(phrasalQuestions.length / PHRASAL_Q_PER_PAGE);
+            for (let p = 0; p < totalPages; p++) {
+                const btn = document.createElement('button');
+                btn.textContent = p + 1;
+                if (p === page) btn.classList.add('active');
+                btn.addEventListener('click', function() {
+                    phrasalQPage = p;
+                    renderPhrasalQ(p);
+                    window.scrollTo(0, 0);
+                });
+                phrasalQPagination.appendChild(btn);
+            }
+        }
+        renderPhrasalQ(0);
 
         // ---------- VERBS 500 ----------
         const baseVerbs = [
